@@ -672,8 +672,139 @@
     .menu-category.active { display: grid; }
     .menu-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 24px;
+    }
+    .menu-card {
+      background: #1e293b;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 16px; padding: 32px;
+      position: relative; overflow: hidden;
+      transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      cursor: default;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+    .menu-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--neon-red), transparent);
+      opacity: 0; transition: opacity 0.35s ease;
+    }
+    .menu-card::after {
+      content: '';
+      position: absolute; inset: 0; border-radius: 16px;
+      background: radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(255,45,85,0.03), transparent 60%);
+      pointer-events: none; opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+    .menu-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(255,45,85,0.3);
+      box-shadow: 0 15px 50px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,45,85,0.1);
+    }
+    .menu-card:hover::before { opacity: 1; }
+    .menu-card:hover::after { opacity: 1; }
+    .menu-card-badge {
+      display: inline-block; font-family: var(--font-accent);
+      font-size: 0.58rem; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; padding: 5px 16px; border-radius: 20px;
+      margin-bottom: 14px;
+    }
+    .badge-hot { background: rgba(255,45,85,0.15); color: var(--neon-red); border: 1px solid rgba(255,45,85,0.25); }
+    .badge-new { background: rgba(0,180,255,0.15); color: var(--neon-blue); border: 1px solid rgba(0,180,255,0.25); }
+    .badge-popular { background: rgba(255,215,0,0.15); color: var(--gold); border: 1px solid rgba(255,215,0,0.25); }
+    .badge-special { background: rgba(139,92,246,0.15); color: var(--neon-purple); border: 1px solid rgba(139,92,246,0.25); }
+    .menu-card-header {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; margin-bottom: 14px;
+    }
+    .menu-card-name {
+      font-family: var(--font-display); font-size: 1.08rem;
+      font-weight: 700; letter-spacing: 1px;
+      color: rgba(240,240,255,0.95);
+    }
+    .menu-card-price {
+      font-family: var(--font-display); font-size: 1.45rem;
+      font-weight: 800; color: var(--neon-red); white-space: nowrap;
+      text-shadow: 0 0 20px rgba(255,45,85,0.3);
+    }
+    .menu-card-desc {
+      font-size: 0.88rem; line-height: 1.8;
+      color: rgba(240,240,255,0.8);
+    }
+    .toppings-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .topping-tag {
+      font-family: var(--font-accent); font-size: 0.62rem;
+      padding: 4px 14px; border-radius: 20px;
+      background: rgba(139,92,246,0.12);
+      border: 1px solid rgba(139,92,246,0.25);
+      color: rgba(240,240,255,0.7);
+    }
+    .menu-card {
+      background: #1e293b;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px; padding: 32px;
+      position: relative; overflow: hidden;
+      transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      cursor: default;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    .menu-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--neon-red), transparent);
+      opacity: 0; transition: opacity 0.35s ease;
+    }
+    .menu-card::after {
+      content: '';
+      position: absolute; inset: 0; border-radius: 16px;
+      background: radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,45,85,0.03), transparent 60%);
+      pointer-events: none; opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+    .menu-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(255,45,85,0.3);
+      box-shadow: 0 15px 50px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,45,85,0.1);
+    }
+    .menu-card:hover::before { opacity: 1; }
+    .menu-card:hover::after { opacity: 1; }
+    .menu-card-badge {
+      display: inline-block; font-family: var(--font-accent);
+      font-size: 0.58rem; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; padding: 5px 16px; border-radius: 20px;
+      margin-bottom: 14px;
+    }
+    .badge-hot { background: rgba(255,45,85,0.15); color: var(--neon-red); border: 1px solid rgba(255,45,85,0.25); }
+    .badge-new { background: rgba(0,180,255,0.15); color: var(--neon-blue); border: 1px solid rgba(0,180,255,0.25); }
+    .badge-popular { background: rgba(255,215,0,0.15); color: var(--gold); border: 1px solid rgba(255,215,0,0.25); }
+    .badge-special { background: rgba(139,92,246,0.15); color: var(--neon-purple); border: 1px solid rgba(139,92,246,0.25); }
+    .menu-card-header {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; margin-bottom: 14px;
+    }
+    .menu-card-name {
+      font-family: var(--font-display); font-size: 1.08rem;
+      font-weight: 700; letter-spacing: 1px;
+      color: rgba(240,240,255,0.95);
+    }
+    .menu-card-price {
+      font-family: var(--font-display); font-size: 1.45rem;
+      font-weight: 800; color: var(--neon-red); white-space: nowrap;
+      text-shadow: 0 0 20px rgba(255,45,85,0.3);
+    }
+    .menu-card-desc {
+      font-size: 0.88rem; line-height: 1.8;
+      color: rgba(240,240,255,0.75);
+    }
+    .toppings-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .topping-tag {
+      font-family: var(--font-accent); font-size: 0.62rem;
+      padding: 4px 14px; border-radius: 20px;
+      background: rgba(139,92,246,0.1);
+      border: 1px solid rgba(139,92,246,0.2);
+      color: rgba(240,240,255,0.6);
     }
     .menu-card {
       background: #1e293b;
@@ -729,7 +860,7 @@
     }
     .menu-card-desc {
       font-size: 0.88rem; line-height: 1.8;
-      color: rgba(240,240,255,0.6);
+      color: rgba(240,240,255,0.75);
     }
     .toppings-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
     .topping-tag {
