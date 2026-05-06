@@ -1,0 +1,2293 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XPACE BURGER | Hamburguesas de Otro Planeta</title>
+  <meta name="description" content="Xpace Burger - Hamburguesas artesanales con un toque espacial. Sabores de otro planeta en cada bocado.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Exo+2:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+ 
+    :root {
+      --space-dark: #030712;
+      --space-deep: #0a1128;
+      --space-mid: #111827;
+      --neon-red: #ff2d55;
+      --neon-red-glow: rgba(255, 45, 85, 0.6);
+      --neon-blue: #00b4ff;
+      --neon-blue-glow: rgba(0, 180, 255, 0.5);
+      --neon-purple: #8b5cf6;
+      --neon-purple-glow: rgba(139, 92, 246, 0.5);
+      --neon-gold: #ffd700;
+      --star-white: #f0f0ff;
+      --font-display: 'Orbitron', sans-serif;
+      --font-body: 'Space Grotesk', sans-serif;
+      --font-accent: 'Exo 2', sans-serif;
+    }
+ 
+    html { overflow-x: hidden; scroll-behavior: auto; }
+    body {
+      font-family: var(--font-body);
+      background: var(--space-dark);
+      color: var(--star-white);
+      overflow-x: hidden;
+      cursor: none;
+    }
+ 
+    /* ===== SCROLL PROGRESS BAR ===== */
+    .scroll-progress {
+      position: fixed; top: 0; left: 0; width: 0; height: 3px;
+      background: linear-gradient(90deg, var(--neon-red), var(--neon-purple), var(--neon-blue));
+      z-index: 10001;
+      transition: none;
+    }
+ 
+    /* ===== CUSTOM CURSOR ===== */
+    .cursor-dot {
+      position: fixed; width: 6px; height: 6px;
+      background: var(--neon-red);
+      border-radius: 50%; pointer-events: none; z-index: 100000;
+      box-shadow: 0 0 20px var(--neon-red), 0 0 40px var(--neon-red-glow);
+      transform: translate(-50%, -50%);
+    }
+    .cursor-ring {
+      position: fixed; width: 44px; height: 44px;
+      border: 1.5px solid rgba(255, 45, 85, 0.4);
+      border-radius: 50%; pointer-events: none; z-index: 99999;
+      transform: translate(-50%, -50%);
+      transition: width 0.4s ease, height 0.4s ease, border-color 0.4s ease, background 0.4s ease;
+    }
+    .cursor-ring.hover {
+      width: 64px; height: 64px;
+      border-color: var(--neon-blue);
+      background: rgba(0, 180, 255, 0.05);
+    }
+    .cursor-ring.click { width: 30px; height: 30px; background: rgba(255, 45, 85, 0.15); }
+    .cursor-glow {
+      position: fixed; width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 45, 85, 0.03) 0%, transparent 70%);
+      pointer-events: none; z-index: 0;
+      transform: translate(-50%, -50%);
+    }
+ 
+    /* ===== PRELOADER ===== */
+    #preloader {
+      position: fixed; inset: 0; z-index: 100000;
+      background: var(--space-dark);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+    }
+    .preloader-inner { position: relative; width: 200px; height: 200px; }
+    .preloader-burger {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .preloader-burger .bun-top {
+      position: absolute; top: 20px;
+      width: 100px; height: 40px;
+      background: linear-gradient(135deg, #d4920a, #f5c842);
+      border-radius: 50px 50px 10px 10px;
+      box-shadow: 0 4px 15px rgba(245, 200, 66, 0.3);
+    }
+    .preloader-burger .patty {
+      position: absolute; top: 65px;
+      width: 90px; height: 22px;
+      background: linear-gradient(135deg, #6b3a2a, #8b4513);
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+    }
+    .preloader-burger .bun-bottom {
+      position: absolute; top: 90px;
+      width: 100px; height: 35px;
+      background: linear-gradient(135deg, #d4920a, #f5c842);
+      border-radius: 10px 10px 30px 30px;
+    }
+    .preloader-ring {
+      position: absolute; inset: -30px;
+      border: 1.5px solid transparent;
+      border-top-color: var(--neon-red);
+      border-radius: 50%;
+      animation: spin-ring 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+    }
+    .preloader-ring:nth-child(2) {
+      inset: -50px;
+      border-top-color: transparent;
+      border-right-color: var(--neon-blue);
+      animation-duration: 2s; animation-direction: reverse;
+    }
+    .preloader-ring:nth-child(3) {
+      inset: -70px;
+      border-top-color: transparent;
+      border-bottom-color: var(--neon-purple);
+      animation-duration: 2.5s;
+    }
+    @keyframes spin-ring { to { transform: rotate(360deg); } }
+ 
+    .preloader-text {
+      font-family: var(--font-display);
+      font-size: 0.9rem; letter-spacing: 12px;
+      color: var(--star-white); margin-top: 50px;
+    }
+    .preloader-text span {
+      display: inline-block;
+      animation: letter-pop 0.5s ease forwards;
+      opacity: 0; transform: translateY(20px) scale(0.5);
+    }
+    @keyframes letter-pop { to { opacity: 1; transform: translateY(0) scale(1); } }
+    .preloader-counter {
+      font-family: var(--font-display); font-size: 4rem; font-weight: 900;
+      margin-top: 30px; letter-spacing: 4px;
+      background: linear-gradient(135deg, var(--neon-red), var(--neon-purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .preloader-bar {
+      width: 240px; height: 2px;
+      background: rgba(255,255,255,0.05);
+      margin-top: 20px; border-radius: 2px; overflow: hidden;
+    }
+    .preloader-bar-fill {
+      height: 100%; width: 0;
+      background: linear-gradient(90deg, var(--neon-red), var(--neon-purple), var(--neon-blue));
+      border-radius: 2px;
+      animation: bar-fill 2.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+    }
+    @keyframes bar-fill { to { width: 100%; } }
+ 
+    /* ===== THREE.JS CANVASES ===== */
+    #galaxy-canvas {
+      position: fixed; inset: 0; z-index: 0;
+      pointer-events: none;
+    }
+ 
+    /* ===== NOISE OVERLAY ===== */
+    .noise-overlay {
+      position: fixed; inset: 0; z-index: 9998;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: 0.018;
+    }
+ 
+    /* ===== GLOW EFFECTS ===== */
+    .glow-orb {
+      position: fixed; border-radius: 50%;
+      filter: blur(100px); pointer-events: none; z-index: 0;
+      opacity: 0.06;
+    }
+    .glow-orb-1 {
+      width: 400px; height: 400px; background: var(--neon-red);
+      top: 10%; left: -100px;
+      animation: orb-float-1 15s ease-in-out infinite;
+    }
+    .glow-orb-2 {
+      width: 300px; height: 300px; background: var(--neon-blue);
+      top: 60%; right: -50px;
+      animation: orb-float-2 18s ease-in-out infinite;
+    }
+    .glow-orb-3 {
+      width: 250px; height: 250px; background: var(--neon-purple);
+      bottom: 10%; left: 30%;
+      animation: orb-float-3 20s ease-in-out infinite;
+    }
+    @keyframes orb-float-1 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(50px, -30px) scale(1.1); }
+      66% { transform: translate(-20px, 40px) scale(0.9); }
+    }
+    @keyframes orb-float-2 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(-40px, 50px) scale(1.15); }
+      66% { transform: translate(30px, -20px) scale(0.85); }
+    }
+    @keyframes orb-float-3 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(60px, -40px) scale(1.2); }
+    }
+ 
+    /* ===== NAVIGATION ===== */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 24px 60px;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .navbar.scrolled {
+      padding: 14px 60px;
+      background: rgba(3, 7, 18, 0.92);
+      backdrop-filter: blur(40px) saturate(180%);
+      border-bottom: 1px solid rgba(255, 45, 85, 0.08);
+      box-shadow: 0 10px 60px rgba(0,0,0,0.3);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 16px; text-decoration: none; }
+    .nav-logo img {
+      width: 50px; height: 50px; border-radius: 50%;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 0 20px rgba(255,45,85,0.2);
+      border: 2px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.05);
+      padding: 2px;
+    }
+    .nav-logo:hover img {
+      transform: rotate(20deg) scale(1.1);
+      box-shadow: 0 0 30px var(--neon-red-glow);
+    }
+    .nav-logo-text {
+      font-family: var(--font-display); font-size: 1.1rem;
+      font-weight: 700; letter-spacing: 4px; color: var(--star-white);
+    }
+    .nav-logo-text span { color: var(--neon-red); }
+    .nav-links { display: flex; align-items: center; gap: 44px; list-style: none; }
+    .nav-links a {
+      font-family: var(--font-accent); font-size: 0.78rem;
+      font-weight: 600; text-transform: uppercase; letter-spacing: 2.5px;
+      color: rgba(240,240,255,0.55); text-decoration: none;
+      position: relative; padding: 6px 0;
+      transition: color 0.3s ease;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute;
+      bottom: 0; left: 50%; width: 0; height: 1.5px;
+      background: var(--neon-red);
+      box-shadow: 0 0 12px var(--neon-red-glow);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateX(-50%);
+    }
+    .nav-links a:hover { color: var(--star-white); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta {
+      padding: 12px 30px !important;
+      border: 1px solid var(--neon-red) !important;
+      border-radius: 30px;
+      color: var(--neon-red) !important;
+      font-family: var(--font-display) !important;
+      font-size: 0.68rem !important;
+      letter-spacing: 3px !important;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    .nav-cta::after { display: none !important; }
+    .nav-cta:hover {
+      background: var(--neon-red) !important;
+      color: white !important;
+      box-shadow: 0 0 50px var(--neon-red-glow) !important;
+      transform: translateY(-3px) scale(1.05);
+    }
+ 
+    /* Mobile toggle */
+    .menu-toggle {
+      display: none; flex-direction: column; gap: 6px;
+      cursor: pointer; z-index: 1001; padding: 10px;
+    }
+    .menu-toggle span {
+      width: 28px; height: 2px; background: var(--star-white);
+      border-radius: 2px; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .menu-toggle.active span:nth-child(2) { opacity: 0; }
+    .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+ 
+    /* ===== HERO ===== */
+    .hero {
+      position: relative; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; overflow: hidden; z-index: 1;
+      perspective: 1200px;
+      padding-top: 100px; padding-bottom: 60px;
+    }
+    .hero-content {
+      position: relative; z-index: 10;
+      max-width: 1100px; padding: 0 30px;
+      transform-style: preserve-3d;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: var(--font-accent); font-size: 0.7rem;
+      font-weight: 600; letter-spacing: 6px; text-transform: uppercase;
+      color: var(--neon-blue);
+      border: 1px solid rgba(0, 180, 255, 0.15);
+      padding: 10px 28px; border-radius: 40px;
+      margin-bottom: 40px;
+      backdrop-filter: blur(10px);
+      background: rgba(0, 180, 255, 0.04);
+      opacity: 0; transform: translateY(30px);
+    }
+    .hero-badge::before {
+      content: ''; width: 6px; height: 6px;
+      background: var(--neon-blue); border-radius: 50%;
+      box-shadow: 0 0 15px var(--neon-blue), 0 0 30px var(--neon-blue-glow);
+      animation: badge-pulse 2s ease-in-out infinite;
+    }
+    @keyframes badge-pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.5); }
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3.5rem, 10vw, 9rem);
+      font-weight: 900; line-height: 1.05;
+      margin-bottom: 35px;
+    }
+    .hero-title .line { display: block; overflow: hidden; padding: 5px 0; }
+    .hero-title .line-1 { color: var(--star-white); }
+    .hero-title .line-2 {
+      background: linear-gradient(135deg, var(--neon-red) 0%, #ff6b8a 25%, var(--neon-purple) 50%, #ff6b8a 75%, var(--neon-red) 100%);
+      background-size: 300% 100%;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradient-flow 5s ease-in-out infinite;
+      filter: drop-shadow(0 0 40px rgba(255,45,85,0.3));
+    }
+    @keyframes gradient-flow {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    .hero-title .char {
+      display: inline-block;
+      opacity: 0; transform: translateY(120%) rotateX(-80deg);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .hero-title .char.visible {
+      opacity: 1 !important;
+      transform: translateY(0) rotateX(0) !important;
+    }
+    .hero-subtitle {
+      font-family: var(--font-accent); font-size: clamp(1rem, 2vw, 1.4rem);
+      font-weight: 300; color: rgba(240,240,255,0.45);
+      letter-spacing: 5px; margin-bottom: 55px;
+      opacity: 0; transform: translateY(30px);
+    }
+    .hero-buttons {
+      display: flex; gap: 22px; justify-content: center; flex-wrap: wrap;
+      opacity: 0; transform: translateY(30px);
+    }
+    .scroll-indicator {
+      position: absolute; bottom: 40px; left: 50%;
+      transform: translateX(-50%); z-index: 10;
+      display: flex; flex-direction: column; align-items: center; gap: 14px;
+      opacity: 0;
+    }
+    .scroll-indicator span {
+      font-family: var(--font-accent); font-size: 0.6rem;
+      letter-spacing: 5px; text-transform: uppercase;
+      color: rgba(240,240,255,0.25);
+    }
+    .scroll-line {
+      width: 1px; height: 70px;
+      background: linear-gradient(180deg, var(--neon-red), transparent);
+      animation: scroll-pulse 2s ease-in-out infinite;
+      transform-origin: top;
+    }
+    @keyframes scroll-pulse {
+      0%, 100% { opacity: 1; transform: scaleY(1); }
+      50% { opacity: 0.2; transform: scaleY(0.4); }
+    }
+ 
+    /* ===== BUTTONS ===== */
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 18px 48px; border-radius: 50px;
+      font-family: var(--font-display); font-size: 0.72rem;
+      font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+      text-decoration: none; cursor: pointer; border: none;
+      position: relative; overflow: hidden;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--neon-red), #e91e63);
+      color: white;
+      box-shadow: 0 10px 50px rgba(255, 45, 85, 0.3);
+    }
+    .btn-primary::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, transparent, rgba(255,255,255,0.25), transparent);
+      transform: translateX(-100%) skewX(-15deg);
+      transition: transform 0.7s ease;
+    }
+    .btn-primary:hover {
+      transform: translateY(-5px) scale(1.03);
+      box-shadow: 0 20px 70px rgba(255,45,85,0.45);
+    }
+    .btn-primary:hover::before { transform: translateX(100%) skewX(-15deg); }
+    .btn-outline {
+      background: rgba(255,255,255,0.02);
+      color: var(--star-white);
+      border: 1px solid rgba(240,240,255,0.12);
+      backdrop-filter: blur(10px);
+    }
+    .btn-outline:hover {
+      border-color: var(--neon-blue); color: var(--neon-blue);
+      box-shadow: 0 0 50px rgba(0,180,255,0.12);
+      transform: translateY(-5px);
+    }
+ 
+    /* ===== GOIKO-STYLE MARQUEE ===== */
+    .marquee-section {
+      overflow: hidden; padding: 0;
+      position: relative; z-index: 1;
+    }
+    .marquee-band {
+      padding: 18px 0;
+      background: linear-gradient(90deg, var(--neon-red), #e91e63, var(--neon-purple), var(--neon-red));
+      background-size: 300% 100%;
+      animation: gradient-flow 8s ease-in-out infinite;
+      overflow: hidden;
+    }
+    .marquee-band:nth-child(2) {
+      background: rgba(255,255,255,0.02);
+      border-top: 1px solid rgba(255,255,255,0.03);
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+    .marquee-track {
+      display: flex; animation: marquee 30s linear infinite;
+      width: max-content;
+    }
+    .marquee-band:nth-child(2) .marquee-track {
+      animation: marquee-reverse 35s linear infinite;
+    }
+    .marquee-item {
+      font-family: var(--font-display); font-size: 0.85rem;
+      font-weight: 800; letter-spacing: 5px; text-transform: uppercase;
+      color: white; white-space: nowrap; padding: 0 35px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    .marquee-band:nth-child(2) .marquee-item {
+      font-size: 3rem; letter-spacing: 8px;
+      color: rgba(240,240,255,0.04);
+      -webkit-text-stroke: 1px rgba(255,45,85,0.15);
+      text-shadow: none;
+      padding: 8px 50px;
+    }
+    .marquee-item .sep {
+      display: inline-block; width: 8px; height: 8px;
+      background: rgba(255,255,255,0.7); border-radius: 50%;
+      margin: 0 30px; vertical-align: middle;
+      box-shadow: 0 0 10px rgba(255,255,255,0.5);
+    }
+    .marquee-band:nth-child(2) .marquee-item .sep {
+      background: rgba(255,45,85,0.3);
+      box-shadow: 0 0 20px rgba(255,45,85,0.2);
+      width: 12px; height: 12px;
+    }
+    @keyframes marquee { to { transform: translateX(-33.333%); } }
+    @keyframes marquee-reverse { to { transform: translateX(33.333%); } }
+ 
+    /* ===== SECTIONS ===== */
+    section { position: relative; z-index: 1; }
+    .section-header { text-align: center; margin-bottom: 90px; }
+    .section-tag {
+      font-family: var(--font-accent); font-size: 0.7rem;
+      font-weight: 600; letter-spacing: 8px; text-transform: uppercase;
+      color: var(--neon-blue); margin-bottom: 20px; display: block;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+      font-weight: 800; line-height: 1.1;
+      margin-bottom: 20px;
+    }
+    .section-title .gradient-text {
+      background: linear-gradient(135deg, var(--star-white), rgba(240,240,255,0.6));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .section-subtitle {
+      font-family: var(--font-accent); font-size: 1.05rem;
+      color: rgba(240,240,255,0.35); max-width: 560px; margin: 0 auto;
+      line-height: 1.8;
+    }
+ 
+    /* ===== FULL-WIDTH PARALLAX DIVIDER ===== */
+    .parallax-divider {
+      position: relative;
+      height: 60vh; min-height: 400px;
+      overflow: hidden; z-index: 1;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .parallax-divider-bg {
+      position: absolute; inset: -100px;
+      background: radial-gradient(ellipse at center, rgba(255,45,85,0.08) 0%, transparent 60%),
+                  radial-gradient(ellipse at 20% 80%, rgba(0,180,255,0.06) 0%, transparent 50%),
+                  radial-gradient(ellipse at 80% 20%, rgba(139,92,246,0.06) 0%, transparent 50%),
+                  var(--space-dark);
+      z-index: 0;
+    }
+    .parallax-divider-content {
+      position: relative; z-index: 2;
+      text-align: center; padding: 0 40px;
+    }
+    .parallax-big-text {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 12vw, 10rem);
+      font-weight: 900; line-height: 1;
+      -webkit-text-stroke: 1px rgba(255,45,85,0.3);
+      color: transparent;
+      position: relative;
+    }
+    .parallax-big-text .fill {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, var(--neon-red), var(--neon-purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      clip-path: inset(0 100% 0 0);
+      transition: clip-path 0s;
+    }
+    .parallax-divider-sub {
+      font-family: var(--font-accent); font-size: 1.1rem;
+      color: rgba(240,240,255,0.3); letter-spacing: 8px;
+      text-transform: uppercase; margin-top: 20px;
+    }
+ 
+    /* ===== BURGER DEL MES ===== */
+    .burger-del-mes {
+      padding: 160px 60px 180px;
+      overflow: hidden;
+      background: linear-gradient(180deg, var(--space-dark), rgba(10,17,40,0.6), var(--space-dark));
+    }
+    .bdm-container {
+      max-width: 1300px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 100px; align-items: center;
+    }
+    .bdm-visual {
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+      height: 550px;
+    }
+    #burger-del-mes-3d {
+      width: 100%; height: 100%;
+      position: relative; z-index: 2;
+    }
+    .bdm-planet {
+      width: 380px; height: 380px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #2a1530, #0d0515);
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow:
+        0 0 100px rgba(139, 92, 246, 0.2),
+        0 0 200px rgba(139, 92, 246, 0.08),
+        inset -30px -30px 80px rgba(0,0,0,0.6),
+        inset 10px 10px 40px rgba(139, 92, 246, 0.08);
+      animation: planet-float 10s ease-in-out infinite;
+    }
+    @keyframes planet-float {
+      0%, 100% { transform: translate(-50%, -50%) rotateY(0deg) rotateX(5deg); }
+      25% { transform: translate(-50%, -50%) rotateY(90deg) rotateX(-3deg); }
+      50% { transform: translate(-50%, -50%) rotateY(180deg) rotateX(5deg); }
+      75% { transform: translate(-50%, -50%) rotateY(270deg) rotateX(-3deg); }
+    }
+    .bdm-ring {
+      position: absolute; left: -25%; right: -25%;
+      top: 50%; height: 70px;
+      transform: translateY(-50%) rotateX(75deg);
+      border-radius: 50%;
+      border: 2px solid rgba(255, 45, 85, 0.25);
+      box-shadow: 0 0 30px rgba(255,45,85,0.1), inset 0 0 30px rgba(255,45,85,0.03);
+      animation: ring-glow 3s ease-in-out infinite alternate;
+    }
+    .bdm-ring-2 {
+      position: absolute; left: -35%; right: -35%;
+      top: 50%; height: 90px;
+      transform: translateY(-50%) rotateX(75deg);
+      border-radius: 50%;
+      border: 1px solid rgba(0, 180, 255, 0.12);
+      animation: ring-glow 4s ease-in-out infinite alternate-reverse;
+    }
+    @keyframes ring-glow {
+      0% { box-shadow: 0 0 20px rgba(255,45,85,0.08); }
+      100% { box-shadow: 0 0 50px rgba(255,45,85,0.25); }
+    }
+    .bdm-info { padding: 30px 0; }
+    .bdm-label {
+      font-family: var(--font-accent); font-size: 0.68rem; font-weight: 600;
+      letter-spacing: 8px; text-transform: uppercase;
+      color: var(--neon-blue); margin-bottom: 18px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .bdm-label::before {
+      content: ''; width: 50px; height: 1px;
+      background: linear-gradient(90deg, var(--neon-blue), transparent);
+    }
+    .bdm-name {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+      font-weight: 800; margin-bottom: 25px; line-height: 1.15;
+    }
+    .bdm-name .highlight {
+      color: var(--neon-red);
+      text-shadow: 0 0 50px var(--neon-red-glow);
+    }
+    .bdm-description {
+      font-size: 1.05rem; line-height: 2;
+      color: rgba(240,240,255,0.45); margin-bottom: 35px;
+    }
+    .bdm-features {
+      display: flex; gap: 30px; margin-bottom: 40px; flex-wrap: wrap;
+    }
+    .bdm-feature {
+      display: flex; align-items: center; gap: 10px;
+      font-family: var(--font-accent); font-size: 0.75rem;
+      color: rgba(240,240,255,0.4); letter-spacing: 1px;
+    }
+    .bdm-feature-icon {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1px solid rgba(255,45,85,0.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      background: rgba(255,45,85,0.03);
+    }
+    .bdm-price {
+      font-family: var(--font-display); font-size: 3.2rem; font-weight: 900;
+      margin-bottom: 40px;
+      background: linear-gradient(135deg, var(--neon-gold), #ffaa00, var(--neon-gold));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 25px rgba(255,215,0,0.25));
+    }
+    .bdm-price small {
+      font-size: 0.35em;
+      -webkit-text-fill-color: rgba(240,240,255,0.3);
+    }
+ 
+    /* ===== HORIZONTAL SCROLL MENU (Goiko-inspired) ===== */
+    .carta {
+      padding: 160px 0;
+      background: linear-gradient(180deg, var(--space-dark), rgba(10,17,40,0.4), var(--space-dark));
+      overflow: hidden;
+    }
+    .carta .section-header { padding: 0 60px; }
+    .menu-tabs {
+      display: flex; justify-content: center; gap: 14px;
+      margin-bottom: 80px; flex-wrap: wrap;
+      padding: 0 60px;
+    }
+    .menu-tab {
+      padding: 14px 38px;
+      border: 1px solid rgba(240,240,255,0.06);
+      border-radius: 40px;
+      font-family: var(--font-display); font-size: 0.63rem;
+      font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+      color: rgba(240,240,255,0.35); cursor: pointer;
+      background: rgba(255,255,255,0.01);
+      backdrop-filter: blur(10px);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative; overflow: hidden;
+    }
+    .menu-tab::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, var(--neon-red), var(--neon-purple));
+      opacity: 0; transition: opacity 0.4s ease;
+      border-radius: 40px;
+    }
+    .menu-tab.active {
+      border-color: transparent; color: white;
+    }
+    .menu-tab.active::before { opacity: 1; }
+    .menu-tab span { position: relative; z-index: 1; }
+    .menu-tab:hover:not(.active) { border-color: rgba(255,45,85,0.2); color: rgba(240,240,255,0.6); }
+ 
+    /* Horizontal scroll container */
+    .menu-scroll-wrapper {
+      position: relative;
+      width: 100%;
+    }
+    .menu-category { display: none; }
+    .menu-category.active { display: block; }
+ 
+    .menu-scroll {
+      display: flex; gap: 30px;
+      padding: 20px 60px 40px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      cursor: grab;
+    }
+    .menu-scroll::-webkit-scrollbar { display: none; }
+    .menu-scroll:active { cursor: grabbing; }
+ 
+    .menu-card {
+      flex: 0 0 340px;
+      scroll-snap-align: start;
+      background: linear-gradient(165deg, rgba(15, 23, 60, 0.6), rgba(5, 10, 30, 0.9));
+      border: 1px solid rgba(240, 240, 255, 0.04);
+      border-radius: 24px;
+      overflow: hidden;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      transform-style: preserve-3d;
+    }
+    .menu-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(
+        600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(255, 45, 85, 0.06), transparent 40%
+      );
+      border-radius: 24px; pointer-events: none; z-index: 1;
+      opacity: 0; transition: opacity 0.4s ease;
+    }
+    .menu-card:hover::before { opacity: 1; }
+    .menu-card:hover {
+      transform: translateY(-12px) scale(1.02);
+      border-color: rgba(255, 45, 85, 0.15);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.4), 0 0 40px rgba(255,45,85,0.06);
+    }
+    .menu-card-visual {
+      height: 220px;
+      background: linear-gradient(145deg, rgba(20,30,70,0.4), rgba(5,10,30,0.8));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 5rem;
+      position: relative; overflow: hidden;
+    }
+    .menu-card-visual::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0; height: 60%;
+      background: linear-gradient(to top, rgba(5,10,30,0.9), transparent);
+    }
+    .menu-card-body { padding: 28px; position: relative; z-index: 2; }
+    .menu-card-name {
+      font-family: var(--font-display); font-size: 0.85rem;
+      font-weight: 700; letter-spacing: 2px; margin-bottom: 10px;
+    }
+    .menu-card-desc {
+      font-size: 0.85rem; color: rgba(240,240,255,0.3);
+      line-height: 1.7; margin-bottom: 20px;
+    }
+    .menu-card-footer {
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .menu-card-price {
+      font-family: var(--font-display); font-size: 1.3rem; font-weight: 800;
+      color: var(--neon-red);
+    }
+    .menu-card-tag {
+      font-family: var(--font-accent); font-size: 0.6rem;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: rgba(240,240,255,0.2);
+      padding: 4px 12px;
+      border: 1px solid rgba(240,240,255,0.06);
+      border-radius: 20px;
+    }
+ 
+    /* Scroll hint arrows */
+    .scroll-hint {
+      display: flex; justify-content: center; gap: 20px;
+      margin-top: 30px; padding: 0 60px;
+    }
+    .scroll-hint-btn {
+      width: 50px; height: 50px;
+      border: 1px solid rgba(240,240,255,0.08);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: rgba(240,240,255,0.3);
+      font-size: 1.2rem;
+      transition: all 0.4s ease;
+      background: rgba(255,255,255,0.01);
+    }
+    .scroll-hint-btn:hover {
+      border-color: var(--neon-red); color: var(--neon-red);
+      box-shadow: 0 0 30px rgba(255,45,85,0.1);
+    }
+ 
+    /* ===== STATS / COUNTER SECTION (Goiko-style) ===== */
+    .stats-section {
+      padding: 120px 60px;
+      position: relative; z-index: 1;
+      overflow: hidden;
+    }
+    .stats-grid {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+    }
+    .stat-item {
+      text-align: center;
+      padding: 40px 20px;
+      border: 1px solid rgba(240,240,255,0.03);
+      border-radius: 20px;
+      background: rgba(255,255,255,0.01);
+      backdrop-filter: blur(10px);
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .stat-item:hover {
+      border-color: rgba(255,45,85,0.1);
+      transform: translateY(-8px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    .stat-number {
+      font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 900; line-height: 1;
+      background: linear-gradient(135deg, var(--neon-red), var(--neon-purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 20px var(--neon-red-glow));
+      margin-bottom: 12px;
+    }
+    .stat-suffix {
+      font-size: 0.6em;
+    }
+    .stat-label {
+      font-family: var(--font-accent); font-size: 0.68rem;
+      letter-spacing: 4px; text-transform: uppercase;
+      color: rgba(240,240,255,0.25);
+    }
+ 
+    /* ===== ABOUT ===== */
+    .about {
+      padding: 160px 60px;
+      text-align: center;
+      background: linear-gradient(180deg, var(--space-dark), rgba(10,17,40,0.5), var(--space-dark));
+      position: relative; overflow: hidden;
+    }
+    .about-logo-wrap {
+      position: relative; width: 160px; height: 160px;
+      margin: 0 auto 60px;
+    }
+    .about-logo-wrap img {
+      width: 100%; height: 100%; border-radius: 50%;
+      border: 3px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      padding: 4px;
+      position: relative; z-index: 2;
+    }
+    .orbit-container {
+      position: absolute; top: 50%; left: 50%;
+      width: 0; height: 0;
+    }
+    .orbit-line {
+      position: absolute;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 50%;
+    }
+    .orbit-line-1 {
+      width: 260px; height: 260px;
+      margin-left: -130px; margin-top: -130px;
+      animation: orbit-spin 12s linear infinite;
+    }
+    .orbit-line-2 {
+      width: 300px; height: 300px;
+      margin-left: -150px; margin-top: -150px;
+      border-color: rgba(255,255,255,0.1);
+      animation: orbit-spin 18s linear infinite reverse;
+    }
+    .orbit-line-3 {
+      width: 340px; height: 120px;
+      margin-left: -170px; margin-top: -60px;
+      border-color: rgba(255,255,255,0.08);
+      animation: orbit-spin 25s linear infinite;
+    }
+    @keyframes orbit-spin { to { transform: rotate(360deg); } }
+    .orbit-dot { position: absolute; border-radius: 50%; z-index: 3; }
+    .orbit-dot-1 {
+      width: 8px; height: 8px; background: white;
+      box-shadow: 0 0 10px rgba(255,255,255,0.6);
+      top: -4px; left: 50%; margin-left: -4px;
+      animation: orbit-spin 12s linear infinite;
+    }
+    .orbit-dot-2 {
+      width: 6px; height: 6px; background: white;
+      box-shadow: 0 0 8px rgba(255,255,255,0.4);
+      bottom: 20px; right: -3px;
+      animation: orbit-spin 18s linear infinite reverse;
+    }
+    .about-logo-ring {
+      position: absolute; inset: -25px;
+      border: 1px solid rgba(255,45,85,0.12); border-radius: 50%;
+    }
+    .about-logo-ring-2 {
+      position: absolute; inset: -50px;
+      border: 1px solid rgba(0,180,255,0.06); border-radius: 50%;
+    }
+    .about-text {
+      font-size: 1.2rem; line-height: 2.2;
+      color: rgba(240,240,255,0.45);
+      max-width: 700px; margin: 0 auto 70px;
+    }
+    .about-text strong { color: var(--star-white); font-weight: 600; }
+ 
+    /* ===== FULLSCREEN TEXT REVEAL (Goiko-style) ===== */
+    .text-reveal-section {
+      min-height: 80vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 120px 60px;
+      position: relative; z-index: 1;
+      overflow: hidden;
+    }
+    .text-reveal-content {
+      max-width: 900px; text-align: center;
+    }
+    .text-reveal-quote {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 700; line-height: 1.5;
+      color: rgba(240,240,255,0.08);
+    }
+    .text-reveal-quote .word {
+      display: inline-block;
+      transition: color 0.5s ease;
+    }
+    .text-reveal-quote .word.active {
+      color: var(--star-white);
+    }
+    .text-reveal-quote .word.highlight {
+      background: linear-gradient(135deg, var(--neon-red), var(--neon-purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+ 
+    /* ===== INSTAGRAM ===== */
+    .instagram-section {
+      padding: 140px 60px;
+      background: linear-gradient(180deg, var(--space-dark), rgba(10,17,40,0.3), var(--space-dark));
+      text-align: center;
+    }
+    .instagram-handle {
+      font-family: var(--font-display); font-size: 1.8rem;
+      color: var(--neon-red); text-decoration: none;
+      display: inline-block; margin-bottom: 60px;
+      transition: all 0.4s ease;
+      position: relative;
+    }
+    .instagram-handle::after {
+      content: ''; position: absolute;
+      bottom: -8px; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--neon-red), transparent);
+      transform: scaleX(0); transition: transform 0.4s ease;
+    }
+    .instagram-handle:hover { text-shadow: 0 0 50px var(--neon-red-glow); }
+    .instagram-handle:hover::after { transform: scaleX(1); }
+    .instagram-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 8px; max-width: 900px; margin: 0 auto;
+    }
+    .instagram-item {
+      aspect-ratio: 1;
+      background: linear-gradient(145deg, rgba(20,30,70,0.4), rgba(5,10,30,0.8));
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3rem;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer; position: relative; overflow: hidden;
+      transform-style: preserve-3d;
+    }
+    .instagram-item:hover {
+      transform: scale(1.1) rotateY(10deg) rotateX(-5deg);
+      z-index: 2;
+      box-shadow: 0 25px 80px rgba(0,0,0,0.4), 0 0 40px rgba(255,45,85,0.12);
+    }
+    .instagram-item::after {
+      content: '@xpace_burger'; position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, rgba(255,45,85,0.85), rgba(139,92,246,0.85));
+      font-family: var(--font-accent); font-size: 0.65rem;
+      letter-spacing: 2px; color: white; opacity: 0;
+      transition: opacity 0.4s ease; border-radius: 12px;
+    }
+    .instagram-item:hover::after { opacity: 1; }
+ 
+    /* ===== CTA BAND ===== */
+    .cta-band {
+      padding: 100px 60px;
+      text-align: center;
+      position: relative; z-index: 1;
+      overflow: hidden;
+    }
+    .cta-band-bg {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,45,85,0.08), rgba(139,92,246,0.08));
+      border-top: 1px solid rgba(255,45,85,0.1);
+      border-bottom: 1px solid rgba(255,45,85,0.1);
+    }
+    .cta-band-content { position: relative; z-index: 2; }
+    .cta-band-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 800; margin-bottom: 15px;
+      letter-spacing: 3px;
+    }
+    .cta-band-sub {
+      font-family: var(--font-accent); font-size: 1rem;
+      color: rgba(240,240,255,0.4); margin-bottom: 40px;
+      letter-spacing: 2px;
+    }
+ 
+    /* ===== FOOTER ===== */
+    .footer {
+      padding: 90px 60px 30px;
+      background: rgba(3, 7, 18, 0.92);
+      backdrop-filter: blur(40px) saturate(180%);
+      border-top: 1px solid rgba(255, 45, 85, 0.08);
+    }
+    .footer-container { max-width: 1300px; margin: 0 auto; }
+    .footer-top {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr;
+      gap: 60px; margin-bottom: 70px;
+    }
+    .footer-brand p {
+      font-size: 0.9rem; color: rgba(240,240,255,0.25);
+      line-height: 1.8; margin-top: 20px;
+    }
+    .footer-col h4 {
+      font-family: var(--font-display); font-size: 0.63rem;
+      font-weight: 700; letter-spacing: 4px; text-transform: uppercase;
+      color: rgba(240,240,255,0.5); margin-bottom: 24px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 14px; }
+    .footer-col ul a {
+      font-size: 0.9rem; color: rgba(240,240,255,0.25);
+      text-decoration: none; transition: color 0.3s ease;
+    }
+    .footer-col ul a:hover { color: var(--neon-red); }
+    .footer-social { display: flex; gap: 14px; margin-top: 25px; }
+    .footer-social a {
+      width: 44px; height: 44px;
+      border: 1px solid rgba(240,240,255,0.06);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(240,240,255,0.25); text-decoration: none;
+      font-size: 1.1rem;
+      transition: all 0.4s ease;
+    }
+    .footer-social a:hover {
+      border-color: var(--neon-red); color: var(--neon-red);
+      box-shadow: 0 0 30px rgba(255,45,85,0.15);
+      transform: translateY(-4px);
+    }
+    .footer-bottom {
+      border-top: 1px solid rgba(240,240,255,0.03);
+      padding-top: 28px;
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 15px;
+    }
+    .footer-bottom p { font-size: 0.8rem; color: rgba(240,240,255,0.15); }
+ 
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1200px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 1024px) {
+      .bdm-container { grid-template-columns: 1fr; gap: 60px; text-align: center; }
+      .bdm-label { justify-content: center; }
+      .bdm-features { justify-content: center; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .menu-card { flex: 0 0 300px; }
+    }
+    @media (max-width: 768px) {
+      .navbar { padding: 15px 20px; }
+      .nav-links {
+        position: fixed; top: 0; right: -100%;
+        width: 85%; height: 100vh;
+        background: rgba(3,7,18,0.98);
+        backdrop-filter: blur(30px);
+        flex-direction: column; justify-content: center;
+        padding: 40px; gap: 30px;
+        transition: right 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 1001;
+      }
+      .nav-links.open { right: 0; }
+      .menu-toggle { display: flex; }
+      .burger-del-mes, .carta, .about, .instagram-section,
+      .stats-section, .text-reveal-section, .cta-band { padding-left: 20px; padding-right: 20px; }
+      .carta .section-header, .menu-tabs, .scroll-hint { padding: 0 20px; }
+      .menu-scroll { padding: 20px 20px 40px; gap: 20px; }
+      .menu-card { flex: 0 0 280px; }
+      .footer-top { grid-template-columns: 1fr; gap: 30px; }
+      .instagram-grid { grid-template-columns: repeat(2, 1fr); }
+      .stats-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+      .stat-item { padding: 25px 15px; }
+      .cursor-dot, .cursor-ring, .cursor-glow, .glow-orb { display: none; }
+      body { cursor: auto; }
+      .marquee-band:nth-child(2) .marquee-item { font-size: 2rem; }
+    }
+    @media (max-width: 480px) {
+      .stats-grid { grid-template-columns: 1fr; }
+      .menu-card { flex: 0 0 260px; }
+    }
+ 
+    /* ===== MAGNETIC ===== */
+    .magnetic { transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+  </style>
+</head>
+<body>
+  <!-- Scroll Progress -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+ 
+  <!-- Noise overlay -->
+  <div class="noise-overlay"></div>
+ 
+  <!-- Glow orbs -->
+  <div class="glow-orb glow-orb-1"></div>
+  <div class="glow-orb glow-orb-2"></div>
+  <div class="glow-orb glow-orb-3"></div>
+ 
+  <!-- Custom cursor -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+  <div class="cursor-glow" id="cursorGlow"></div>
+ 
+  <!-- Preloader -->
+  <div id="preloader">
+    <div class="preloader-inner">
+      <div class="preloader-burger">
+        <div class="bun-top"></div>
+        <div class="patty"></div>
+        <div class="bun-bottom"></div>
+      </div>
+      <div class="preloader-ring"></div>
+      <div class="preloader-ring"></div>
+      <div class="preloader-ring"></div>
+    </div>
+    <div class="preloader-text" id="preloaderText"></div>
+    <div class="preloader-counter" id="preloaderCounter">0%</div>
+    <div class="preloader-bar"><div class="preloader-bar-fill"></div></div>
+  </div>
+ 
+  <!-- Three.js Galaxy -->
+  <canvas id="galaxy-canvas"></canvas>
+ 
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <a href="#" class="nav-logo magnetic" data-strength="20">
+      <img src="logo_xpace.jpg" alt="Xpace Burger">
+      <span class="nav-logo-text">XPACE <span>BURGER</span></span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#burger-del-mes">Del Mes</a></li>
+      <li><a href="#carta">Carta</a></li>
+      <li><a href="#about">Nosotros</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+      <li><a href="#carta" class="nav-cta magnetic" data-strength="15">Pedir Ahora</a></li>
+    </ul>
+    <div class="menu-toggle" id="menuToggle">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+ 
+  <!-- ==================== HERO ==================== -->
+  <section class="hero" id="hero">
+    <div class="hero-content" id="heroContent">
+      <div class="hero-badge">&#9733; Smash Burgers Artesanales</div>
+      <h1 class="hero-title" id="heroTitle">
+        <span class="line line-1">SABORES DE</span>
+        <span class="line line-2">OTRO PLANETA</span>
+      </h1>
+      <p class="hero-subtitle">Smash burgers que desafian la gravedad del sabor</p>
+      <div class="hero-buttons">
+        <a href="#carta" class="btn btn-primary magnetic" data-strength="10">Ver Carta</a>
+        <a href="#about" class="btn btn-outline magnetic" data-strength="10">Nuestra Historia</a>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+ 
+  <!-- ==================== MARQUEE (Goiko-style double band) ==================== -->
+  <div class="marquee-section">
+    <div class="marquee-band">
+      <div class="marquee-track">
+        <span class="marquee-item">Smash Burgers <span class="sep"></span></span>
+        <span class="marquee-item">Ingredientes Premium <span class="sep"></span></span>
+        <span class="marquee-item">Sabores Espaciales <span class="sep"></span></span>
+        <span class="marquee-item">Artesanal <span class="sep"></span></span>
+        <span class="marquee-item">De Otro Planeta <span class="sep"></span></span>
+        <span class="marquee-item">Chorreo Galactico <span class="sep"></span></span>
+        <span class="marquee-item">Smash Burgers <span class="sep"></span></span>
+        <span class="marquee-item">Ingredientes Premium <span class="sep"></span></span>
+        <span class="marquee-item">Sabores Espaciales <span class="sep"></span></span>
+        <span class="marquee-item">Artesanal <span class="sep"></span></span>
+        <span class="marquee-item">De Otro Planeta <span class="sep"></span></span>
+        <span class="marquee-item">Chorreo Galactico <span class="sep"></span></span>
+        <span class="marquee-item">Smash Burgers <span class="sep"></span></span>
+        <span class="marquee-item">Ingredientes Premium <span class="sep"></span></span>
+        <span class="marquee-item">Sabores Espaciales <span class="sep"></span></span>
+        <span class="marquee-item">Artesanal <span class="sep"></span></span>
+        <span class="marquee-item">De Otro Planeta <span class="sep"></span></span>
+        <span class="marquee-item">Chorreo Galactico <span class="sep"></span></span>
+      </div>
+    </div>
+    <div class="marquee-band">
+      <div class="marquee-track">
+        <span class="marquee-item">XPACE BURGER <span class="sep"></span></span>
+        <span class="marquee-item">XPACE BURGER <span class="sep"></span></span>
+        <span class="marquee-item">XPACE BURGER <span class="sep"></span></span>
+        <span class="marquee-item">XPACE BURGER <span class="sep"></span></span>
+        <span class="marquee-item">XPACE BURGER <span class="sep"></span></span>
+        <span class="marquee-item">XPACE BURGER <span class="sep"></span></span>
+        <span class="marquee-item">XPACE BURGER <span class="sep"></span></span>
+        <span class="marquee-item">XPACE BURGER <span class="sep"></span></span>
+        <span class="marquee-item">XPACE BURGER <span class="sep"></span></span>
+        <span class="marquee-item">XPACE BURGER <span class="sep"></span></span>
+        <span class="marquee-item">XPACE BURGER <span class="sep"></span></span>
+        <span class="marquee-item">XPACE BURGER <span class="sep"></span></span>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- ==================== BURGER DEL MES ==================== -->
+  <section class="burger-del-mes" id="burger-del-mes">
+    <div class="section-header">
+      <span class="section-tag">Edicion Limitada</span>
+      <h2 class="section-title"><span class="gradient-text">Burger del Mes</span></h2>
+      <p class="section-subtitle">Cada mes creamos una obra maestra gastronomica con ingredientes de temporada</p>
+    </div>
+    <div class="bdm-container">
+      <div class="bdm-visual">
+        <div class="bdm-planet"></div>
+        <div class="bdm-ring"></div>
+        <div class="bdm-ring-2"></div>
+        <canvas id="burger-del-mes-3d" width="500" height="500"></canvas>
+      </div>
+      <div class="bdm-info">
+        <div class="bdm-label">Junio 2026</div>
+        <h3 class="bdm-name">SUPERNOVA <span class="highlight">TRUFFLE</span></h3>
+        <p class="bdm-description">
+          Doble smash patty de 120g de Black Angus, trufa negra rallada,
+          queso brie fundido, cebolla caramelizada con bourbon y nuestra
+          salsa secreta de trufa con un toque de miel ahumada.
+        </p>
+        <div class="bdm-features">
+          <div class="bdm-feature">
+            <div class="bdm-feature-icon">&#127793;</div>
+            <span>Black Angus</span>
+          </div>
+          <div class="bdm-feature">
+            <div class="bdm-feature-icon">&#129472;</div>
+            <span>Trufa Negra</span>
+          </div>
+          <div class="bdm-feature">
+            <div class="bdm-feature-icon">&#128293;</div>
+            <span>Smash Style</span>
+          </div>
+        </div>
+        <div class="bdm-price">14,90&#8364; <small>IVA incl.</small></div>
+        <a href="#carta" class="btn btn-primary magnetic" data-strength="10">Pedirla Ahora</a>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- ==================== PARALLAX DIVIDER ==================== -->
+  <div class="parallax-divider" id="parallaxDivider">
+    <div class="parallax-divider-bg"></div>
+    <div class="parallax-divider-content">
+      <div class="parallax-big-text" id="parallaxText">
+        +5.000
+        <span class="fill" id="parallaxFill">+5.000</span>
+      </div>
+      <p class="parallax-divider-sub">Burgers vendidas este a&ntilde;o</p>
+    </div>
+  </div>
+ 
+  <!-- ==================== CARTA (Horizontal Scroll) ==================== -->
+  <section class="carta" id="carta">
+    <div class="section-header">
+      <span class="section-tag">Nuestra Carta</span>
+      <h2 class="section-title"><span class="gradient-text">Explora el Menu</span></h2>
+      <p class="section-subtitle">Cada creacion es un viaje a traves de sabores de otro planeta</p>
+    </div>
+ 
+    <div class="menu-tabs">
+      <div class="menu-tab active" data-tab="burgers"><span>Burgers</span></div>
+      <div class="menu-tab" data-tab="entrantes"><span>Entrantes</span></div>
+      <div class="menu-tab" data-tab="postres"><span>Postres</span></div>
+      <div class="menu-tab" data-tab="bebidas"><span>Bebidas</span></div>
+    </div>
+ 
+    <div class="menu-scroll-wrapper">
+      <!-- BURGERS -->
+      <div class="menu-category active" id="tab-burgers">
+        <div class="menu-scroll" id="scrollBurgers">
+          <div class="menu-card">
+            <div class="menu-card-visual">&#127828;</div>
+            <div class="menu-card-body">
+              <h4 class="menu-card-name">NEBULA CLASSIC</h4>
+              <p class="menu-card-desc">Doble smash patty, cheddar fundido, pepinillos, cebolla, nuestra salsa espacial.</p>
+              <div class="menu-card-footer">
+                <span class="menu-card-price">9,90&#8364;</span>
+                <span class="menu-card-tag">Best Seller</span>
+              </div>
+            </div>
+          </div>
+          <div class="menu-card">
+            <div class="menu-card-visual">&#128293;</div>
+            <div class="menu-card-body">
+              <h4 class="menu-card-name">SOLAR FLARE</h4>
+              <p class="menu-card-desc">Triple smash, habanero, jalape&ntilde;os, pepper jack, salsa sriracha c&oacute;smica.</p>
+              <div class="menu-card-footer">
+                <span class="menu-card-price">12,50&#8364;</span>
+                <span class="menu-card-tag">Picante</span>
+              </div>
+            </div>
+          </div>
+          <div class="menu-card">
+            <div class="menu-card-visual">&#127850;</div>
+            <div class="menu-card-body">
+              <h4 class="menu-card-name">BLACK HOLE BBQ</h4>
+              <p class="menu-card-desc">Doble smash, bacon ahumado, onion rings, bbq ahumada, cheddar aged.</p>
+              <div class="menu-card-footer">
+                <span class="menu-card-price">11,90&#8364;</span>
+                <span class="menu-card-tag">Favorita</span>
+              </div>
+            </div>
+          </div>
+          <div class="menu-card">
+            <div class="menu-card-visual">&#129472;</div>
+            <div class="menu-card-body">
+              <h4 class="menu-card-name">SUPERNOVA TRUFFLE</h4>
+              <p class="menu-card-desc">Doble smash, trufa negra rallada, queso brie fundido, cebolla bourbon.</p>
+              <div class="menu-card-footer">
+                <span class="menu-card-price">14,90&#8364;</span>
+                <span class="menu-card-tag">Del Mes</span>
+              </div>
+            </div>
+          </div>
+          <div class="menu-card">
+            <div class="menu-card-visual">&#127850;</div>
+            <div class="menu-card-body">
+              <h4 class="menu-card-name">METEOR BACON</h4>
+              <p class="menu-card-desc">Triple smash, triple bacon crujiente, queso gouda, salsa teriyaki especial.</p>
+              <div class="menu-card-footer">
+                <span class="menu-card-price">13,90&#8364;</span>
+                <span class="menu-card-tag">Premium</span>
+              </div>
+            </div>
+          </div>
+          <div class="menu-card">
+            <div class="menu-card-visual">&#127793;</div>
+            <div class="menu-card-body">
+              <h4 class="menu-card-name">GRAVITY GREEN</h4>
+              <p class="menu-card-desc">Smash patty vegetal Beyond Meat, guacamole, lechuga, tomate, mayo vegana.</p>
+              <div class="menu-card-footer">
+                <span class="menu-card-price">11,50&#8364;</span>
+                <span class="menu-card-tag">Veggie</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- ENTRANTES -->
+      <div class="menu-category" id="tab-entrantes">
+        <div class="menu-scroll">
+          <div class="menu-card">
+            <div class="menu-card-visual">&#127839;</div>
+            <div class="menu-card-body">
+              <h4 class="menu-card-name">ASTEROID FRIES</h4>
+              <p class="menu-card-desc">Patatas fritas crujientes con salsa espacial y parmesano.</p>
+              <div class="menu-card-footer">
+                <span class="menu-card-price">4,90&#8364;</span>
+                <span class="menu-card-tag">Clasico</span>
+              </div>
+            </div>
+          </div>
+          <div class="menu-card">
+            <div class="menu-card-visual">&#127798;</div>
+            <div class="menu-card-body">
+              <h4 class="menu-card-name">ONION RINGS ORBITALES</h4>
+              <p class="menu-card-desc">Aros de cebolla rebozados con salsa chipotle ahumada.</p>
+              <div class="menu-card-footer">
+                <span class="menu-card-price">5,90&#8364;</span>
+                <span class="menu-card-tag">Popular</span>
+              </div>
+            </div>
+          </div>
+          <div class="menu-card">
+            <div class="menu-card-visual">&#129364;</div>
+            <div class="menu-card-body">
+              <h4 class="menu-card-name">NACHOS GALACTICOS</h4>
+              <p class="menu-card-desc">Nachos con cheddar fundido, guacamole, pico de gallo y jalapenos.</p>
+              <div class="menu-card-footer">
+                <span class="menu-card-price">7,50&#8364;</span>
+                <span class="menu-card-tag">Para Compartir</span>
+              </div>
+            </div>
+          </div>
+          <div class="menu-card">
+            <div class="menu-card-visual">&#127831;</div>
+            <div class="menu-card-body">
+              <h4 class="menu-card-name">ALITAS SUPERNOVA</h4>
+              <p class="menu-card-desc">Alitas marinadas 24h con nuestra salsa buffalo espacial y salsa ranch.</p>
+              <div class="menu-card-footer">
+                <span class="menu-card-price">8,90&#8364;</span>
+                <span class="menu-card-tag">Nuevo</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- POSTRES -->
+      <div class="menu-category" id="tab-postres">
+        <div class="menu-scroll">
+          <div class="menu-card">
+            <div class="menu-card-visual">&#127849;</div>
+            <div class="menu-card-body">
+              <h4 class="menu-card-name">MILKSHAKE COSMICO</h4>
+              <p class="menu-card-desc">Batido artesanal con helado premium. Sabores: Oreo, Nutella, Fresa.</p>
+              <div class="menu-card-footer">
+                <span class="menu-card-price">5,90&#8364;</span>
+                <span class="menu-card-tag">Estrella</span>
+              </div>
+            </div>
+          </div>
+          <div class="menu-card">
+            <div class="menu-card-visual">&#127856;</div>
+            <div class="menu-card-body">
+              <h4 class="menu-card-name">BROWNIE METEORITO</h4>
+              <p class="menu-card-desc">Brownie caliente con helado de vainilla y salsa de chocolate.</p>
+              <div class="menu-card-footer">
+                <span class="menu-card-price">6,50&#8364;</span>
+                <span class="menu-card-tag">Dulce</span>
+              </div>
+            </div>
+          </div>
+          <div class="menu-card">
+            <div class="menu-card-visual">&#127846;</div>
+            <div class="menu-card-body">
+              <h4 class="menu-card-name">CHEESECAKE LUNAR</h4>
+              <p class="menu-card-desc">Tarta de queso cremosa con coulis de frutos rojos y polvo de estrellas.</p>
+              <div class="menu-card-footer">
+                <span class="menu-card-price">5,50&#8364;</span>
+                <span class="menu-card-tag">Artesanal</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- BEBIDAS -->
+      <div class="menu-category" id="tab-bebidas">
+        <div class="menu-scroll">
+          <div class="menu-card">
+            <div class="menu-card-visual">&#127866;</div>
+            <div class="menu-card-body">
+              <h4 class="menu-card-name">CERVEZA ARTESANAL</h4>
+              <p class="menu-card-desc">IPA, Lager o Stout de cerveceras locales. Rotacion mensual.</p>
+              <div class="menu-card-footer">
+                <span class="menu-card-price">3,90&#8364;</span>
+                <span class="menu-card-tag">Craft</span>
+              </div>
+            </div>
+          </div>
+          <div class="menu-card">
+            <div class="menu-card-visual">&#127863;</div>
+            <div class="menu-card-body">
+              <h4 class="menu-card-name">LIMONADA NEBULAR</h4>
+              <p class="menu-card-desc">Limonada casera con jengibre, menta y un toque de maracuya.</p>
+              <div class="menu-card-footer">
+                <span class="menu-card-price">3,50&#8364;</span>
+                <span class="menu-card-tag">Fresca</span>
+              </div>
+            </div>
+          </div>
+          <div class="menu-card">
+            <div class="menu-card-visual">&#129380;</div>
+            <div class="menu-card-body">
+              <h4 class="menu-card-name">REFRESCOS</h4>
+              <p class="menu-card-desc">Coca-Cola, Fanta, Sprite, Nestea, agua mineral con o sin gas.</p>
+              <div class="menu-card-footer">
+                <span class="menu-card-price">2,50&#8364;</span>
+                <span class="menu-card-tag">Clasico</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="scroll-hint">
+      <div class="scroll-hint-btn" id="scrollLeft">&#8592;</div>
+      <div class="scroll-hint-btn" id="scrollRight">&#8594;</div>
+    </div>
+  </section>
+ 
+  <!-- ==================== TEXT REVEAL SECTION ==================== -->
+  <section class="text-reveal-section" id="textReveal">
+    <div class="text-reveal-content">
+      <p class="text-reveal-quote" id="textRevealQuote">
+        Cada hamburguesa es una experiencia. Ingredientes frescos, fuego real, y un amor por el sabor que va mas alla de lo terrenal. Esto no es fast food, esto es comida con alma.
+      </p>
+    </div>
+  </section>
+ 
+  <!-- ==================== STATS SECTION ==================== -->
+  <section class="stats-section" id="stats">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number"><span data-count="5000">0</span><span class="stat-suffix">+</span></div>
+        <div class="stat-label">Burgers Vendidas</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number"><span data-count="12">0</span></div>
+        <div class="stat-label">Creaciones Unicas</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number"><span data-count="98">0</span><span class="stat-suffix">%</span></div>
+        <div class="stat-label">Clientes Felices</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number"><span data-count="1">0</span></div>
+        <div class="stat-label">Mision Espacial</div>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- ==================== ABOUT ==================== -->
+  <section class="about" id="about">
+    <div class="section-header">
+      <span class="section-tag">Nuestra Historia</span>
+      <h2 class="section-title"><span class="gradient-text">Nacidos en Otro Planeta</span></h2>
+    </div>
+    <div class="about-logo-wrap">
+      <img src="logo_xpace.jpg" alt="Xpace Burger">
+      <div class="about-logo-ring"></div>
+      <div class="about-logo-ring-2"></div>
+      <div class="orbit-container">
+        <div class="orbit-line orbit-line-1">
+          <div class="orbit-dot orbit-dot-1"></div>
+        </div>
+        <div class="orbit-line orbit-line-2">
+          <div class="orbit-dot orbit-dot-2"></div>
+        </div>
+        <div class="orbit-line orbit-line-3"></div>
+      </div>
+    </div>
+    <p class="about-text">
+      <strong>Xpace Burger</strong> nacio con una mision: crear las mejores
+      smash burgers de la galaxia. Cada ingrediente es seleccionado con
+      precision astronautica, cada receta es un experimento que desafia
+      la gravedad del sabor. No somos un restaurante mas, somos un
+      <strong>viaje gastronomico a otro planeta</strong>.
+    </p>
+  </section>
+ 
+  <!-- ==================== CTA BAND ==================== -->
+  <div class="cta-band">
+    <div class="cta-band-bg"></div>
+    <div class="cta-band-content">
+      <h3 class="cta-band-title">&#127756; Preparado para despegar?</h3>
+      <p class="cta-band-sub">Tu proxima burger te espera en Xpace</p>
+      <a href="#carta" class="btn btn-primary magnetic" data-strength="10">Ver Carta Completa</a>
+    </div>
+  </div>
+ 
+  <!-- ==================== INSTAGRAM ==================== -->
+  <section class="instagram-section" id="contacto">
+    <div class="section-header">
+      <span class="section-tag">Redes Sociales</span>
+      <h2 class="section-title"><span class="gradient-text">Siguenos en el Espacio</span></h2>
+    </div>
+    <a href="https://instagram.com/xpace_burger" target="_blank" class="instagram-handle magnetic" data-strength="15">@xpace_burger</a>
+    <div class="instagram-grid">
+      <div class="instagram-item">&#127828;</div>
+      <div class="instagram-item">&#127843;</div>
+      <div class="instagram-item">&#127798;</div>
+      <div class="instagram-item">&#127828;</div>
+      <div class="instagram-item">&#128293;</div>
+      <div class="instagram-item">&#127828;</div>
+      <div class="instagram-item">&#127849;</div>
+      <div class="instagram-item">&#127828;</div>
+    </div>
+  </section>
+ 
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="#" class="nav-logo">
+            <img src="logo_xpace.jpg" alt="Xpace Burger" style="border:2px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.03);padding:2px;">
+            <span class="nav-logo-text">XPACE <span>BURGER</span></span>
+          </a>
+          <p>Hamburguesas artesanales con un toque espacial. Cada bocado es un viaje a otro planeta.</p>
+          <div class="footer-social">
+            <a href="https://instagram.com/xpace_burger" target="_blank" title="Instagram">&#9737;</a>
+            <a href="#" title="TikTok">&#9830;</a>
+            <a href="#" title="Google Maps">&#9872;</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Carta</h4>
+          <ul>
+            <li><a href="#carta">Burgers</a></li>
+            <li><a href="#carta">Entrantes</a></li>
+            <li><a href="#carta">Postres</a></li>
+            <li><a href="#burger-del-mes">Del Mes</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Info</h4>
+          <ul>
+            <li><a href="#about">Sobre Nosotros</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+            <li><a href="#">Alergenos</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contacto</h4>
+          <ul>
+            <li><a href="#">&#128205; Encuentranos en Google Maps</a></li>
+            <li><a href="https://instagram.com/xpace_burger" target="_blank">&#128247; @xpace_burger</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Xpace Burger. Todos los derechos reservados.</p>
+        <p>Hecho con &#10084;&#65039; desde otro planeta</p>
+      </div>
+    </div>
+  </footer>
+ 
+<script>
+// ============================================================
+// 1. PRELOADER
+// ============================================================
+(function() {
+  const text = 'XPACE BURGER';
+  const container = document.getElementById('preloaderText');
+  text.split('').forEach((ch, i) => {
+    const span = document.createElement('span');
+    span.textContent = ch === ' ' ? '\u00A0' : ch;
+    span.style.animationDelay = (0.4 + i * 0.07) + 's';
+    container.appendChild(span);
+  });
+ 
+  // Animated counter
+  const counter = document.getElementById('preloaderCounter');
+  let count = 0;
+  const counterInterval = setInterval(() => {
+    count += Math.floor(Math.random() * 5) + 1;
+    if (count >= 100) { count = 100; clearInterval(counterInterval); }
+    counter.textContent = count + '%';
+  }, 40);
+})();
+ 
+// ============================================================
+// 2. THREE.JS GALAXY BACKGROUND
+// ============================================================
+(function() {
+  const canvas = document.getElementById('galaxy-canvas');
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  camera.position.z = 3;
+ 
+  const particleCount = 2500;
+  const positions = new Float32Array(particleCount * 3);
+  const colors = new Float32Array(particleCount * 3);
+  const sizes = new Float32Array(particleCount);
+ 
+  for (let i = 0; i < particleCount; i++) {
+    const i3 = i * 3;
+    const radius = Math.random() * 5;
+    const spinAngle = radius * 2;
+    const branchAngle = ((i % 4) / 4) * Math.PI * 2;
+    const randomX = (Math.random() - 0.5) * Math.pow(Math.random(), 3) * 2;
+    const randomY = (Math.random() - 0.5) * Math.pow(Math.random(), 3) * 0.8;
+    const randomZ = (Math.random() - 0.5) * Math.pow(Math.random(), 3) * 2;
+    positions[i3]     = Math.cos(branchAngle + spinAngle) * radius + randomX;
+    positions[i3 + 1] = randomY;
+    positions[i3 + 2] = Math.sin(branchAngle + spinAngle) * radius + randomZ;
+    const insideColor = new THREE.Color('#331122');
+    const midColor = new THREE.Color('#1a0a2e');
+    const outsideColor = new THREE.Color('#0a1628');
+    const mixedColor = new THREE.Color();
+    if (radius < 2) { mixedColor.lerpColors(insideColor, midColor, radius / 2); }
+    else { mixedColor.lerpColors(midColor, outsideColor, (radius - 2) / 3); }
+    colors[i3]     = mixedColor.r;
+    colors[i3 + 1] = mixedColor.g;
+    colors[i3 + 2] = mixedColor.b;
+    sizes[i] = Math.random() * 1.5;
+  }
+ 
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  geometry.setAttribute('aSize', new THREE.BufferAttribute(sizes, 1));
+ 
+  const vertexShader = `
+    attribute float aSize;
+    varying vec3 vColor;
+    void main() {
+      vColor = color;
+      vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+      gl_PointSize = aSize * (220.0 / -mvPosition.z);
+      gl_Position = projectionMatrix * mvPosition;
+    }
+  `;
+  const fragmentShader = `
+    varying vec3 vColor;
+    void main() {
+      float d = length(gl_PointCoord - vec2(0.5));
+      if (d > 0.5) discard;
+      float alpha = 1.0 - smoothstep(0.15, 0.5, d);
+      gl_FragColor = vec4(vColor, alpha * 0.35);
+    }
+  `;
+ 
+  const material = new THREE.ShaderMaterial({
+    vertexShader, fragmentShader,
+    transparent: true, vertexColors: true,
+    depthWrite: false, blending: THREE.AdditiveBlending
+  });
+ 
+  const galaxy = new THREE.Points(geometry, material);
+  scene.add(galaxy);
+ 
+  const glowGeo = new THREE.SphereGeometry(0.12, 32, 32);
+  const glowMat = new THREE.MeshBasicMaterial({ color: 0xff2d55, transparent: true, opacity: 0.12 });
+  const glowSphere = new THREE.Mesh(glowGeo, glowMat);
+  scene.add(glowSphere);
+ 
+  let mouseX = 0, mouseY = 0;
+  document.addEventListener('mousemove', (e) => {
+    mouseX = (e.clientX / window.innerWidth - 0.5) * 0.4;
+    mouseY = (e.clientY / window.innerHeight - 0.5) * 0.4;
+  });
+ 
+  function animate() {
+    requestAnimationFrame(animate);
+    galaxy.rotation.y += 0.0002;
+    galaxy.rotation.x += 0.00005;
+    glowSphere.scale.setScalar(1 + Math.sin(Date.now() * 0.001) * 0.15);
+    camera.position.x += (mouseX - camera.position.x) * 0.008;
+    camera.position.y += (-mouseY - camera.position.y) * 0.008;
+    camera.lookAt(scene.position);
+    renderer.render(scene, camera);
+  }
+  animate();
+ 
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+})();
+ 
+// ============================================================
+// 3. THREE.JS 3D BURGER (Burger del Mes)
+// ============================================================
+(function() {
+  const canvas = document.getElementById('burger-del-mes-3d');
+  if (!canvas) return;
+ 
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setSize(500, 500);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.shadowMap.enabled = true;
+  camera.position.set(0, 2, 6);
+  camera.lookAt(0, 0, 0);
+ 
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+  scene.add(ambientLight);
+  const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+  dirLight.position.set(5, 10, 5);
+  dirLight.castShadow = true;
+  scene.add(dirLight);
+  const redLight = new THREE.PointLight(0xff2d55, 0.6, 20);
+  redLight.position.set(-3, 3, 2);
+  scene.add(redLight);
+  const blueLight = new THREE.PointLight(0x00b4ff, 0.4, 20);
+  blueLight.position.set(3, -2, 3);
+  scene.add(blueLight);
+ 
+  const burgerGroup = new THREE.Group();
+  const bunMat = new THREE.MeshStandardMaterial({ color: 0xd4920a, roughness: 0.6, metalness: 0.1 });
+  const bunBottomMat = new THREE.MeshStandardMaterial({ color: 0xc48109, roughness: 0.65, metalness: 0.1 });
+  const pattyMat = new THREE.MeshStandardMaterial({ color: 0x6b3a2a, roughness: 0.8, metalness: 0.2 });
+  const cheeseMat = new THREE.MeshStandardMaterial({ color: 0xffa500, roughness: 0.3, metalness: 0.1, transparent: true, opacity: 0.9 });
+  const lettuceMat = new THREE.MeshStandardMaterial({ color: 0x3a7d1a, roughness: 0.7, metalness: 0.05 });
+  const tomatoMat = new THREE.MeshStandardMaterial({ color: 0xcc3333, roughness: 0.4, metalness: 0.1 });
+ 
+  const bunBottom = new THREE.Mesh(new THREE.CylinderGeometry(1.8, 1.6, 0.6, 32), bunBottomMat);
+  bunBottom.position.y = -1.2; bunBottom.receiveShadow = true;
+  burgerGroup.add(bunBottom);
+ 
+  const patty = new THREE.Mesh(new THREE.CylinderGeometry(1.6, 1.6, 0.35, 32), pattyMat);
+  patty.position.y = -0.75;
+  burgerGroup.add(patty);
+ 
+  const cheese = new THREE.Mesh(new THREE.CylinderGeometry(1.7, 1.7, 0.08, 32), cheeseMat);
+  cheese.position.y = -0.5;
+  burgerGroup.add(cheese);
+ 
+  const lettuce = new THREE.Mesh(new THREE.CylinderGeometry(1.9, 1.9, 0.15, 32), lettuceMat);
+  lettuce.position.y = -0.35;
+  burgerGroup.add(lettuce);
+ 
+  const tomato = new THREE.Mesh(new THREE.CylinderGeometry(1.5, 1.5, 0.18, 32), tomatoMat);
+  tomato.position.y = -0.2;
+  burgerGroup.add(tomato);
+ 
+  const patty2 = new THREE.Mesh(new THREE.CylinderGeometry(1.6, 1.6, 0.35, 32), pattyMat);
+  patty2.position.y = 0;
+  burgerGroup.add(patty2);
+ 
+  const cheese2 = new THREE.Mesh(new THREE.CylinderGeometry(1.75, 1.75, 0.08, 32), cheeseMat);
+  cheese2.position.y = 0.25;
+  burgerGroup.add(cheese2);
+ 
+  const bunTop = new THREE.Mesh(
+    new THREE.SphereGeometry(1.7, 32, 32, 0, Math.PI * 2, 0, Math.PI * 0.55), bunMat
+  );
+  bunTop.position.y = 0.6; bunTop.scale.y = 1.3;
+  burgerGroup.add(bunTop);
+ 
+  for (let i = 0; i < 12; i++) {
+    const angle = (i / 12) * Math.PI * 2;
+    const r = Math.random() * 0.8;
+    const seed = new THREE.Mesh(
+      new THREE.SphereGeometry(0.08, 8, 8),
+      new THREE.MeshStandardMaterial({ color: 0xfff8e1, roughness: 0.5 })
+    );
+    seed.position.set(Math.cos(angle) * r, 1.1 + Math.random() * 0.1, Math.sin(angle) * r);
+    seed.scale.y = 1.5;
+    burgerGroup.add(seed);
+  }
+  scene.add(burgerGroup);
+ 
+  const particleCount = 200;
+  const pPositions = new Float32Array(particleCount * 3);
+  for (let i = 0; i < particleCount; i++) {
+    const i3 = i * 3;
+    const theta = Math.random() * Math.PI * 2;
+    const phi = Math.random() * Math.PI;
+    const r = 2.5 + Math.random() * 2;
+    pPositions[i3]     = r * Math.sin(phi) * Math.cos(theta);
+    pPositions[i3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+    pPositions[i3 + 2] = r * Math.cos(phi);
+  }
+  const pGeo = new THREE.BufferGeometry();
+  pGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
+  const pMat = new THREE.PointsMaterial({
+    color: 0xff2d55, size: 0.03, transparent: true, opacity: 0.6,
+    blending: THREE.AdditiveBlending
+  });
+  const particles = new THREE.Points(pGeo, pMat);
+  scene.add(particles);
+ 
+  let targetRotY = 0, targetRotX = 0;
+  document.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    if (e.clientX >= rect.left && e.clientX <= rect.right &&
+        e.clientY >= rect.top && e.clientY <= rect.bottom) {
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      targetRotY = x * 0.5;
+      targetRotX = -y * 0.3;
+    }
+  });
+ 
+  function animateBurger() {
+    requestAnimationFrame(animateBurger);
+    burgerGroup.rotation.y += 0.008;
+    burgerGroup.rotation.y += (targetRotY - burgerGroup.rotation.y) * 0.05;
+    burgerGroup.rotation.x += (targetRotX - burgerGroup.rotation.x) * 0.05;
+    burgerGroup.position.y = Math.sin(Date.now() * 0.001) * 0.15;
+    particles.rotation.y += 0.003;
+    particles.rotation.x += 0.001;
+    redLight.intensity = 0.6 + Math.sin(Date.now() * 0.003) * 0.2;
+    blueLight.intensity = 0.4 + Math.cos(Date.now() * 0.004) * 0.15;
+    renderer.render(scene, camera);
+  }
+  animateBurger();
+})();
+ 
+// ============================================================
+// 4. LENIS SMOOTH SCROLL
+// ============================================================
+const lenis = new Lenis({
+  duration: 1.2,
+  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  orientation: 'vertical',
+  smoothWheel: true
+});
+function raf(time) {
+  lenis.raf(time);
+  requestAnimationFrame(raf);
+}
+requestAnimationFrame(raf);
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add((time) => lenis.raf(time * 1000));
+gsap.ticker.lagSmoothing(0);
+ 
+// ============================================================
+// 5. PRELOADER EXIT + HERO ENTRANCE
+// ============================================================
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const preloader = document.getElementById('preloader');
+ 
+    // Clip-path wipe reveal (Goiko-style)
+    preloader.style.transition = 'clip-path 1.2s cubic-bezier(0.77, 0, 0.175, 1)';
+    preloader.style.clipPath = 'inset(0 0 100% 0)';
+ 
+    setTimeout(() => {
+      preloader.style.display = 'none';
+ 
+      // Hero entrance sequence with GSAP timeline
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+ 
+      // Split hero title into chars for stagger animation
+      document.querySelectorAll('.hero-title .line').forEach(line => {
+        const text = line.textContent;
+        line.innerHTML = '';
+        text.split('').forEach(ch => {
+          const span = document.createElement('span');
+          span.className = 'char';
+          span.textContent = ch === ' ' ? '\u00A0' : ch;
+          line.appendChild(span);
+        });
+      });
+ 
+      tl.to('.hero-badge', { opacity: 1, y: 0, duration: 0.8 }, 0.2)
+        .to('.hero-title .line-1 .char', {
+          opacity: 1, y: '0%', rotateX: 0,
+          stagger: 0.04, duration: 0.8
+        }, 0.4)
+        .to('.hero-title .line-2 .char', {
+          opacity: 1, y: '0%', rotateX: 0,
+          stagger: 0.04, duration: 0.8
+        }, 0.7)
+        .to('.hero-subtitle', { opacity: 1, y: 0, duration: 0.8 }, 1.0)
+        .to('.hero-buttons', { opacity: 1, y: 0, duration: 0.8 }, 1.2)
+        .to('.scroll-indicator', { opacity: 1, duration: 0.8 }, 1.4);
+    }, 1200);
+  }, 2400);
+});
+ 
+// ============================================================
+// 6. HERO 3D TILT + PARALLAX
+// ============================================================
+const heroContent = document.getElementById('heroContent');
+document.addEventListener('mousemove', (e) => {
+  const x = (e.clientX / window.innerWidth - 0.5) * 15;
+  const y = (e.clientY / window.innerHeight - 0.5) * 10;
+  gsap.to(heroContent, {
+    rotationY: x, rotationX: -y, duration: 0.8, ease: 'power2.out'
+  });
+});
+ 
+gsap.to('.hero-content', {
+  y: 250, opacity: 0,
+  scrollTrigger: {
+    trigger: '.hero', start: 'top top', end: 'bottom top',
+    scrub: 1
+  }
+});
+ 
+// ============================================================
+// 7. GSAP SCROLL-TRIGGERED ANIMATIONS
+// ============================================================
+gsap.registerPlugin(ScrollTrigger);
+ 
+// Scroll progress bar
+gsap.to('.scroll-progress', {
+  width: '100%',
+  ease: 'none',
+  scrollTrigger: {
+    trigger: 'body', start: 'top top', end: 'bottom bottom',
+    scrub: 0.3
+  }
+});
+ 
+// Marquee speed change on scroll
+gsap.to('.marquee-band:first-child .marquee-track', {
+  x: '-=200',
+  scrollTrigger: {
+    trigger: '.marquee-section', start: 'top bottom', end: 'bottom top',
+    scrub: 2
+  }
+});
+gsap.to('.marquee-band:nth-child(2) .marquee-track', {
+  x: '+=200',
+  scrollTrigger: {
+    trigger: '.marquee-section', start: 'top bottom', end: 'bottom top',
+    scrub: 2
+  }
+});
+ 
+// Burger del Mes
+gsap.from('#burger-del-mes-3d', {
+  x: -120, opacity: 0, duration: 1.4, ease: 'power3.out',
+  scrollTrigger: { trigger: '.bdm-container', start: 'top 75%' }
+});
+gsap.from('.bdm-info > *', {
+  x: 80, opacity: 0, duration: 0.9, stagger: 0.15, ease: 'power3.out',
+  scrollTrigger: { trigger: '.bdm-info', start: 'top 75%' }
+});
+ 
+// Parallax divider - fill text on scroll
+ScrollTrigger.create({
+  trigger: '#parallaxDivider',
+  start: 'top 80%',
+  end: 'bottom 20%',
+  onUpdate: (self) => {
+    const fill = document.getElementById('parallaxFill');
+    if (fill) {
+      const progress = Math.min(self.progress * 1.5, 1);
+      fill.style.clipPath = `inset(0 ${(1 - progress) * 100}% 0 0)`;
+    }
+  }
+});
+ 
+// Parallax bg movement
+gsap.to('.parallax-divider-bg', {
+  y: -100,
+  scrollTrigger: {
+    trigger: '#parallaxDivider', start: 'top bottom', end: 'bottom top',
+    scrub: 1
+  }
+});
+ 
+// Section headers
+gsap.utils.toArray('.section-header').forEach(header => {
+  gsap.from(header.children, {
+    y: 60, opacity: 0, duration: 1, stagger: 0.12, ease: 'power3.out',
+    scrollTrigger: { trigger: header, start: 'top 80%' }
+  });
+});
+ 
+// Menu tabs
+gsap.from('.menu-tabs', {
+  y: 40, opacity: 0, duration: 0.8, ease: 'power3.out',
+  scrollTrigger: { trigger: '.menu-tabs', start: 'top 85%' }
+});
+ 
+// Menu cards stagger from below
+gsap.utils.toArray('.menu-category.active .menu-card').forEach((card, i) => {
+  gsap.from(card, {
+    y: 60, opacity: 0, scale: 0.95, duration: 0.7,
+    delay: i * 0.1, ease: 'power3.out',
+    scrollTrigger: { trigger: '.menu-scroll-wrapper', start: 'top 85%' }
+  });
+});
+ 
+// Text reveal section - word by word on scroll
+(function() {
+  const quoteEl = document.getElementById('textRevealQuote');
+  if (!quoteEl) return;
+  const text = quoteEl.textContent.trim();
+  const words = text.split(/\s+/);
+  const highlightWords = ['experiencia', 'frescos', 'amor', 'alma'];
+  quoteEl.innerHTML = words.map(w => {
+    const isHighlight = highlightWords.some(hw => w.toLowerCase().includes(hw));
+    return `<span class="word${isHighlight ? ' highlight' : ''}">${w}</span>`;
+  }).join(' ');
+ 
+  const wordEls = quoteEl.querySelectorAll('.word');
+  ScrollTrigger.create({
+    trigger: '#textReveal',
+    start: 'top 70%',
+    end: 'bottom 30%',
+    onUpdate: (self) => {
+      const progress = self.progress;
+      const activeCount = Math.floor(progress * wordEls.length);
+      wordEls.forEach((w, i) => {
+        w.classList.toggle('active', i < activeCount);
+      });
+    }
+  });
+})();
+ 
+// Stats counters
+document.querySelectorAll('[data-count]').forEach(el => {
+  const target = parseInt(el.dataset.count);
+  ScrollTrigger.create({
+    trigger: el, start: 'top 80%',
+    onEnter: () => {
+      gsap.to(el, {
+        innerText: target, duration: 2.5, snap: { innerText: 1 },
+        ease: 'power2.out',
+        modifiers: { innerText: (v) => Math.floor(v) }
+      });
+    }, once: true
+  });
+});
+ 
+// Stats items
+gsap.from('.stat-item', {
+  y: 50, opacity: 0, duration: 0.8, stagger: 0.12, ease: 'power3.out',
+  scrollTrigger: { trigger: '.stats-grid', start: 'top 80%' }
+});
+ 
+// About section
+gsap.from('.about-logo-wrap', {
+  scale: 0.4, opacity: 0, duration: 1.2, ease: 'power3.out',
+  scrollTrigger: { trigger: '.about-logo-wrap', start: 'top 75%' }
+});
+gsap.from('.about-text', {
+  y: 60, opacity: 0, duration: 1, ease: 'power3.out',
+  scrollTrigger: { trigger: '.about-text', start: 'top 80%' }
+});
+ 
+// CTA band
+gsap.from('.cta-band-content > *', {
+  y: 40, opacity: 0, duration: 0.8, stagger: 0.15, ease: 'power3.out',
+  scrollTrigger: { trigger: '.cta-band', start: 'top 80%' }
+});
+ 
+// Instagram grid
+gsap.from('.instagram-item', {
+  scale: 0.7, opacity: 0, rotationY: 30,
+  duration: 0.7, stagger: 0.08, ease: 'back.out(1.4)',
+  scrollTrigger: { trigger: '.instagram-grid', start: 'top 80%' }
+});
+ 
+// Footer
+gsap.from('.footer-top > *', {
+  y: 50, opacity: 0, duration: 0.8, stagger: 0.12, ease: 'power3.out',
+  scrollTrigger: { trigger: '.footer-top', start: 'top 90%' }
+});
+ 
+// ============================================================
+// 8. CUSTOM CURSOR
+// ============================================================
+const cursorDot = document.getElementById('cursorDot');
+const cursorRing = document.getElementById('cursorRing');
+const cursorGlow = document.getElementById('cursorGlow');
+let cursorX = 0, cursorY = 0, ringX = 0, ringY = 0;
+ 
+document.addEventListener('mousemove', (e) => {
+  cursorX = e.clientX; cursorY = e.clientY;
+  cursorDot.style.left = cursorX + 'px';
+  cursorDot.style.top = cursorY + 'px';
+  cursorGlow.style.left = cursorX + 'px';
+  cursorGlow.style.top = cursorY + 'px';
+});
+function updateRing() {
+  ringX += (cursorX - ringX) * 0.15;
+  ringY += (cursorY - ringY) * 0.15;
+  cursorRing.style.left = ringX + 'px';
+  cursorRing.style.top = ringY + 'px';
+  requestAnimationFrame(updateRing);
+}
+updateRing();
+ 
+document.querySelectorAll('a, button, .menu-card, .instagram-item, .menu-tab, .scroll-hint-btn').forEach(el => {
+  el.addEventListener('mouseenter', () => cursorRing.classList.add('hover'));
+  el.addEventListener('mouseleave', () => cursorRing.classList.remove('hover'));
+});
+document.addEventListener('mousedown', () => cursorRing.classList.add('click'));
+document.addEventListener('mouseup', () => cursorRing.classList.remove('click'));
+ 
+// ============================================================
+// 9. MAGNETIC ELEMENTS
+// ============================================================
+document.querySelectorAll('.magnetic').forEach(el => {
+  const strength = parseInt(el.dataset.strength) || 20;
+  el.addEventListener('mousemove', (e) => {
+    const rect = el.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    el.style.transform = `translate(${x / strength * 3}px, ${y / strength * 3}px)`;
+  });
+  el.addEventListener('mouseleave', () => { el.style.transform = ''; });
+});
+ 
+// ============================================================
+// 10. MENU CARD GLOW ON HOVER
+// ============================================================
+document.querySelectorAll('.menu-card').forEach(card => {
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    card.style.setProperty('--mouse-x', (e.clientX - rect.left) + 'px');
+    card.style.setProperty('--mouse-y', (e.clientY - rect.top) + 'px');
+  });
+});
+ 
+// ============================================================
+// 11. MENU TABS
+// ============================================================
+document.querySelectorAll('.menu-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const target = tab.dataset.tab;
+    document.querySelectorAll('.menu-category').forEach(cat => {
+      const isActive = cat.id === 'tab-' + target;
+      cat.classList.toggle('active', isActive);
+      // Animate cards on tab switch
+      if (isActive) {
+        gsap.from(cat.querySelectorAll('.menu-card'), {
+          y: 40, opacity: 0, scale: 0.95,
+          duration: 0.5, stagger: 0.08, ease: 'power2.out'
+        });
+      }
+    });
+  });
+});
+ 
+// ============================================================
+// 12. HORIZONTAL SCROLL BUTTONS
+// ============================================================
+document.getElementById('scrollLeft').addEventListener('click', () => {
+  const active = document.querySelector('.menu-category.active .menu-scroll');
+  if (active) active.scrollBy({ left: -360, behavior: 'smooth' });
+});
+document.getElementById('scrollRight').addEventListener('click', () => {
+  const active = document.querySelector('.menu-category.active .menu-scroll');
+  if (active) active.scrollBy({ left: 360, behavior: 'smooth' });
+});
+ 
+// Drag scroll for menu
+document.querySelectorAll('.menu-scroll').forEach(scroll => {
+  let isDown = false, startX, scrollLeft;
+  scroll.addEventListener('mousedown', (e) => {
+    isDown = true;
+    startX = e.pageX - scroll.offsetLeft;
+    scrollLeft = scroll.scrollLeft;
+  });
+  scroll.addEventListener('mouseleave', () => { isDown = false; });
+  scroll.addEventListener('mouseup', () => { isDown = false; });
+  scroll.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - scroll.offsetLeft;
+    const walk = (x - startX) * 1.5;
+    scroll.scrollLeft = scrollLeft - walk;
+  });
+});
+ 
+// ============================================================
+// 13. NAVBAR
+// ============================================================
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+});
+ 
+const menuToggle = document.getElementById('menuToggle');
+const navLinks = document.getElementById('navLinks');
+menuToggle.addEventListener('click', () => {
+  menuToggle.classList.toggle('active');
+  navLinks.classList.toggle('open');
+});
+navLinks.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    menuToggle.classList.remove('active');
+    navLinks.classList.remove('open');
+  });
+});
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.querySelector(anchor.getAttribute('href'));
+    if (target) lenis.scrollTo(target, { offset: -80 });
+  });
+});
+</script>
+</body>
+</html>

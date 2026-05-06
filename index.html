@@ -8,8 +8,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Exo+2:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <!-- Three.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <!-- GSAP + Plugins -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -37,48 +35,14 @@
     }
 
     html { overflow-x: hidden; scroll-behavior: auto; }
-    body {
-      font-family: var(--font-body);
-      background: var(--space-dark);
-      color: var(--star-white);
-      overflow-x: hidden;
-      cursor: none;
-    }
+     body {
+       font-family: var(--font-body);
+       background: var(--space-dark);
+       color: var(--star-white);
+       overflow-x: hidden;
+     }
 
-    /* ===== CUSTOM CURSOR ===== */
-    .cursor-layer {
-      position: fixed; inset: 0; z-index: 99999; pointer-events: none;
-    }
-    .cursor-dot {
-      position: fixed; width: 6px; height: 6px;
-      background: var(--neon-red);
-      border-radius: 50%; pointer-events: none; z-index: 100000;
-      box-shadow: 0 0 20px var(--neon-red), 0 0 40px var(--neon-red-glow);
-      transform: translate(-50%, -50%);
-    }
-    .cursor-ring {
-      position: fixed; width: 44px; height: 44px;
-      border: 1.5px solid rgba(255, 45, 85, 0.4);
-      border-radius: 50%; pointer-events: none; z-index: 99999;
-      transform: translate(-50%, -50%);
-      transition: width 0.4s ease, height 0.4s ease, border-color 0.4s ease, background 0.4s ease;
-    }
-    .cursor-ring.hover {
-      width: 64px; height: 64px;
-      border-color: var(--neon-blue);
-      background: rgba(0, 180, 255, 0.05);
-    }
-    .cursor-ring.click {
-      width: 30px; height: 30px;
-      background: rgba(255, 45, 85, 0.15);
-    }
-    .cursor-glow {
-      position: fixed; width: 500px; height: 500px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 45, 85, 0.03) 0%, transparent 70%);
-      pointer-events: none; z-index: 0;
-      transform: translate(-50%, -50%);
-    }
+
 
     /* ===== PRELOADER ===== */
     #preloader {
@@ -159,63 +123,13 @@
     }
     @keyframes bar-fill { to { width: 100%; } }
 
-    /* ===== THREE.JS CANVASES ===== */
-    #galaxy-canvas {
-      position: fixed; inset: 0; z-index: 0;
-      pointer-events: none;
-    }
-    #burger-3d-canvas {
-      position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 500px; height: 500px;
-      z-index: 5; pointer-events: none;
-    }
-
-    /* ===== NOISE OVERLAY ===== */
-    .noise-overlay {
-      position: fixed; inset: 0; z-index: 9998;
-      pointer-events: none;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      opacity: 0.018;
-    }
-
-    /* ===== GLOW EFFECTS ===== */
-    .glow-orb {
-      position: fixed; border-radius: 50%;
-      filter: blur(100px); pointer-events: none; z-index: 0;
-      opacity: 0.06;
-    }
-    .glow-orb-1 {
-      width: 400px; height: 400px;
-      background: var(--neon-red);
-      top: 10%; left: -100px;
-      animation: orb-float-1 15s ease-in-out infinite;
-    }
-    .glow-orb-2 {
-      width: 300px; height: 300px;
-      background: var(--neon-blue);
-      top: 60%; right: -50px;
-      animation: orb-float-2 18s ease-in-out infinite;
-    }
-    .glow-orb-3 {
-      width: 250px; height: 250px;
-      background: var(--neon-purple);
-      bottom: 10%; left: 30%;
-      animation: orb-float-3 20s ease-in-out infinite;
-    }
-    @keyframes orb-float-1 {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      33% { transform: translate(50px, -30px) scale(1.1); }
-      66% { transform: translate(-20px, 40px) scale(0.9); }
-    }
-    @keyframes orb-float-2 {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      33% { transform: translate(-40px, 50px) scale(1.15); }
-      66% { transform: translate(30px, -20px) scale(0.85); }
-    }
-    @keyframes orb-float-3 {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      50% { transform: translate(60px, -40px) scale(1.2); }
+    /* ===== CLEAN BACKGROUND ===== */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: var(--space-dark);
+      z-index: -1;
     }
 
     /* ===== NAVIGATION ===== */
@@ -235,100 +149,55 @@
     .nav-logo { display: flex; align-items: center; gap: 16px; text-decoration: none; }
     .nav-logo img {
       width: 50px; height: 50px; border-radius: 50%;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.6s ease;
       box-shadow: 0 0 20px rgba(255,45,85,0.2);
       border: 2px solid rgba(255,255,255,0.1);
       background: rgba(255,255,255,0.05);
       padding: 2px;
     }
     .nav-logo img:hover {
-      transform: rotate(20deg) scale(1.1);
-      box-shadow: 0 0 30px var(--neon-red-glow);
+      transform: rotate(360deg);
     }
-    .nav-logo-text {
-      font-family: var(--font-display); font-size: 1.1rem;
-      font-weight: 700; letter-spacing: 4px; color: var(--star-white);
-    }
-    .nav-logo-text span { color: var(--neon-red); }
-    .nav-links { display: flex; align-items: center; gap: 44px; list-style: none; }
-    .nav-links a {
-      font-family: var(--font-accent); font-size: 0.78rem;
-      font-weight: 600; text-transform: uppercase; letter-spacing: 2.5px;
-      color: rgba(240,240,255,0.55); text-decoration: none;
-      position: relative; padding: 6px 0;
-      transition: color 0.3s ease;
-    }
-    .nav-links a::after {
-      content: ''; position: absolute;
-      bottom: 0; left: 50%; width: 0; height: 1.5px;
-      background: var(--neon-red);
-      box-shadow: 0 0 12px var(--neon-red-glow);
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      transform: translateX(-50%);
-    }
-    .nav-links a:hover { color: var(--star-white); }
-    .nav-links a:hover::after { width: 100%; }
-    .nav-cta {
-      padding: 12px 30px !important;
-      border: 1px solid var(--neon-red) !important;
-      border-radius: 30px;
-      color: var(--neon-red) !important;
-      font-family: var(--font-display) !important;
-      font-size: 0.68rem !important;
-      letter-spacing: 3px !important;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
-    }
-    .nav-cta::after { display: none !important; }
-    .nav-cta:hover {
-      background: var(--neon-red) !important;
-      color: white !important;
-      box-shadow: 0 0 50px var(--neon-red-glow) !important;
-      transform: translateY(-3px) scale(1.05);
-    }
-    .nav-logo:hover img {
-      transform: rotate(20deg) scale(1.1);
-      box-shadow: 0 0 30px var(--neon-red-glow);
-    }
-    .nav-logo-text {
-      font-family: var(--font-display); font-size: 1.1rem;
-      font-weight: 700; letter-spacing: 4px; color: var(--star-white);
-    }
-    .nav-logo-text span { color: var(--neon-red); }
-    .nav-links { display: flex; align-items: center; gap: 44px; list-style: none; }
-    .nav-links a {
-      font-family: var(--font-accent); font-size: 0.78rem;
-      font-weight: 600; text-transform: uppercase; letter-spacing: 2.5px;
-      color: rgba(240,240,255,0.55); text-decoration: none;
-      position: relative; padding: 6px 0;
-      transition: color 0.3s ease;
-    }
-    .nav-links a::after {
-      content: ''; position: absolute;
-      bottom: 0; left: 50%; width: 0; height: 1.5px;
-      background: var(--neon-red);
-      box-shadow: 0 0 12px var(--neon-red-glow);
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      transform: translateX(-50%);
-    }
-    .nav-links a:hover { color: var(--star-white); }
-    .nav-links a:hover::after { width: 100%; }
-    .nav-cta {
-      padding: 12px 30px !important;
-      border: 1px solid var(--neon-red) !important;
-      border-radius: 30px;
-      color: var(--neon-red) !important;
-      font-family: var(--font-display) !important;
-      font-size: 0.68rem !important;
-      letter-spacing: 3px !important;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
-    }
-    .nav-cta::after { display: none !important; }
-    .nav-cta:hover {
-      background: var(--neon-red) !important;
-      color: white !important;
-      box-shadow: 0 0 50px var(--neon-red-glow) !important;
-      transform: translateY(-3px) scale(1.05);
-    }
+     .nav-logo-text {
+       font-family: var(--font-display); font-size: 1.1rem;
+       font-weight: 700; letter-spacing: 4px; color: var(--star-white);
+     }
+     .nav-logo-text span { color: var(--neon-red); }
+     .nav-links { display: flex; align-items: center; gap: 44px; list-style: none; }
+     .nav-links a {
+       font-family: var(--font-accent); font-size: 0.78rem;
+       font-weight: 600; text-transform: uppercase; letter-spacing: 2.5px;
+       color: rgba(240,240,255,0.55); text-decoration: none;
+       position: relative; padding: 6px 0;
+       transition: color 0.3s ease;
+     }
+     .nav-links a::after {
+       content: ''; position: absolute;
+       bottom: 0; left: 50%; width: 0; height: 1.5px;
+       background: var(--neon-red);
+       box-shadow: 0 0 12px var(--neon-red-glow);
+       transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+       transform: translateX(-50%);
+     }
+     .nav-links a:hover { color: var(--star-white); }
+     .nav-links a:hover::after { width: 100%; }
+     .nav-cta {
+       padding: 12px 30px !important;
+       border: 1px solid var(--neon-red) !important;
+       border-radius: 30px;
+       color: var(--neon-red) !important;
+       font-family: var(--font-display) !important;
+       font-size: 0.68rem !important;
+       letter-spacing: 3px !important;
+       transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+     }
+     .nav-cta::after { display: none !important; }
+     .nav-cta:hover {
+       background: var(--neon-red) !important;
+       color: white !important;
+       box-shadow: 0 0 50px var(--neon-red-glow) !important;
+       transform: translateY(-3px) scale(1.05);
+     }
 
     /* ===== HERO ===== */
     .hero {
@@ -541,6 +410,66 @@
       padding: 140px 60px 160px;
       overflow: hidden;
       background: linear-gradient(180deg, var(--space-dark), rgba(10,17,40,0.6), var(--space-dark));
+    }
+    .bdm-container {
+      max-width: 1200px; margin:0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+    }
+    .bdm-visual {
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+      height: 500px;
+      background: radial-gradient(circle at center, rgba(255,45,85,0.05) 0%, transparent 70%);
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .burger-rotate {
+      font-size: 12rem;
+      filter: drop-shadow(0 20px 60px rgba(0,0,0,0.5));
+    }
+    .bdm-info { padding: 30px 0; }
+    .bdm-label {
+      font-family: var(--font-accent); font-size: 0.68rem; font-weight: 600;
+      letter-spacing: 8px; text-transform: uppercase;
+      color: var(--neon-blue); margin-bottom: 18px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .bdm-label::before {
+      content: ''; width: 50px; height: 1px;
+      background: linear-gradient(90deg, var(--neon-blue), transparent);
+    }
+    .bdm-name {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+      font-weight: 800; margin-bottom: 25px; line-height: 1.15;
+    }
+    .bdm-name .highlight {
+      color: var(--neon-red);
+      text-shadow: 0 0 50px var(--neon-red-glow);
+    }
+    .bdm-description {
+      font-size: 1.05rem; line-height: 2;
+      color: rgba(240,240,255,0.65); margin-bottom: 35px;
+    }
+    .bdm-features {
+      display: flex; gap: 20px; margin-bottom: 30px; flex-wrap: wrap;
+    }
+    .bdm-feature {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.85rem; color: rgba(240,240,255,0.5);
+      padding: 8px 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+    }
+    .bdm-price {
+      font-family: var(--font-display); font-size: 3.2rem; font-weight: 900;
+      margin-bottom: 40px;
+      color: var(--neon-red);
+    }
+    .bdm-price small {
+      font-size: 0.35em;
+      color: rgba(240,240,255,0.3);
     }
     .bdm-container {
       max-width: 1300px; margin: 0 auto;
@@ -1224,9 +1153,6 @@
       body { cursor: auto; }
     }
 
-    /* ===== MAGNETIC ELEMENTS ===== */
-    .magnetic { transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-
     /* ===== 3D TILT UTILITY ===== */
     .tilt-3d {
       transform-style: preserve-3d;
@@ -1242,11 +1168,6 @@
   <div class="glow-orb glow-orb-1"></div>
   <div class="glow-orb glow-orb-2"></div>
   <div class="glow-orb glow-orb-3"></div>
-
-  <!-- Custom cursor -->
-  <div class="cursor-dot" id="cursorDot"></div>
-  <div class="cursor-ring" id="cursorRing"></div>
-  <div class="cursor-glow" id="cursorGlow"></div>
 
   <!-- Preloader -->
   <div id="preloader">
@@ -1264,12 +1185,9 @@
     <div class="preloader-bar"><div class="preloader-bar-fill"></div></div>
   </div>
 
-  <!-- Three.js Galaxy -->
-  <canvas id="galaxy-canvas"></canvas>
-
   <!-- Navigation -->
   <nav class="navbar" id="navbar">
-    <a href="#" class="nav-logo magnetic" data-strength="20">
+    <a href="#" class="nav-logo">
       <img src="logo_xpace.jpg" alt="Xpace Burger">
       <span class="nav-logo-text">XPACE <span>BURGER</span></span>
     </a>
@@ -1278,7 +1196,7 @@
       <li><a href="#carta">Carta</a></li>
       <li><a href="#about">Nosotros</a></li>
       <li><a href="#contacto">Contacto</a></li>
-      <li><a href="#carta" class="nav-cta magnetic" data-strength="15">Pedir Ahora</a></li>
+      <li><a href="#carta" class="nav-cta">Pedir Ahora</a></li>
     </ul>
     <div class="menu-toggle" id="menuToggle">
       <span></span><span></span><span></span>
@@ -1294,8 +1212,8 @@
         </h1>
       <p class="hero-subtitle">Smash burgers que desafian la gravedad del sabor</p>
       <div class="hero-buttons">
-        <a href="#carta" class="btn btn-primary magnetic" data-strength="10">Ver Carta</a>
-        <a href="#burger-del-mes" class="btn btn-outline magnetic" data-strength="10">Burger del Mes</a>
+        <a href="#carta" class="btn btn-primary">Ver Carta</a>
+        <a href="#burger-del-mes" class="btn btn-outline">Burger del Mes</a>
       </div>
         </div>
       </div>
@@ -1312,20 +1230,29 @@
 
   <!-- Burger del Mes -->
   <section class="burger-del-mes" id="burger-del-mes">
+    <div class="section-header">
+      <span class="section-tag">Edicion Limitada</span>
+      <h2 class="section-title"><span class="gradient-text">Burger del Mes</span></h2>
+    </div>
     <div class="bdm-container">
       <div class="bdm-visual">
-        <canvas id="burger-del-mes-3d" style="width:100%;height:100%"></canvas>
+        <div class="burger-rotate">🍔</div>
       </div>
       <div class="bdm-info">
-        <div class="bdm-label">Hamburguesa del mes</div>
-        <h2 class="bdm-name">El <span class="highlight">Alien</span> Sweet</h2>
+        <div class="bdm-label">Junio 2026</div>
+        <h2 class="bdm-name">SUPERNOVA <span class="highlight">TRUFFLE</span></h2>
         <p class="bdm-description">
-          Pan brioche, doble carne smash o medallon con costilla de bala tierna con chili y pico de gallo,
-          mayo lima sweet chili y pico de gallo. Un equilibrio donde el picante y la dulzura aterrizan
-          donde deberian... en tu paladar.
+          Doble smash patty de 120g de Black Angus, trufa negra rallada,
+          queso brie fundido, cebolla caramelizada con bourbon y nuestra
+          salsa secreta de trufa con un toque de miel ahumada.
         </p>
-        <div class="bdm-price">13,90&euro; <small>IVA incl.</small></div>
-        <a href="#carta" class="btn btn-primary magnetic" data-strength="10">Pedir Ahora</a>
+        <div class="bdm-features">
+          <div class="bdm-feature">🥩 Black Angus</div>
+          <div class="bdm-feature">🍄 Trufa Negra</div>
+          <div class="bdm-feature">🔥 Smash Style</div>
+        </div>
+        <div class="bdm-price">14,90&euro; <small>IVA incl.</small></div>
+        <a href="#carta" class="btn btn-primary">Pedir Ahora</a>
       </div>
     </div>
   </section>
@@ -1536,7 +1463,7 @@
       <span class="section-tag">Redes Sociales</span>
       <h2 class="section-title"><span class="gradient-text">Siguenos en el Espacio</span></h2>
     </div>
-    <a href="https://instagram.com/xpace_burger" target="_blank" class="instagram-handle magnetic" data-strength="15">@xpace_burger</a>
+    <a href="https://instagram.com/xpace_burger" target="_blank" class="instagram-handle">@xpace_burger</a>
     <div class="instagram-grid">
       <div class="instagram-item">&#127828;</div>
       <div class="instagram-item">&#127843;</div>
@@ -1613,310 +1540,7 @@
 })();
 
 // ============================================================
-// 2. THREE.JS GALAXY BACKGROUND
-// ============================================================
-(function() {
-  const canvas = document.getElementById('galaxy-canvas');
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  camera.position.z = 3;
-
-  const particleCount = 2500;
-  const positions = new Float32Array(particleCount * 3);
-  const colors = new Float32Array(particleCount * 3);
-  const sizes = new Float32Array(particleCount);
-
-  for (let i = 0; i < particleCount; i++) {
-    const i3 = i * 3;
-    const radius = Math.random() * 5;
-    const spinAngle = radius * 2;
-    const branchAngle = ((i % 4) / 4) * Math.PI * 2;
-
-    const randomX = (Math.random() - 0.5) * Math.pow(Math.random(), 3) * 2;
-    const randomY = (Math.random() - 0.5) * Math.pow(Math.random(), 3) * 0.8;
-    const randomZ = (Math.random() - 0.5) * Math.pow(Math.random(), 3) * 2;
-
-    positions[i3]     = Math.cos(branchAngle + spinAngle) * radius + randomX;
-    positions[i3 + 1] = randomY;
-    positions[i3 + 2] = Math.sin(branchAngle + spinAngle) * radius + randomZ;
-
-    const insideColor = new THREE.Color('#331122');
-    const midColor = new THREE.Color('#1a0a2e');
-    const outsideColor = new THREE.Color('#0a1628');
-    const mixedColor = new THREE.Color();
-    if (radius < 2) {
-      mixedColor.lerpColors(insideColor, midColor, radius / 2);
-    } else {
-      mixedColor.lerpColors(midColor, outsideColor, (radius - 2) / 3);
-    }
-
-    colors[i3]     = mixedColor.r;
-    colors[i3 + 1] = mixedColor.g;
-    colors[i3 + 2] = mixedColor.b;
-    sizes[i] = Math.random() * 1.5;
-  }
-
-  const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-  geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-  geometry.setAttribute('aSize', new THREE.BufferAttribute(sizes, 1));
-
-  const vertexShader = `
-    attribute float aSize;
-    varying vec3 vColor;
-    void main() {
-      vColor = color;
-      vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-      gl_PointSize = aSize * (220.0 / -mvPosition.z);
-      gl_Position = projectionMatrix * mvPosition;
-    }
-  `;
-  const fragmentShader = `
-    varying vec3 vColor;
-    void main() {
-      float d = length(gl_PointCoord - vec2(0.5));
-      if (d > 0.5) discard;
-      float alpha = 1.0 - smoothstep(0.15, 0.5, d);
-      gl_FragColor = vec4(vColor, alpha * 0.35);
-    }
-  `;
-
-  const material = new THREE.ShaderMaterial({
-    vertexShader, fragmentShader,
-    transparent: true, vertexColors: true,
-    depthWrite: false, blending: THREE.AdditiveBlending
-  });
-
-  const galaxy = new THREE.Points(geometry, material);
-  scene.add(galaxy);
-
-  // Glow sphere in center
-  const glowGeo = new THREE.SphereGeometry(0.12, 32, 32);
-  const glowMat = new THREE.MeshBasicMaterial({
-    color: 0xff2d55, transparent: true, opacity: 0.12
-  });
-  const glowSphere = new THREE.Mesh(glowGeo, glowMat);
-  scene.add(glowSphere);
-
-  let mouseX = 0, mouseY = 0;
-  document.addEventListener('mousemove', (e) => {
-    mouseX = (e.clientX / window.innerWidth - 0.5) * 0.4;
-    mouseY = (e.clientY / window.innerHeight - 0.5) * 0.4;
-  });
-
-  function animate() {
-    requestAnimationFrame(animate);
-    galaxy.rotation.y += 0.0002;
-    galaxy.rotation.x += 0.00005;
-    glowSphere.scale.setScalar(1 + Math.sin(Date.now() * 0.001) * 0.15);
-    camera.position.x += (mouseX - camera.position.x) * 0.008;
-    camera.position.y += (-mouseY - camera.position.y) * 0.008;
-    camera.lookAt(scene.position);
-    renderer.render(scene, camera);
-  }
-  animate();
-
-  window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  });
-})();
-
-// ============================================================
-// 3. THREE.JS 3D BURGER FOR "BURGER DEL MES"
-// ============================================================
-(function() {
-  const canvas = document.getElementById('burger-del-mes-3d');
-  if (!canvas) return;
-
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 1000);
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-  renderer.setSize(500, 500);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.shadowMap.enabled = true;
-  camera.position.set(0, 2, 6);
-  camera.lookAt(0, 0, 0);
-
-  // Lights
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
-  scene.add(ambientLight);
-  const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
-  dirLight.position.set(5, 10, 5);
-  dirLight.castShadow = true;
-  scene.add(dirLight);
-  const redLight = new THREE.PointLight(0xff2d55, 0.6, 20);
-  redLight.position.set(-3, 3, 2);
-  scene.add(redLight);
-  const blueLight = new THREE.PointLight(0x00b4ff, 0.4, 20);
-  blueLight.position.set(3, -2, 3);
-  scene.add(blueLight);
-
-  // Create Burger
-  const burgerGroup = new THREE.Group();
-  burgerGroup.position.y = 0;
-
-  // Materials
-  const bunMat = new THREE.MeshStandardMaterial({
-    color: 0xd4920a, roughness: 0.6, metalness: 0.1
-  });
-  const bunBottomMat = new THREE.MeshStandardMaterial({
-    color: 0xc48109, roughness: 0.65, metalness: 0.1
-  });
-  const pattyMat = new THREE.MeshStandardMaterial({
-    color: 0x6b3a2a, roughness: 0.8, metalness: 0.2
-  });
-  const cheeseMat = new THREE.MeshStandardMaterial({
-    color: 0xffa500, roughness: 0.3, metalness: 0.1, transparent: true, opacity: 0.9
-  });
-  const lettuceMat = new THREE.MeshStandardMaterial({
-    color: 0x3a7d1a, roughness: 0.7, metalness: 0.05
-  });
-  const tomatoMat = new THREE.MeshStandardMaterial({
-    color: 0xcc3333, roughness: 0.4, metalness: 0.1
-  });
-
-  // Bottom bun
-  const bunBottom = new THREE.Mesh(
-    new THREE.CylinderGeometry(1.8, 1.6, 0.6, 32),
-    bunBottomMat
-  );
-  bunBottom.position.y = -1.2;
-  bunBottom.receiveShadow = true;
-  burgerGroup.add(bunBottom);
-
-  // Patty
-  const patty = new THREE.Mesh(
-    new THREE.CylinderGeometry(1.6, 1.6, 0.35, 32),
-    pattyMat
-  );
-  patty.position.y = -0.75;
-  burgerGroup.add(patty);
-
-  // Cheese (slightly larger, with drip)
-  const cheeseShape = new THREE.CylinderGeometry(1.7, 1.7, 0.08, 32);
-  const cheese = new THREE.Mesh(cheeseShape, cheeseMat);
-  cheese.position.y = -0.5;
-  burgerGroup.add(cheese);
-
-  // Lettuce
-  const lettuceGeo = new THREE.CylinderGeometry(1.9, 1.9, 0.15, 32);
-  const lettuce = new THREE.Mesh(lettuceGeo, lettuceMat);
-  lettuce.position.y = -0.35;
-  burgerGroup.add(lettuce);
-
-  // Tomato
-  const tomato = new THREE.Mesh(
-    new THREE.CylinderGeometry(1.5, 1.5, 0.18, 32),
-    tomatoMat
-  );
-  tomato.position.y = -0.2;
-  burgerGroup.add(tomato);
-
-  // More patty
-  const patty2 = new THREE.Mesh(
-    new THREE.CylinderGeometry(1.6, 1.6, 0.35, 32),
-    pattyMat
-  );
-  patty2.position.y = 0;
-  burgerGroup.add(patty2);
-
-  // Cheese 2
-  const cheese2 = new THREE.Mesh(
-    new THREE.CylinderGeometry(1.75, 1.75, 0.08, 32),
-    cheeseMat
-  );
-  cheese2.position.y = 0.25;
-  burgerGroup.add(cheese2);
-
-  // Top bun
-  const bunTopGeo = new THREE.SphereGeometry(1.7, 32, 32, 0, Math.PI * 2, 0, Math.PI * 0.55);
-  const bunTop = new THREE.Mesh(bunTopGeo, bunMat);
-  bunTop.position.y = 0.6;
-  bunTop.scale.y = 1.3;
-  burgerGroup.add(bunTop);
-
-  // Sesame seeds
-  for (let i = 0; i < 12; i++) {
-    const angle = (i / 12) * Math.PI * 2;
-    const r = Math.random() * 0.8;
-    const seed = new THREE.Mesh(
-      new THREE.SphereGeometry(0.08, 8, 8),
-      new THREE.MeshStandardMaterial({ color: 0xfff8e1, roughness: 0.5 })
-    );
-    seed.position.set(
-      Math.cos(angle) * r,
-      1.1 + Math.random() * 0.1,
-      Math.sin(angle) * r
-    );
-    seed.scale.y = 1.5;
-    burgerGroup.add(seed);
-  }
-
-  scene.add(burgerGroup);
-
-  // Floating particles around burger
-  const particleCount = 200;
-  const pPositions = new Float32Array(particleCount * 3);
-  for (let i = 0; i < particleCount; i++) {
-    const i3 = i * 3;
-    const theta = Math.random() * Math.PI * 2;
-    const phi = Math.random() * Math.PI;
-    const r = 2.5 + Math.random() * 2;
-    pPositions[i3]     = r * Math.sin(phi) * Math.cos(theta);
-    pPositions[i3 + 1] = r * Math.sin(phi) * Math.sin(theta);
-    pPositions[i3 + 2] = r * Math.cos(phi);
-  }
-  const pGeo = new THREE.BufferGeometry();
-  pGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
-  const pMat = new THREE.PointsMaterial({
-    color: 0xff2d55, size: 0.03, transparent: true, opacity: 0.6,
-    blending: THREE.AdditiveBlending
-  });
-  const particles = new THREE.Points(pGeo, pMat);
-  scene.add(particles);
-
-  // Mouse interaction
-  let targetRotY = 0, targetRotX = 0;
-  document.addEventListener('mousemove', (e) => {
-    const rect = canvas.getBoundingClientRect();
-    if (e.clientX >= rect.left && e.clientX <= rect.right &&
-        e.clientY >= rect.top && e.clientY <= rect.bottom) {
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
-      targetRotY = x * 0.5;
-      targetRotX = -y * 0.3;
-    }
-  });
-
-  function animateBurger() {
-    requestAnimationFrame(animateBurger);
-    burgerGroup.rotation.y += 0.008;
-    burgerGroup.rotation.y += (targetRotY - burgerGroup.rotation.y) * 0.05;
-    burgerGroup.rotation.x += (targetRotX - burgerGroup.rotation.x) * 0.05;
-
-    // Float up and down
-    burgerGroup.position.y = Math.sin(Date.now() * 0.001) * 0.15;
-
-    // Particles orbit
-    particles.rotation.y += 0.003;
-    particles.rotation.x += 0.001;
-
-    // Lights pulse
-    redLight.intensity = 0.6 + Math.sin(Date.now() * 0.003) * 0.2;
-    blueLight.intensity = 0.4 + Math.cos(Date.now() * 0.004) * 0.15;
-
-    renderer.render(scene, camera);
-  }
-  animateBurger();
-})();
-
-// ============================================================
-// 4. LENIS SMOOTH SCROLL
+// 2. LENIS SMOOTH SCROLL
 // ============================================================
 const lenis = new Lenis({
   duration: 1.2,
@@ -1934,7 +1558,7 @@ gsap.ticker.add((time) => lenis.raf(time * 1000));
 gsap.ticker.lagSmoothing(0);
 
 // ============================================================
-// 5. PRELOADER EXIT
+// 3. PRELOADER EXIT
 // ============================================================
 window.addEventListener('load', () => {
   setTimeout(() => {
@@ -1959,28 +1583,7 @@ window.addEventListener('load', () => {
 });
 
 // ============================================================
-// 6. HERO 3D TILT
-// ============================================================
-const heroContent = document.getElementById('heroContent');
-document.addEventListener('mousemove', (e) => {
-  const x = (e.clientX / window.innerWidth - 0.5) * 15;
-  const y = (e.clientY / window.innerHeight - 0.5) * 10;
-  gsap.to(heroContent, {
-    rotationY: x, rotationX: -y, duration: 0.8, ease: 'power2.out'
-  });
-});
-
-// Parallax hero on scroll
-gsap.to('.hero-content', {
-  y: 250, opacity: 0,
-  scrollTrigger: {
-    trigger: '.hero', start: 'top top', end: 'bottom top',
-    scrub: 1
-  }
-});
-
-// ============================================================
-// 7. SCROLL-TRIGGERED ANIMATIONS
+// 4. SCROLL-TRIGGERED ANIMATIONS
 // ============================================================
 gsap.registerPlugin(ScrollTrigger);
 
@@ -2100,21 +1703,7 @@ document.addEventListener('mouseup', () => {
 });
 
 // ============================================================
-// 9. MAGNETIC ELEMENTS
-// ============================================================
-document.querySelectorAll('.magnetic').forEach(el => {
-  const strength = parseInt(el.dataset.strength) || 20;
-  el.addEventListener('mousemove', (e) => {
-    const rect = el.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
-    el.style.transform = `translate(${x / strength * 3}px, ${y / strength * 3}px)`;
-  });
-  el.addEventListener('mouseleave', () => { el.style.transform = ''; });
-});
-
-// ============================================================
-// 10. MENU CARD GLOW ON HOVER
+// 9. MENU CARD GLOW ON HOVER
 // ============================================================
 document.querySelectorAll('.menu-card').forEach(card => {
   card.addEventListener('mousemove', (e) => {
