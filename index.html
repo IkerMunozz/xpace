@@ -14,21 +14,22 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
   <!-- Lenis smooth scroll -->
   <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+  <link rel="icon" href="logo_xpace.jpg" type="image/jpg">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
       --space-dark: #030712;
-      --space-deep: #0a1128;
-      --space-mid: #111827;
+      --space-deep: #050a18;
+      --space-mid: #0f172a;
       --neon-red: #ff2d55;
-      --neon-red-glow: rgba(255, 45, 85, 0.6);
+      --neon-red-glow: rgba(255, 45, 85, 0.3);
       --neon-blue: #00b4ff;
-      --neon-blue-glow: rgba(0, 180, 255, 0.5);
+      --neon-blue-glow: rgba(0, 180, 255, 0.2);
       --neon-purple: #8b5cf6;
-      --neon-purple-glow: rgba(139, 92, 246, 0.5);
+      --neon-purple-glow: rgba(139, 92, 246, 0.2);
       --neon-gold: #ffd700;
-      --star-white: #f0f0ff;
+      --star-white: #f8fafc;
       --font-display: 'Orbitron', sans-serif;
       --font-body: 'Space Grotesk', sans-serif;
       --font-accent: 'Exo 2', sans-serif;
@@ -40,259 +41,95 @@
        background: var(--space-dark);
        color: var(--star-white);
        overflow-x: hidden;
+       line-height: 1.6;
      }
-
-
-
-    /* ===== PRELOADER ===== */
-    #preloader {
-      position: fixed; inset: 0; z-index: 100000;
-      background: var(--space-dark);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-    }
-    .preloader-inner { position: relative; width: 200px; height: 200px; }
-    .preloader-burger {
-      position: absolute; inset: 0;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .preloader-burger .bun-top {
-      position: absolute; top: 20px;
-      width: 100px; height: 40px;
-      background: linear-gradient(135deg, #d4920a, #f5c842);
-      border-radius: 50px 50px 10px 10px;
-      box-shadow: 0 4px 15px rgba(245, 200, 66, 0.3);
-    }
-    .preloader-burger .patty {
-      position: absolute; top: 65px;
-      width: 90px; height: 22px;
-      background: linear-gradient(135deg, #6b3a2a, #8b4513);
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
-    }
-    .preloader-burger .bun-bottom {
-      position: absolute; top: 90px;
-      width: 100px; height: 35px;
-      background: linear-gradient(135deg, #d4920a, #f5c842);
-      border-radius: 10px 10px 30px 30px;
-    }
-    .preloader-ring {
-      position: absolute; inset: -30px;
-      border: 1.5px solid transparent;
-      border-top-color: var(--neon-red);
-      border-radius: 50%;
-      animation: spin-ring 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
-    }
-    .preloader-ring:nth-child(2) {
-      inset: -50px;
-      border-top-color: transparent;
-      border-right-color: var(--neon-blue);
-      animation-duration: 2s; animation-direction: reverse;
-    }
-    .preloader-ring:nth-child(3) {
-      inset: -70px;
-      border-top-color: transparent;
-      border-bottom-color: var(--neon-purple);
-      animation-duration: 2.5s;
-    }
-    @keyframes spin-ring { to { transform: rotate(360deg); } }
-
-    .preloader-text {
-      font-family: var(--font-display);
-      font-size: 0.9rem; letter-spacing: 12px;
-      color: var(--star-white); margin-top: 50px;
-    }
-    .preloader-text span {
-      display: inline-block;
-      animation: letter-pop 0.5s ease forwards;
-      opacity: 0; transform: translateY(20px) scale(0.5);
-    }
-    @keyframes letter-pop {
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    .preloader-bar {
-      width: 240px; height: 2px;
-      background: rgba(255,255,255,0.05);
-      margin-top: 30px; border-radius: 2px; overflow: hidden;
-    }
-    .preloader-bar-fill {
-      height: 100%; width: 0;
-      background: linear-gradient(90deg, var(--neon-red), var(--neon-purple), var(--neon-blue));
-      border-radius: 2px;
-      animation: bar-fill 2.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
-    }
-    @keyframes bar-fill { to { width: 100%; } }
-
-    /* ===== CLEAN BACKGROUND ===== */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: var(--space-dark);
-      z-index: -1;
-    }
 
     /* ===== NAVIGATION ===== */
     .navbar {
       position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-      padding: 24px 60px;
+      padding: 30px 80px;
       display: flex; align-items: center; justify-content: space-between;
-      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .navbar.scrolled {
-      padding: 14px 60px;
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
       background: rgba(3, 7, 18, 0.92);
       backdrop-filter: blur(40px) saturate(180%);
       border-bottom: 1px solid rgba(255, 45, 85, 0.08);
-      box-shadow: 0 10px 60px rgba(0,0,0,0.3);
     }
-    .nav-logo { display: flex; align-items: center; gap: 16px; text-decoration: none; }
+    .navbar.scrolled {
+      padding: 18px 80px;
+      background: rgba(3, 7, 18, 0.95);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
     .nav-logo img {
-      width: 50px; height: 50px; border-radius: 50%;
-      transition: transform 0.6s ease;
-      box-shadow: 0 0 20px rgba(255,45,85,0.2);
-      border: 2px solid rgba(255,255,255,0.1);
-      background: rgba(255,255,255,0.05);
-      padding: 2px;
+      width: 42px; height: 42px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .nav-logo img:hover {
-      transform: rotate(360deg);
+    .nav-logo img:hover { transform: rotate(360deg); }
+    .nav-logo-text {
+       font-family: var(--font-display); font-size: 1rem;
+       font-weight: 800; letter-spacing: 2px; color: var(--star-white);
     }
-     .nav-logo-text {
-       font-family: var(--font-display); font-size: 1.1rem;
-       font-weight: 700; letter-spacing: 4px; color: var(--star-white);
-     }
-     .nav-logo-text span { color: var(--neon-red); }
-     .nav-links { display: flex; align-items: center; gap: 44px; list-style: none; }
-     .nav-links a {
-       font-family: var(--font-accent); font-size: 0.78rem;
-       font-weight: 600; text-transform: uppercase; letter-spacing: 2.5px;
-       color: rgba(240,240,255,0.55); text-decoration: none;
+    .nav-links { display: flex; align-items: center; gap: 50px; list-style: none; margin-left: auto; }
+    .nav-links a {
+       font-family: var(--font-accent); font-size: 0.7rem;
+       font-weight: 600; text-transform: uppercase; letter-spacing: 3px;
+       color: rgba(248, 250, 252, 0.5); text-decoration: none;
+       transition: color 0.4s ease;
        position: relative; padding: 6px 0;
-       transition: color 0.3s ease;
-     }
-     .nav-links a::after {
+    }
+    .nav-links a::after {
        content: ''; position: absolute;
        bottom: 0; left: 50%; width: 0; height: 1.5px;
        background: var(--neon-red);
        box-shadow: 0 0 12px var(--neon-red-glow);
        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
        transform: translateX(-50%);
-     }
-     .nav-links a:hover { color: var(--star-white); }
-     .nav-links a:hover::after { width: 100%; }
-     .nav-cta {
-       padding: 12px 30px !important;
-       border: 1px solid var(--neon-red) !important;
-       border-radius: 30px;
-       color: var(--neon-red) !important;
+    }
+    .nav-links a:hover { color: var(--star-white); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta {
+       padding: 10px 24px !important;
+       border: 1px solid rgba(255, 45, 85, 0.4) !important;
+       border-radius: 4px;
+       color: var(--star-white) !important;
+       background: transparent;
        font-family: var(--font-display) !important;
-       font-size: 0.68rem !important;
-       letter-spacing: 3px !important;
-       transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
-     }
-     .nav-cta::after { display: none !important; }
-     .nav-cta:hover {
+       font-size: 0.65rem !important;
+       letter-spacing: 2px !important;
+       transition: all 0.4s ease !important;
+    }
+    .nav-cta:hover {
        background: var(--neon-red) !important;
-       color: white !important;
-       box-shadow: 0 0 50px var(--neon-red-glow) !important;
-       transform: translateY(-3px) scale(1.05);
-     }
+       border-color: var(--neon-red) !important;
+       box-shadow: 0 0 30px var(--neon-red-glow) !important;
+       transform: translateY(-2px);
+    }
 
     /* ===== HERO ===== */
     .hero {
       position: relative; min-height: 100vh;
       display: flex; align-items: center; justify-content: center;
       text-align: center; overflow: hidden; z-index:1;
-      perspective: 1200px;
       padding-top: 100px;
-      padding-bottom: 60px;
     }
     .hero-content {
       position: relative; z-index: 10;
-      max-width: 1100px; padding: 0 30px;
-      transform-style: preserve-3d;
-    }
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 10px;
-      font-family: var(--font-accent); font-size: 0.7rem;
-      font-weight: 600; letter-spacing: 6px; text-transform: uppercase;
-      color: var(--neon-blue);
-      border: 1px solid rgba(0, 180, 255, 0.15);
-      padding: 10px 28px; border-radius: 40px;
-      margin-bottom: 40px;
-      backdrop-filter: blur(10px);
-      background: rgba(0, 180, 255, 0.04);
-    }
-    .hero-badge::before {
-      content: ''; width: 6px; height: 6px;
-      background: var(--neon-blue); border-radius: 50%;
-      box-shadow: 0 0 15px var(--neon-blue), 0 0 30px var(--neon-blue-glow);
-      animation: badge-pulse 2s ease-in-out infinite;
-    }
-    @keyframes badge-pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(1.5); }
+      max-width: 1200px; padding: 0 40px;
     }
     .hero-title {
       font-family: var(--font-display);
-      font-size: clamp(3.5rem, 10vw, 9rem);
-      font-weight: 900; line-height: 1.1;
-      margin-bottom: 35px;
-    }
-    .hero-title .line {
-      display: block;
-    }
-    .hero-title .line-1 {
-      color: var(--star-white);
-    }
-    .hero-title .line-2 {
-      background: linear-gradient(135deg, var(--neon-red) 0%, #ff6b8a 25%, var(--neon-purple) 50%, #ff6b8a 75%, var(--neon-red) 100%);
-      background-size: 300% 100%;
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: gradient-flow 5s ease-in-out infinite;
-      filter: drop-shadow(0 0 40px rgba(255,45,85,0.3));
-    }
-    .hero-title .line {
-      display: block;
-      padding: 5px 0;
-    }
-    .hero-title .line-1 {
-      color: var(--star-white);
-      transform: translateZ(0);
-    }
-    .hero-title .line-2 {
-      background: linear-gradient(135deg, var(--neon-red) 0%, #ff6b8a 25%, var(--neon-purple) 50%, #ff6b8a 75%, var(--neon-red) 100%);
-      background-size: 300% 100%;
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: gradient-flow 5s ease-in-out infinite;
-      filter: drop-shadow(0 0 40px rgba(255,45,85,0.3));
-      transform: translateZ(30px);
-    }
-    @keyframes gradient-flow {
-      0%, 100% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-    }
-    .hero-title .char {
-      display: inline-block;
-    }
-    .hero-title .line-1 .char,
-    .hero-title .line-2 .char {
-      opacity: 0; transform: translateY(120%) rotateX(-80deg);
-    }
-    .hero-title .char.visible {
-      opacity: 1 !important;
-      transform: translateY(0) rotateX(0) !important;
+      font-size: clamp(3.5rem, 12vw, 10rem);
+      font-weight: 900; line-height: 0.9;
+      margin-bottom: 45px; letter-spacing: -4px;
     }
     .hero-subtitle {
-      font-family: var(--font-accent); font-size: clamp(1rem, 2vw, 1.4rem);
-      font-weight: 300; color: rgba(240,240,255,0.45);
-      letter-spacing: 5px; margin-bottom: 55px;
+      font-family: var(--font-accent); font-size: clamp(1rem, 2.5vw, 1.4rem);
+      font-weight: 400; color: rgba(248, 250, 252, 0.5);
+      letter-spacing: 6px; text-transform: uppercase;
+      margin-bottom: 60px;
     }
     .hero-buttons {
-      display: flex; gap: 22px; justify-content: center; flex-wrap: wrap;
+      display: flex; gap: 20px; justify-content: center;
     }
     .scroll-indicator {
       position: absolute; bottom: 40px; left: 50%;
@@ -354,55 +191,115 @@
       transform: translateY(-5px);
     }
 
-    /* ===== MARQUEE ===== */
-    .marquee-section {
-      overflow: hidden; padding: 22px 0;
-      background: linear-gradient(90deg, var(--neon-red), #e91e63, var(--neon-purple), var(--neon-red));
-      background-size: 300% 100%;
-      animation: gradient-flow 8s ease-in-out infinite;
-      position: relative; z-index: 1;
+    /* ===== GOIKO STYLE MARQUEE ===== */
+    .goiko-marquee {
+      width: 100%;
+      background: #030712;
+      overflow: hidden;
+      padding: 30px 0;
+      position: relative;
+      user-select: none;
+      border-top: 1px solid var(--neon-red);
+      border-bottom: 1px solid var(--neon-red);
+      box-shadow: 0 0 40px rgba(255, 45, 85, 0.15);
+      z-index: 10;
+      margin: 40px 0;
     }
+    .goiko-marquee::before, .goiko-marquee::after {
+      content: ""; position: absolute; top: 0; width: 10vw; height: 100%; z-index: 2; pointer-events: none;
+    }
+    .goiko-marquee::before { left: 0; background: linear-gradient(to right, #030712, transparent); }
+    .goiko-marquee::after { right: 0; background: linear-gradient(to left, #030712, transparent); }
     .marquee-track {
-      display: flex; animation: marquee 25s linear infinite;
-      width: max-content;
+      display: flex; width: max-content;
+      animation: goiko-scroll 25s linear infinite;
+      will-change: transform;
     }
+    .marquee-content { display: flex; align-items: center; gap: 60px; padding-right: 60px; }
     .marquee-item {
-      font-family: var(--font-display); font-size: 0.85rem;
-      font-weight: 800; letter-spacing: 5px; text-transform: uppercase;
-      color: white; white-space: nowrap; padding: 0 35px;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      color: #fff; font-family: var(--font-display); font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 900; text-transform: uppercase; white-space: nowrap;
+      letter-spacing: -1px;
     }
-    .marquee-item .sep {
-      display: inline-block; width: 8px; height: 8px;
-      background: rgba(255,255,255,0.7); border-radius: 50%;
-      margin: 0 30px; vertical-align: middle;
-      box-shadow: 0 0 10px rgba(255,255,255,0.5);
+    .marquee-item span { color: var(--neon-red); margin-left: 20px; }
+    @keyframes goiko-scroll {
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-50%, 0, 0); }
     }
-    @keyframes marquee { to { transform: translateX(-33.333%); } }
 
     /* ===== SECTIONS ===== */
-    section { position: relative; z-index: 1; }
-    .section-header { text-align: center; margin-bottom: 90px; }
+    section { position: relative; z-index: 1; padding: 120px 0; }
+    .section-header { text-align: center; margin-bottom: 100px; padding: 0 20px; }
     .section-tag {
-      font-family: var(--font-accent); font-size: 0.7rem;
-      font-weight: 600; letter-spacing: 8px; text-transform: uppercase;
-      color: var(--neon-blue); margin-bottom: 20px; display: block;
+      font-family: var(--font-accent); font-size: 0.65rem;
+      font-weight: 600; letter-spacing: 10px; text-transform: uppercase;
+      color: var(--neon-blue); margin-bottom: 24px; display: block;
+      opacity: 0.8;
     }
     .section-title {
       font-family: var(--font-display);
-      font-size: clamp(2.4rem, 5.5vw, 4.2rem);
-      font-weight: 800; line-height: 1.1;
-      margin-bottom: 20px;
+      font-size: clamp(2.5rem, 6vw, 5.5rem);
+      font-weight: 900; line-height: 0.95;
+      margin-bottom: 30px; letter-spacing: -2px;
     }
     .section-title .gradient-text {
-      background: linear-gradient(135deg, var(--star-white), rgba(240,240,255,0.6));
+      background: linear-gradient(135deg, var(--star-white) 0%, rgba(248, 250, 252, 0.7) 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       background-clip: text;
     }
     .section-subtitle {
-      font-family: var(--font-accent); font-size: 1.05rem;
-      color: rgba(240,240,255,0.35); max-width: 560px; margin: 0 auto;
-      line-height: 1.8;
+      font-family: var(--font-body); font-size: 1.15rem;
+      color: rgba(248, 250, 252, 0.4); max-width: 600px; margin: 0 auto;
+      font-weight: 300; line-height: 1.8;
+    }
+
+    /* ===== CATEGORY BLOCKS (GOIKO STYLE) ===== */
+    .category-section { padding: 0; background: var(--space-dark); }
+    .category-block {
+      position: relative; height: 85vh; width: 100%;
+      overflow: hidden; display: flex; align-items: center; justify-content: center;
+      text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+    .category-bg {
+      position: absolute; inset: 0; z-index: 1;
+      background-size: cover; background-position: center;
+      transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+      filter: brightness(0.4) saturate(0.8);
+    }
+    .category-block:hover .category-bg { transform: scale(1.05); }
+    .category-overlay {
+      position: absolute; inset: 0; z-index: 2;
+      background: linear-gradient(to bottom, rgba(3,7,18,0.2) 0%, rgba(3,7,18,0.8) 100%);
+    }
+    .category-content {
+      position: relative; z-index: 3; text-align: center;
+      padding: 0 40px; transform: translateY(20px);
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .category-block:hover .category-content { transform: translateY(0); }
+    .category-title {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 10vw, 8rem);
+      font-weight: 900; line-height: 1;
+      margin-bottom: 20px; letter-spacing: -4px;
+      color: var(--star-white);
+    }
+    .category-subtitle {
+      font-family: var(--font-accent); font-size: 0.8rem;
+      letter-spacing: 8px; text-transform: uppercase;
+      color: var(--neon-blue); opacity: 0.7;
+      margin-bottom: 40px; display: block;
+    }
+    .category-btn {
+      display: inline-flex; align-items: center; gap: 12px;
+      padding: 16px 36px; border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 4px; color: white;
+      font-family: var(--font-display); font-size: 0.65rem;
+      font-weight: 700; letter-spacing: 4px; text-transform: uppercase;
+      transition: all 0.4s ease;
+    }
+    .category-block:hover .category-btn {
+      background: white; color: black; border-color: white;
     }
 
     /* ===== BURGER DEL MES ===== */
@@ -1219,12 +1116,21 @@
       </div>
     </section>
 
-  <!-- Marquee -->
-  <div class="marquee-section">
+  <!-- Goiko Style Marquee -->
+  <div class="goiko-marquee">
     <div class="marquee-track">
-      <div class="marquee-item">SMASH BURGERS <span class="sep"></span> SABOR ESPACIAL <span class="sep"></span> INGREDIENTES FRESCOS <span class="sep"></span> DE OTRO PLANETA <span class="sep"></span> XPACE BURGER <span class="sep"></span></div>
-      <div class="marquee-item">SMASH BURGERS <span class="sep"></span> SABOR ESPACIAL <span class="sep"></span> INGREDIENTES FRESCOS <span class="sep"></span> DE OTRO PLANETA <span class="sep"></span> XPACE BURGER <span class="sep"></span></div>
-      <div class="marquee-item">SMASH BURGERS <span class="sep"></span> SABOR ESPACIAL <span class="sep"></span> INGREDIENTES FRESCOS <span class="sep"></span> DE OTRO PLANETA <span class="sep"></span> XPACE BURGER <span class="sep"></span></div>
+      <div class="marquee-content">
+        <div class="marquee-item">FOREVER CHORREO <span>•</span></div>
+        <div class="marquee-item">FOREVER CHORREO <span>•</span></div>
+        <div class="marquee-item">FOREVER CHORREO <span>•</span></div>
+        <div class="marquee-item">FOREVER CHORREO <span>•</span></div>
+      </div>
+      <div class="marquee-content" aria-hidden="true">
+        <div class="marquee-item">FOREVER CHORREO <span>•</span></div>
+        <div class="marquee-item">FOREVER CHORREO <span>•</span></div>
+        <div class="marquee-item">FOREVER CHORREO <span>•</span></div>
+        <div class="marquee-item">FOREVER CHORREO <span>•</span></div>
+      </div>
     </div>
   </div>
 
@@ -1259,161 +1165,80 @@
 
   <div class="section-divider"></div>
 
-  <!-- Carta -->
-  <section class="carta" id="carta">
-    <div class="carta-container">
-      <div class="section-header">
-        <span class="section-tag">Nuestra Carta</span>
-        <h2 class="section-title"><span class="gradient-text">Menu Intergalactico</span></h2>
-        <p class="section-subtitle">Cada hamburguesa es un viaje a traves del sabor. Todas disponibles en medallon y smash.</p>
+  <!-- Marquee -->
+  <div class="goiko-marquee marquee-section">
+    <div class="marquee-track" style="animation-duration: 40s;">
+      <div class="marquee-content">
+        <div class="marquee-item">EXPLORA EL MENÚ <span>•</span></div>
+        <div class="marquee-item">SABORES GALÁCTICOS <span>•</span></div>
+        <div class="marquee-item">EXPLORA EL MENÚ <span>•</span></div>
+        <div class="marquee-item">SABORES GALÁCTICOS <span>•</span></div>
       </div>
-
-      <div class="menu-tabs">
-        <button class="menu-tab active" data-tab="burgers"><span>Burgers</span></button>
-        <button class="menu-tab" data-tab="entrantes"><span>Entrantes</span></button>
-        <button class="menu-tab" data-tab="postres"><span>Postres</span></button>
-      </div>
-
-      <!-- Burgers -->
-      <div class="menu-category active" id="tab-burgers">
-        <div class="menu-grid">
-          <div class="menu-card">
-            <span class="menu-card-badge badge-popular">Estrella</span>
-            <div class="menu-card-header">
-              <h3 class="menu-card-name">Estrella</h3>
-              <span class="menu-card-price">10,90&euro;</span>
-            </div>
-            <p class="menu-card-desc">Pan brioche Juanita baker, doble carne de vacuno smash (180g), bacon ahumado, cebolla crispy y pepinillos encurtidos, todo acompanado con nuestra salsa especial.</p>
-          </div>
-          <div class="menu-card">
-            <div class="menu-card-header">
-              <h3 class="menu-card-name">Lunar</h3>
-              <span class="menu-card-price">11,90&euro;</span>
-            </div>
-            <p class="menu-card-desc">Pan brioche baker, doble carne de vacuno smash (180g), bacon ahumado, queso cheddar y nuestra salsa secreta lunar.</p>
-          </div>
-          <div class="menu-card">
-            <span class="menu-card-badge badge-hot">Picante</span>
-            <div class="menu-card-header">
-              <h3 class="menu-card-name">Volcan</h3>
-              <span class="menu-card-price">11,90&euro;</span>
-            </div>
-            <p class="menu-card-desc">Pan brioche Juanita baker, doble carne de vacuno smash (180g), jalapenos, queso fundido y salsa de queso volcan. Con jalapenos ardientes.</p>
-          </div>
-          <div class="menu-card">
-            <span class="menu-card-badge badge-new">Nuevo</span>
-            <div class="menu-card-header">
-              <h3 class="menu-card-name">Trufada 2.0</h3>
-              <span class="menu-card-price">11,90&euro;</span>
-            </div>
-            <p class="menu-card-desc">Pan brioche baker, doble carne de vacuno smash (180g), queso Monterey Jack, bacon ahumado, cebolla caramelizada y vinagreta de trufa.</p>
-          </div>
-          <div class="menu-card">
-            <span class="menu-card-badge badge-special">Favorita</span>
-            <div class="menu-card-header">
-              <h3 class="menu-card-name">Emmy Xpace</h3>
-              <span class="menu-card-price">11,90&euro;</span>
-            </div>
-            <p class="menu-card-desc">Pan brioche baker, doble carne de vacuno smash o medallon (180g), queso Monterey Jack, lechuga, tomate, salsa Emmy casera.</p>
-          </div>
-          <div class="menu-card">
-            <div class="menu-card-header">
-              <h3 class="menu-card-name">Menu Junior</h3>
-              <span class="menu-card-price">10,00&euro;</span>
-            </div>
-            <p class="menu-card-desc">Pan brioche baker, carne de vacuno (90g) y queso cheddar americano. Salsa a elegir (ketchup, mayo o bbq). Patatas clasicas + bebida incluidas.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Entrantes -->
-      <div class="menu-category" id="tab-entrantes">
-        <div class="menu-grid">
-          <div class="menu-card">
-            <div class="menu-card-header">
-              <h3 class="menu-card-name">Patatas Clasicas</h3>
-              <span class="menu-card-price">3,00&euro;</span>
-            </div>
-            <p class="menu-card-desc">Patatas clasicas para dippear con salsa.</p>
-          </div>
-          <div class="menu-card">
-            <div class="menu-card-header">
-              <h3 class="menu-card-name">Patatas Trufadas</h3>
-              <span class="menu-card-price">5,50&euro;</span>
-            </div>
-            <p class="menu-card-desc">Patatas con un toque de aceite de trufa y parmesano.</p>
-          </div>
-          <div class="menu-card">
-            <div class="menu-card-header">
-              <h3 class="menu-card-name">Patatas Bacon Cheddar</h3>
-              <span class="menu-card-price">5,50&euro;</span>
-            </div>
-            <p class="menu-card-desc">Patatas cubiertas con bacon crujiente y queso cheddar fundido.</p>
-          </div>
-          <div class="menu-card">
-            <div class="menu-card-header">
-              <h3 class="menu-card-name">Alitas Kentucky</h3>
-              <span class="menu-card-price">6,90&euro;</span>
-            </div>
-            <p class="menu-card-desc">Alitas de pollo con un crujiente toque picante Kentucky y salsa barbacoa.</p>
-          </div>
-          <div class="menu-card">
-            <div class="menu-card-header">
-              <h3 class="menu-card-name">Alitas de Pollo BBQ</h3>
-              <span class="menu-card-price">5,90&euro;</span>
-            </div>
-            <p class="menu-card-desc">Deliciosas alitas de pollo marinadas con BBQ y salsa Smokey BBQ.</p>
-          </div>
-          <div class="menu-card">
-            <div class="menu-card-header">
-              <h3 class="menu-card-name">Pops de Pollo</h3>
-              <span class="menu-card-price">3,00&euro;</span>
-            </div>
-            <p class="menu-card-desc">Bolitas de pollo con un sabroso empanado con salsas BBQ y mayonesa.</p>
-          </div>
-          <div class="menu-card">
-            <div class="menu-card-header">
-              <h3 class="menu-card-name">Nachos Bacon Cheddar</h3>
-              <span class="menu-card-price">4,00&euro;</span>
-            </div>
-            <p class="menu-card-desc">Nachos cubiertos con una cremosa salsa de queso cheddar y bacon crujiente.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Postres -->
-      <div class="menu-category" id="tab-postres">
-        <div class="menu-grid">
-          <div class="menu-card">
-            <div class="shimmer"></div>
-            <div class="menu-card-header">
-              <h3 class="menu-card-name">Cheesecake</h3>
-              <span class="menu-card-price">5,50&euro;</span>
-            </div>
-            <p class="menu-card-desc">Tarta de queso manchego cremosa.</p>
-            <div class="toppings-list">
-              <span class="topping-tag">Frutos Rojos</span>
-              <span class="topping-tag">Dulce de Leche</span>
-              <span class="topping-tag">+0,60&euro;</span>
-            </div>
-          </div>
-          <div class="menu-card">
-            <div class="shimmer"></div>
-            <span class="menu-card-badge badge-special">Xpacial</span>
-            <div class="menu-card-header">
-              <h3 class="menu-card-name">Crema Xpacial</h3>
-              <span class="menu-card-price">4,50&euro;</span>
-            </div>
-            <p class="menu-card-desc">Postre casero a base de galleta de chocolate, crujiente de lotus y galleta lotus, con un sabor de otro planeta.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="extras-note">
-        <p><strong>Todas nuestras hamburguesas disponibles en medallon y smash.</strong><br>
-        Salsa extra o queso adicional disponible. Consulta alergenos e intolerancias.</p>
+      <div class="marquee-content" aria-hidden="true">
+        <div class="marquee-item">EXPLORA EL MENÚ <span>•</span></div>
+        <div class="marquee-item">SABORES GALÁCTICOS <span>•</span></div>
+        <div class="marquee-item">EXPLORA EL MENÚ <span>•</span></div>
+        <div class="marquee-item">SABORES GALÁCTICOS <span>•</span></div>
       </div>
     </div>
+  </div>
+
+  <!-- Category Blocks (Carta Redesign) -->
+  <section class="category-section" id="carta">
+    <!-- Smash Burgers -->
+    <a href="hamburguesas.html" class="category-block">
+      <div class="category-bg" style="background-image: url('https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?auto=format&fit=crop&q=80&w=2000');"></div>
+      <div class="category-overlay"></div>
+      <div class="category-content">
+        <span class="category-subtitle">Smash Style</span>
+        <h2 class="category-title">BURGERS</h2>
+        <div class="category-btn">Ver Selección</div>
+      </div>
+    </a>
+
+    <!-- Entrantes -->
+    <a href="entrantes.html" class="category-block">
+      <div class="category-bg" style="background-image: url('https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&q=80&w=2000');"></div>
+      <div class="category-overlay"></div>
+      <div class="category-content">
+        <span class="category-subtitle">Para empezar</span>
+        <h2 class="category-title">ENTRANTES</h2>
+        <div class="category-btn">Ver Selección</div>
+      </div>
+    </a>
+
+    <!-- Patatas -->
+    <a href="patatas.html" class="category-block">
+      <div class="category-bg" style="background-image: url('https://images.unsplash.com/photo-1573016605824-28bdafb45a2a?auto=format&fit=crop&q=80&w=2000');"></div>
+      <div class="category-overlay"></div>
+      <div class="category-content">
+        <span class="category-subtitle">Crunchy Space</span>
+        <h2 class="category-title">PATATAS</h2>
+        <div class="category-btn">Ver Selección</div>
+      </div>
+    </a>
+
+    <!-- Postres -->
+    <a href="postres.html" class="category-block">
+      <div class="category-bg" style="background-image: url('https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&q=80&w=2000');"></div>
+      <div class="category-overlay"></div>
+      <div class="category-content">
+        <span class="category-subtitle">Final Dulce</span>
+        <h2 class="category-title">POSTRES</h2>
+        <div class="category-btn">Ver Selección</div>
+      </div>
+    </a>
+
+    <!-- Bebidas -->
+    <a href="bebidas.html" class="category-block">
+      <div class="category-bg" style="background-image: url('https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&q=80&w=2000');"></div>
+      <div class="category-overlay"></div>
+      <div class="category-content">
+        <span class="category-subtitle">Refresca tu órbita</span>
+        <h2 class="category-title">BEBIDAS</h2>
+        <div class="category-btn">Ver Selección</div>
+      </div>
+    </a>
   </section>
 
   <div class="section-divider"></div>
@@ -1605,21 +1430,17 @@ gsap.utils.toArray('.section-header').forEach(header => {
   });
 });
 
-// Menu tabs
-gsap.from('.menu-tabs', {
-  y: 40, opacity: 0, duration: 0.8, ease: 'power3.out',
-  scrollTrigger: { trigger: '.menu-tabs', start: 'top 85%' }
-});
-
-// Menu cards simple fade-in
-function animateCards(container) {
-  const cards = container.querySelectorAll('.menu-card');
-  gsap.from(cards, {
-    y: 30, opacity: 0, duration: 0.6, stagger: 0.05, ease: 'power2.out',
-    scrollTrigger: { trigger: container, start: 'top 85%' }
+// Category blocks reveal
+gsap.utils.toArray('.category-block').forEach(block => {
+  gsap.from(block.querySelector('.category-content'), {
+    y: 100, opacity: 0, duration: 1.2, ease: 'power4.out',
+    scrollTrigger: { trigger: block, start: 'top 80%' }
   });
-}
-animateCards(document.getElementById('tab-burgers'));
+  gsap.from(block.querySelector('.category-bg'), {
+    scale: 1.2, duration: 2, ease: 'power2.out',
+    scrollTrigger: { trigger: block, start: 'top 100%' }
+  });
+});
 
 // About section
 gsap.from('.about-logo-wrap', {
@@ -1655,12 +1476,6 @@ gsap.from('.instagram-item', {
   scale: 0.7, opacity: 0, rotationY: 30,
   duration: 0.7, stagger: 0.08, ease: 'back.out(1.4)',
   scrollTrigger: { trigger: '.instagram-grid', start: 'top 80%' }
-});
-
-// Footer
-gsap.from('.footer-top > *', {
-  y: 50, opacity: 0, duration: 0.8, stagger: 0.12, ease: 'power3.out',
-  scrollTrigger: { trigger: '.footer-top', start: 'top 90%' }
 });
 
 // ============================================================

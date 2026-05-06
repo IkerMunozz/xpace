@@ -219,13 +219,14 @@
       padding: 24px 60px;
       display: flex; align-items: center; justify-content: space-between;
       transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      background: var(--space-dark);
+      border-bottom: 1px solid rgba(255, 45, 85, 0.08);
+      box-shadow: 0 10px 60px rgba(0,0,0,0.3);
     }
     .navbar.scrolled {
       padding: 14px 60px;
-      background: rgba(3, 7, 18, 0.92);
+      background: rgba(3, 7, 18, 0.98);
       backdrop-filter: blur(40px) saturate(180%);
-      border-bottom: 1px solid rgba(255, 45, 85, 0.08);
-      box-shadow: 0 10px 60px rgba(0,0,0,0.3);
     }
     .nav-logo { display: flex; align-items: center; gap: 16px; text-decoration: none; }
     .nav-logo img {
@@ -428,56 +429,43 @@
       transform: translateY(-5px);
     }
  
-    /* ===== GOIKO-STYLE MARQUEE ===== */
-    .marquee-section {
-      overflow: hidden; padding: 0;
-      position: relative; z-index: 1;
-    }
-    .marquee-band {
-      padding: 18px 0;
-      background: linear-gradient(90deg, var(--neon-red), #e91e63, var(--neon-purple), var(--neon-red));
-      background-size: 300% 100%;
-      animation: gradient-flow 8s ease-in-out infinite;
+    /* ===== GOIKO STYLE MARQUEE ===== */
+    .goiko-marquee {
+      width: 100%;
+      background: #030712;
       overflow: hidden;
+      padding: 30px 0;
+      position: relative;
+      user-select: none;
+      transform: skewY(-1.5deg);
+      border-top: 1px solid var(--neon-red);
+      border-bottom: 1px solid var(--neon-red);
+      box-shadow: 0 0 40px rgba(255, 45, 85, 0.15);
+      z-index: 10;
+      margin: 40px 0;
     }
-    .marquee-band:nth-child(2) {
-      background: rgba(255,255,255,0.02);
-      border-top: 1px solid rgba(255,255,255,0.03);
-      border-bottom: 1px solid rgba(255,255,255,0.03);
+    .goiko-marquee::before, .goiko-marquee::after {
+      content: ""; position: absolute; top: 0; width: 10vw; height: 100%; z-index: 2; pointer-events: none;
     }
+    .goiko-marquee::before { left: 0; background: linear-gradient(to right, #030712, transparent); }
+    .goiko-marquee::after { right: 0; background: linear-gradient(to left, #030712, transparent); }
     .marquee-track {
-      display: flex; animation: marquee 30s linear infinite;
-      width: max-content;
+      display: flex; width: max-content;
+      animation: goiko-scroll 25s linear infinite;
+      will-change: transform;
     }
-    .marquee-band:nth-child(2) .marquee-track {
-      animation: marquee-reverse 35s linear infinite;
-    }
+    .goiko-marquee:hover .marquee-track { animation-play-state: paused; }
+    .marquee-content { display: flex; align-items: center; gap: 60px; padding-right: 60px; }
     .marquee-item {
-      font-family: var(--font-display); font-size: 0.85rem;
-      font-weight: 800; letter-spacing: 5px; text-transform: uppercase;
-      color: white; white-space: nowrap; padding: 0 35px;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      color: #fff; font-family: var(--font-display); font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 900; text-transform: uppercase; white-space: nowrap;
+      letter-spacing: -1px;
     }
-    .marquee-band:nth-child(2) .marquee-item {
-      font-size: 3rem; letter-spacing: 8px;
-      color: rgba(240,240,255,0.04);
-      -webkit-text-stroke: 1px rgba(255,45,85,0.15);
-      text-shadow: none;
-      padding: 8px 50px;
+    .marquee-item span { color: var(--neon-red); margin-left: 20px; }
+    @keyframes goiko-scroll {
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-50%, 0, 0); }
     }
-    .marquee-item .sep {
-      display: inline-block; width: 8px; height: 8px;
-      background: rgba(255,255,255,0.7); border-radius: 50%;
-      margin: 0 30px; vertical-align: middle;
-      box-shadow: 0 0 10px rgba(255,255,255,0.5);
-    }
-    .marquee-band:nth-child(2) .marquee-item .sep {
-      background: rgba(255,45,85,0.3);
-      box-shadow: 0 0 20px rgba(255,45,85,0.2);
-      width: 12px; height: 12px;
-    }
-    @keyframes marquee { to { transform: translateX(-33.333%); } }
-    @keyframes marquee-reverse { to { transform: translateX(33.333%); } }
  
     /* ===== SECTIONS ===== */
     section { position: relative; z-index: 1; }
@@ -1190,45 +1178,21 @@
       <div class="scroll-line"></div>
     </div>
   </section>
- 
-  <!-- ==================== MARQUEE (Goiko-style double band) ==================== -->
-  <div class="marquee-section">
-    <div class="marquee-band">
-      <div class="marquee-track">
-        <span class="marquee-item">Smash Burgers <span class="sep"></span></span>
-        <span class="marquee-item">Ingredientes Premium <span class="sep"></span></span>
-        <span class="marquee-item">Sabores Espaciales <span class="sep"></span></span>
-        <span class="marquee-item">Artesanal <span class="sep"></span></span>
-        <span class="marquee-item">De Otro Planeta <span class="sep"></span></span>
-        <span class="marquee-item">Chorreo Galactico <span class="sep"></span></span>
-        <span class="marquee-item">Smash Burgers <span class="sep"></span></span>
-        <span class="marquee-item">Ingredientes Premium <span class="sep"></span></span>
-        <span class="marquee-item">Sabores Espaciales <span class="sep"></span></span>
-        <span class="marquee-item">Artesanal <span class="sep"></span></span>
-        <span class="marquee-item">De Otro Planeta <span class="sep"></span></span>
-        <span class="marquee-item">Chorreo Galactico <span class="sep"></span></span>
-        <span class="marquee-item">Smash Burgers <span class="sep"></span></span>
-        <span class="marquee-item">Ingredientes Premium <span class="sep"></span></span>
-        <span class="marquee-item">Sabores Espaciales <span class="sep"></span></span>
-        <span class="marquee-item">Artesanal <span class="sep"></span></span>
-        <span class="marquee-item">De Otro Planeta <span class="sep"></span></span>
-        <span class="marquee-item">Chorreo Galactico <span class="sep"></span></span>
+
+  <!-- Goiko Style Marquee -->
+  <div class="goiko-marquee">
+    <div class="marquee-track">
+      <div class="marquee-content">
+        <div class="marquee-item">FOREVER CHORREO <span>•</span></div>
+        <div class="marquee-item">FOREVER CHORREO <span>•</span></div>
+        <div class="marquee-item">FOREVER CHORREO <span>•</span></div>
+        <div class="marquee-item">FOREVER CHORREO <span>•</span></div>
       </div>
-    </div>
-    <div class="marquee-band">
-      <div class="marquee-track">
-        <span class="marquee-item">XPACE BURGER <span class="sep"></span></span>
-        <span class="marquee-item">XPACE BURGER <span class="sep"></span></span>
-        <span class="marquee-item">XPACE BURGER <span class="sep"></span></span>
-        <span class="marquee-item">XPACE BURGER <span class="sep"></span></span>
-        <span class="marquee-item">XPACE BURGER <span class="sep"></span></span>
-        <span class="marquee-item">XPACE BURGER <span class="sep"></span></span>
-        <span class="marquee-item">XPACE BURGER <span class="sep"></span></span>
-        <span class="marquee-item">XPACE BURGER <span class="sep"></span></span>
-        <span class="marquee-item">XPACE BURGER <span class="sep"></span></span>
-        <span class="marquee-item">XPACE BURGER <span class="sep"></span></span>
-        <span class="marquee-item">XPACE BURGER <span class="sep"></span></span>
-        <span class="marquee-item">XPACE BURGER <span class="sep"></span></span>
+      <div class="marquee-content" aria-hidden="true">
+        <div class="marquee-item">FOREVER CHORREO <span>•</span></div>
+        <div class="marquee-item">FOREVER CHORREO <span>•</span></div>
+        <div class="marquee-item">FOREVER CHORREO <span>•</span></div>
+        <div class="marquee-item">FOREVER CHORREO <span>•</span></div>
       </div>
     </div>
   </div>
@@ -1289,6 +1253,7 @@
  
   <!-- ==================== CARTA (Horizontal Scroll) ==================== -->
   <section class="carta" id="carta">
+ 
     <div class="section-header">
       <span class="section-tag">Nuestra Carta</span>
       <h2 class="section-title"><span class="gradient-text">Explora el Menu</span></h2>
@@ -2146,13 +2111,7 @@ gsap.from('.instagram-item', {
   duration: 0.7, stagger: 0.08, ease: 'back.out(1.4)',
   scrollTrigger: { trigger: '.instagram-grid', start: 'top 80%' }
 });
- 
-// Footer
-gsap.from('.footer-top > *', {
-  y: 50, opacity: 0, duration: 0.8, stagger: 0.12, ease: 'power3.out',
-  scrollTrigger: { trigger: '.footer-top', start: 'top 90%' }
-});
- 
+
 // ============================================================
 // 8. CUSTOM CURSOR
 // ============================================================
