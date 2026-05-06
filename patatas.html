@@ -10,6 +10,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+  <link rel="icon" href="logo_xpace.jpg" type="image/jpg">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
@@ -81,7 +82,7 @@
   <nav class="navbar">
     <a href="index.html" class="nav-logo">
       <img src="logo_xpace.jpg" alt="Xpace Burger">
-      <span class="nav-logo-text">XPACE BURGER</span>
+      <span class="nav-logo-text">XPACE <span>BURGER</span></span>
     </a>
     <ul class="nav-links">
       <li><a href="index.html">Inicio</a></li>
@@ -139,6 +140,10 @@
     gsap.from('.product-card', {
       y: 50, opacity: 0, duration: 0.8, stagger: 0.15, ease: 'power3.out',
       scrollTrigger: { trigger: '.product-grid', start: 'top 85%' }
+    });
+  </script>
+</body>
+</html>
     });
   </script>
 </body>
