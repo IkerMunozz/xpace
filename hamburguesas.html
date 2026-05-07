@@ -25,18 +25,76 @@
     /* ===== NAVIGATION ===== */
     .navbar {
       position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-      padding: 30px 80px; display: flex; align-items: center; justify-content: space-between;
+      padding: 30px 80px;
+      display: flex; align-items: center; justify-content: space-between;
       transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-      background: rgba(3, 7, 18, 0.8); backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      background: rgba(3, 7, 18, 0.92);
+      backdrop-filter: blur(40px) saturate(180%);
+      border-bottom: 1px solid rgba(255, 45, 85, 0.08);
+    }
+    .navbar.scrolled {
+      padding: 18px 80px;
+      background: rgba(3, 7, 18, 0.95);
     }
     .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-    .nav-logo img { width: 42px; height: 42px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1); }
-    .nav-logo-text { font-family: var(--font-display); font-size: 1rem; font-weight: 800; letter-spacing: 2px; color: var(--star-white); }
+    .nav-logo img {
+      width: 42px; height: 42px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .nav-logo img:hover { transform: rotate(360deg); }
+    .nav-logo-text {
+       font-family: var(--font-display); font-size: 1rem;
+       font-weight: 800; letter-spacing: 2px; color: var(--star-white);
+    }
     .nav-logo-text span { color: var(--neon-red); }
     .nav-links { display: flex; align-items: center; gap: 50px; list-style: none; margin-left: auto; }
-    .nav-links a { font-family: var(--font-accent); font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; color: rgba(248, 250, 252, 0.5); text-decoration: none; transition: color 0.4s ease; }
+    .nav-links a {
+       font-family: var(--font-accent); font-size: 0.7rem;
+       font-weight: 600; text-transform: uppercase; letter-spacing: 3px;
+       color: rgba(248, 250, 252, 0.5); text-decoration: none;
+       transition: color 0.4s ease;
+       position: relative; padding: 6px 0;
+    }
+    .nav-links a::after {
+       content: ''; position: absolute;
+       bottom: 0; left: 50%; width: 0; height: 1.5px;
+       background: var(--neon-red);
+       box-shadow: 0 0 12px var(--neon-red-glow);
+       transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+       transform: translateX(-50%);
+    }
     .nav-links a:hover { color: var(--star-white); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta {
+       padding: 10px 24px !important;
+       border: 1px solid rgba(255, 45, 85, 0.4) !important;
+       border-radius: 4px;
+       color: var(--star-white) !important;
+       background: transparent;
+       font-family: var(--font-display) !important;
+       font-size: 0.65rem !important;
+       letter-spacing: 2px !important;
+       transition: all 0.4s ease !important;
+    }
+    .nav-cta:hover {
+       background: var(--neon-red) !important;
+       border-color: var(--neon-red) !important;
+       box-shadow: 0 0 30px var(--neon-red-glow) !important;
+       transform: translateY(-2px);
+    }
+    .menu-toggle {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; z-index: 1001; padding: 5px;
+    }
+    .menu-toggle span {
+      width: 24px; height: 2px;
+      background: var(--star-white);
+      transition: all 0.3s ease; border-radius: 2px;
+    }
+    .menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .menu-toggle.active span:nth-child(2) { opacity: 0; }
+    .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
 
     /* ===== INTERNAL HERO ===== */
     .internal-hero {
@@ -86,19 +144,38 @@
     /* ===== FOOTER ===== */
     .footer { padding: 60px 40px; border-top: 1px solid rgba(255,255,255,0.03); text-align: center; }
     .footer p { font-size: 0.8rem; color: rgba(248,250,252,0.2); }
+    @media (max-width: 768px) {
+      .navbar { padding: 15px 20px; }
+      .nav-links {
+        position: fixed; top: 0; right: -100%;
+        width: 85%; height: 100vh;
+        background: rgba(3,7,18,0.98);
+        backdrop-filter: blur(30px);
+        flex-direction: column; justify-content: center;
+        padding: 40px; gap: 30px;
+        transition: right 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .nav-links.open { right: 0; }
+      .menu-toggle { display: flex; }
+      .product-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
-  <nav class="navbar">
+  <nav class="navbar" id="navbar">
     <a href="index.html" class="nav-logo">
       <img src="logo_xpace.jpg" alt="Xpace Burger">
       <span class="nav-logo-text">XPACE <span>BURGER</span></span>
     </a>
-    <ul class="nav-links">
+    <ul class="nav-links" id="navLinks">
       <li><a href="index.html">Inicio</a></li>
       <li><a href="index.html#carta">Carta</a></li>
       <li><a href="index.html#contacto">Contacto</a></li>
+      <li><a href="index.html#carta" class="nav-cta">Pedir Ahora</a></li>
     </ul>
+    <div class="menu-toggle" id="menuToggle">
+      <span></span><span></span><span></span>
+    </div>
   </nav>
 
   <section class="internal-hero">
@@ -170,6 +247,25 @@
     gsap.from('.product-card', {
       y: 50, opacity: 0, duration: 0.8, stagger: 0.15, ease: 'power3.out',
       scrollTrigger: { trigger: '.product-grid', start: 'top 85%' }
+    });
+
+    // Navbar scroll shrink
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Mobile menu toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    menuToggle.addEventListener('click', () => {
+      menuToggle.classList.toggle('active');
+      navLinks.classList.toggle('open');
+    });
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        menuToggle.classList.remove('active');
+        navLinks.classList.remove('open');
+      });
     });
   </script>
 </body>
