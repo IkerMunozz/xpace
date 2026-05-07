@@ -105,6 +105,18 @@
        box-shadow: 0 0 30px var(--neon-red-glow) !important;
        transform: translateY(-2px);
     }
+    .menu-toggle {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; z-index: 1001; padding: 5px;
+    }
+    .menu-toggle span {
+      width: 24px; height: 2px;
+      background: var(--star-white);
+      transition: all 0.3s ease; border-radius: 2px;
+    }
+    .menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .menu-toggle.active span:nth-child(2) { opacity: 0; }
+    .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
 
     /* ===== HERO ===== */
     .hero {
@@ -1101,6 +1113,11 @@
 <body>
   <!-- Noise overlay -->
   <div class="noise-overlay"></div>
+
+  <!-- Custom cursor -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+  <div class="cursor-glow" id="cursorGlow"></div>
 
   <!-- Glow orbs -->
   <div class="glow-orb glow-orb-1"></div>
