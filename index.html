@@ -229,13 +229,18 @@
       animation: goiko-scroll 25s linear infinite;
       will-change: transform;
     }
-    .marquee-content { display: flex; align-items: center; gap: 60px; padding-right: 60px; }
+    .marquee-content { display: flex; align-items: center; gap: 20px; padding-right: 20px; }
     .marquee-item {
       color: #fff; font-family: var(--font-display); font-size: clamp(2rem, 5vw, 4rem);
       font-weight: 900; text-transform: uppercase; white-space: nowrap;
       letter-spacing: -1px;
     }
-    .marquee-item span { color: var(--neon-red); margin-left: 20px; }
+    .marquee-item--outline {
+      color: transparent;
+      -webkit-text-stroke: 1.5px var(--neon-red);
+      text-stroke: 1.5px var(--neon-red);
+      letter-spacing: 2px;
+    }
     @keyframes goiko-scroll {
       0% { transform: translate3d(0, 0, 0); }
       100% { transform: translate3d(-50%, 0, 0); }
@@ -318,162 +323,148 @@
 
     /* ===== BURGER DEL MES ===== */
     .burger-del-mes {
-      padding: 140px 60px 160px;
+      padding: 160px 80px;
+      background: var(--space-dark);
       overflow: hidden;
-      background: linear-gradient(180deg, var(--space-dark), rgba(10,17,40,0.6), var(--space-dark));
     }
     .bdm-container {
-      max-width: 1200px; margin:0 auto;
+      max-width: 1200px; margin: 0 auto;
       display: grid; grid-template-columns: 1fr 1fr;
       gap: 80px; align-items: center;
     }
     .bdm-visual {
       position: relative;
       display: flex; align-items: center; justify-content: center;
-      height: 500px;
-      background: radial-gradient(circle at center, rgba(255,45,85,0.05) 0%, transparent 70%);
-      border-radius: 30px;
-      border: 1px solid rgba(255,255,255,0.05);
+      height: 600px;
     }
-    .burger-rotate {
-      font-size: 12rem;
-      filter: drop-shadow(0 20px 60px rgba(0,0,0,0.5));
+    .bdm-3d-stage {
+      perspective: 1200px;
+      transform-style: preserve-3d;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column;
+      width: 100%; height: 100%;
+      position: relative;
     }
-    .bdm-info { padding: 30px 0; }
+    .bdm-3d-stage::before {
+      content: '';
+      position: absolute; top: 50%; left: 50%;
+      width: 80%; max-width: 500px;
+      aspect-ratio: 1;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(255,45,85,0.04) 0%, transparent 70%);
+      pointer-events: none; z-index: 0;
+    }
+    .bdm-orbital-ring {
+      position: absolute; top: 50%; left: 50%;
+      width: 110%; max-width: 520px;
+      aspect-ratio: 1;
+      transform: translate(-50%, -50%) rotateX(75deg);
+      border: 1px solid rgba(255, 45, 85, 0.06);
+      border-radius: 50%;
+      animation: bdm-ring-spin 25s linear infinite;
+      pointer-events: none; z-index: 1;
+      box-shadow: 0 0 30px rgba(255,45,85,0.03), inset 0 0 30px rgba(255,45,85,0.02);
+    }
+    @keyframes bdm-ring-spin {
+      0% { transform: translate(-50%, -50%) rotateX(75deg) rotateZ(0deg); }
+      100% { transform: translate(-50%, -50%) rotateX(75deg) rotateZ(360deg); }
+    }
+    .bdm-rotate-wrapper {
+      position: relative; z-index: 2;
+      transform-style: preserve-3d;
+      animation: bdm-orbit 25s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+    }
+    .bdm-rotate-wrapper img {
+      display: block;
+      width: 90%; max-width: 450px;
+      height: auto;
+      backface-visibility: visible;
+      -webkit-backface-visibility: visible;
+      animation: bdm-float 4s ease-in-out infinite;
+      filter: drop-shadow(0 40px 80px rgba(0,0,0,0.6)) brightness(1.05) contrast(1.05);
+      border-radius: 8px;
+      transform: translateZ(15px);
+    }
+    .bdm-shadow {
+      position: relative; z-index: 1;
+      width: 50%; max-width: 260px;
+      height: 24px;
+      background: radial-gradient(ellipse, rgba(0,0,0,0.5) 0%, transparent 70%);
+      margin-top: -20px;
+      animation: bdm-shadow-pulse 4s ease-in-out infinite;
+    }
+    @keyframes bdm-orbit {
+      0% { transform: rotateY(0deg) rotateX(7deg) rotateZ(2deg) scale(1); }
+      20% { transform: rotateY(72deg) rotateX(5deg) rotateZ(0deg) scale(1.02); }
+      40% { transform: rotateY(144deg) rotateX(8deg) rotateZ(-1deg) scale(1); }
+      50% { transform: rotateY(180deg) rotateX(6deg) rotateZ(-2deg) scale(0.98); }
+      60% { transform: rotateY(216deg) rotateX(8deg) rotateZ(-1deg) scale(1); }
+      80% { transform: rotateY(288deg) rotateX(5deg) rotateZ(0deg) scale(1.02); }
+      100% { transform: rotateY(360deg) rotateX(7deg) rotateZ(2deg) scale(1); }
+    }
+    @keyframes bdm-float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-18px); }
+    }
+    @keyframes bdm-shadow-pulse {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(0.85); opacity: 0.25; }
+    }
+    .bdm-info {
+      padding: 20px 0;
+    }
     .bdm-label {
-      font-family: var(--font-accent); font-size: 0.68rem; font-weight: 600;
-      letter-spacing: 8px; text-transform: uppercase;
-      color: var(--neon-blue); margin-bottom: 18px;
-      display: flex; align-items: center; gap: 14px;
+      font-family: var(--font-accent); font-size: 0.65rem;
+      font-weight: 600; letter-spacing: 6px; text-transform: uppercase;
+      color: rgba(248, 250, 252, 0.25);
+      margin-bottom: 24px;
+      display: flex; align-items: center; gap: 16px;
     }
     .bdm-label::before {
-      content: ''; width: 50px; height: 1px;
-      background: linear-gradient(90deg, var(--neon-blue), transparent);
+      content: ''; width: 40px; height: 1px;
+      background: rgba(255, 255, 255, 0.15);
     }
     .bdm-name {
       font-family: var(--font-display);
-      font-size: clamp(2.4rem, 4.5vw, 3.8rem);
-      font-weight: 800; margin-bottom: 25px; line-height: 1.15;
+      font-size: clamp(2.8rem, 5vw, 4.2rem);
+      font-weight: 800; margin-bottom: 28px; line-height: 1.1;
+      letter-spacing: -2px;
     }
     .bdm-name .highlight {
       color: var(--neon-red);
-      text-shadow: 0 0 50px var(--neon-red-glow);
     }
     .bdm-description {
-      font-size: 1.05rem; line-height: 2;
-      color: rgba(240,240,255,0.65); margin-bottom: 35px;
+      font-size: 1rem; line-height: 1.9;
+      color: rgba(248, 250, 252, 0.4);
+      margin-bottom: 40px;
+      max-width: 480px;
     }
     .bdm-features {
-      display: flex; gap: 20px; margin-bottom: 30px; flex-wrap: wrap;
+      display: flex; gap: 24px; margin-bottom: 40px; flex-wrap: wrap;
     }
     .bdm-feature {
-      display: flex; align-items: center; gap: 8px;
-      font-size: 0.85rem; color: rgba(240,240,255,0.5);
-      padding: 8px 16px;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 20px;
+      font-family: var(--font-accent); font-size: 0.68rem;
+      font-weight: 500; letter-spacing: 2px; text-transform: uppercase;
+      color: rgba(248, 250, 252, 0.3);
+      position: relative;
+    }
+    .bdm-feature + .bdm-feature::before {
+      content: '\2215';
+      position: absolute; left: -14px;
+      color: rgba(255,255,255,0.08);
     }
     .bdm-price {
-      font-family: var(--font-display); font-size: 3.2rem; font-weight: 900;
-      margin-bottom: 40px;
-      color: var(--neon-red);
+      font-family: var(--font-display); font-size: 2.8rem;
+      font-weight: 800; margin-bottom: 40px;
+      color: var(--star-white);
+      letter-spacing: -1px;
     }
     .bdm-price small {
       font-size: 0.35em;
-      color: rgba(240,240,255,0.3);
+      font-weight: 400;
+      color: rgba(248, 250, 252, 0.2);
+      letter-spacing: 0;
     }
-    .bdm-container {
-      max-width: 1300px; margin: 0 auto;
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 100px; align-items: center;
-    }
-    .bdm-visual {
-      position: relative;
-      display: flex; align-items: center; justify-content: center;
-      perspective: 1200px;
-      height: 500px;
-    }
-    #burger-del-mes-3d {
-      width: 100%; height: 100%;
-      position: relative; z-index: 2;
-    }
-    .bdm-planet {
-      width: 380px; height: 380px; border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #2a1530, #0d0515);
-      position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      box-shadow:
-        0 0 100px rgba(139, 92, 246, 0.2),
-        0 0 200px rgba(139, 92, 246, 0.08),
-        inset -30px -30px 80px rgba(0,0,0,0.6),
-        inset 10px 10px 40px rgba(139, 92, 246, 0.08);
-      animation: planet-float 10s ease-in-out infinite;
-    }
-    @keyframes planet-float {
-      0%, 100% { transform: translate(-50%, -50%) rotateY(0deg) rotateX(5deg); }
-      25% { transform: translate(-50%, -50%) rotateY(90deg) rotateX(-3deg); }
-      50% { transform: translate(-50%, -50%) rotateY(180deg) rotateX(5deg); }
-      75% { transform: translate(-50%, -50%) rotateY(270deg) rotateX(-3deg); }
-    }
-    .bdm-ring {
-      position: absolute; left: -25%; right: -25%;
-      top: 50%; height: 70px;
-      transform: translateY(-50%) rotateX(75deg);
-      border-radius: 50%;
-      border: 2px solid rgba(255, 45, 85, 0.25);
-      box-shadow: 0 0 30px rgba(255,45,85,0.1), inset 0 0 30px rgba(255,45,85,0.03);
-      animation: ring-glow 3s ease-in-out infinite alternate;
-    }
-    .bdm-ring-2 {
-      position: absolute; left: -35%; right: -35%;
-      top: 50%; height: 90px;
-      transform: translateY(-50%) rotateX(75deg);
-      border-radius: 50%;
-      border: 1px solid rgba(0, 180, 255, 0.12);
-      animation: ring-glow 4s ease-in-out infinite alternate-reverse;
-    }
-    @keyframes ring-glow {
-      0% { box-shadow: 0 0 20px rgba(255,45,85,0.08); }
-      100% { box-shadow: 0 0 50px rgba(255,45,85,0.25); }
-    }
-    .bdm-info { padding: 30px 0; }
-    .bdm-label {
-      font-family: var(--font-accent); font-size: 0.68rem; font-weight: 600;
-      letter-spacing: 8px; text-transform: uppercase;
-      color: var(--neon-blue); margin-bottom: 18px;
-      display: flex; align-items: center; gap: 14px;
-    }
-    .bdm-label::before {
-      content: ''; width: 50px; height: 1px;
-      background: linear-gradient(90deg, var(--neon-blue), transparent);
-    }
-    .bdm-name {
-      font-family: var(--font-display);
-      font-size: clamp(2.4rem, 4.5vw, 3.8rem);
-      font-weight: 800; margin-bottom: 25px; line-height: 1.15;
-    }
-    .bdm-name .highlight {
-      color: var(--neon-red);
-      text-shadow: 0 0 50px var(--neon-red-glow);
-      position: relative;
-    }
-    .bdm-description {
-      font-size: 1.05rem; line-height: 2;
-      color: rgba(240,240,255,0.45); margin-bottom: 35px;
-    }
-    .bdm-price {
-      font-family: var(--font-display); font-size: 3.2rem; font-weight: 900;
-      margin-bottom: 40px;
-      background: linear-gradient(135deg, var(--gold), #ffaa00, var(--gold));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
-      filter: drop-shadow(0 0 25px rgba(255,215,0,0.25));
-    }
-    .bdm-price small {
-      font-size: 0.35em;
-      -webkit-text-fill-color: rgba(240,240,255,0.3);
-    }
-
     /* ===== CARTA / MENU ===== */
     .carta {
       padding: 160px 60px;
@@ -1039,7 +1030,10 @@
     /* ===== RESPONSIVE ===== */
     @media (max-width: 1024px) {
       .bdm-container { grid-template-columns: 1fr; gap: 60px; text-align: center; }
+      .bdm-visual { height: 400px; }
+      .bdm-rotate-wrapper img { max-width: 320px; }
       .bdm-label { justify-content: center; }
+      .bdm-description { max-width: 100%; }
       .footer-top { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 768px) {
@@ -1056,7 +1050,11 @@
       .nav-links.open { right: 0; }
       .menu-toggle { display: flex; }
       .menu-grid { grid-template-columns: 1fr; }
-      .burger-del-mes, .carta, .about, .instagram-section { padding: 100px 20px; }
+      .burger-del-mes { padding: 80px 20px; }
+      .bdm-visual { height: 300px; }
+      .bdm-rotate-wrapper img { max-width: 220px; }
+      .bdm-name { font-size: 2rem; }
+      .carta, .about, .instagram-section { padding: 100px 20px; }
       .footer-top { grid-template-columns: 1fr; gap: 30px; }
       .instagram-grid { grid-template-columns: repeat(2, 1fr); }
       .about-stats { gap: 40px; }
@@ -1132,31 +1130,33 @@
 
   <!-- Goiko Style Marquee -->
   <div class="goiko-marquee">
-    <div class="marquee-track">
+    <div class="marquee-track" style="animation-duration: 40s;">
       <div class="marquee-content">
-        <div class="marquee-item">FOREVER CHORREO <span>•</span></div>
-        <div class="marquee-item">FOREVER CHORREO <span>•</span></div>
-        <div class="marquee-item">FOREVER CHORREO <span>•</span></div>
-        <div class="marquee-item">FOREVER CHORREO <span>•</span></div>
+        <div class="marquee-item">HAMBURGUESA DEL MES</div>
+        <div class="marquee-item marquee-item--outline">HAMBURGUESA DEL MES</div>
+        <div class="marquee-item">HAMBURGUESA DEL MES</div>
+        <div class="marquee-item marquee-item--outline">HAMBURGUESA DEL MES</div>
       </div>
       <div class="marquee-content" aria-hidden="true">
-        <div class="marquee-item">FOREVER CHORREO <span>•</span></div>
-        <div class="marquee-item">FOREVER CHORREO <span>•</span></div>
-        <div class="marquee-item">FOREVER CHORREO <span>•</span></div>
-        <div class="marquee-item">FOREVER CHORREO <span>•</span></div>
+        <div class="marquee-item">HAMBURGUESA DEL MES</div>
+        <div class="marquee-item marquee-item--outline">HAMBURGUESA DEL MES</div>
+        <div class="marquee-item">HAMBURGUESA DEL MES</div>
+        <div class="marquee-item marquee-item--outline">HAMBURGUESA DEL MES</div>
       </div>
     </div>
   </div>
 
   <!-- Burger del Mes -->
   <section class="burger-del-mes" id="burger-del-mes">
-    <div class="section-header">
-      <span class="section-tag">Edicion Limitada</span>
-      <h2 class="section-title"><span class="gradient-text">Burger del Mes</span></h2>
-    </div>
     <div class="bdm-container">
       <div class="bdm-visual">
-        <div class="burger-rotate">🍔</div>
+        <div class="bdm-3d-stage">
+          <div class="bdm-orbital-ring"></div>
+          <div class="bdm-rotate-wrapper">
+            <img src="/hamburguesa_mes.png" alt="Supernova Truffle" loading="lazy">
+          </div>
+          <div class="bdm-shadow"></div>
+        </div>
       </div>
       <div class="bdm-info">
         <div class="bdm-label">Junio 2026</div>
@@ -1167,9 +1167,9 @@
           salsa secreta de trufa con un toque de miel ahumada.
         </p>
         <div class="bdm-features">
-          <div class="bdm-feature">🥩 Black Angus</div>
-          <div class="bdm-feature">🍄 Trufa Negra</div>
-          <div class="bdm-feature">🔥 Smash Style</div>
+          <span class="bdm-feature">Black Angus</span>
+          <span class="bdm-feature">Trufa Negra</span>
+          <span class="bdm-feature">Smash Style</span>
         </div>
         <div class="bdm-price">14,90&euro; <small>IVA incl.</small></div>
         <a href="#carta" class="btn btn-primary">Pedir Ahora</a>
@@ -1183,16 +1183,16 @@
   <div class="goiko-marquee marquee-section">
     <div class="marquee-track" style="animation-duration: 40s;">
       <div class="marquee-content">
-        <div class="marquee-item">EXPLORA EL MENÚ <span>•</span></div>
-        <div class="marquee-item">SABORES GALÁCTICOS <span>•</span></div>
-        <div class="marquee-item">EXPLORA EL MENÚ <span>•</span></div>
-        <div class="marquee-item">SABORES GALÁCTICOS <span>•</span></div>
+        <div class="marquee-item">CARTA</div>
+        <div class="marquee-item marquee-item--outline">CARTA</div>
+        <div class="marquee-item">CARTA</div>
+        <div class="marquee-item marquee-item--outline">CARTA</div>
       </div>
       <div class="marquee-content" aria-hidden="true">
-        <div class="marquee-item">EXPLORA EL MENÚ <span>•</span></div>
-        <div class="marquee-item">SABORES GALÁCTICOS <span>•</span></div>
-        <div class="marquee-item">EXPLORA EL MENÚ <span>•</span></div>
-        <div class="marquee-item">SABORES GALÁCTICOS <span>•</span></div>
+        <div class="marquee-item">CARTA</div>
+        <div class="marquee-item marquee-item--outline">CARTA</div>
+        <div class="marquee-item">CARTA</div>
+        <div class="marquee-item marquee-item--outline">CARTA</div>
       </div>
     </div>
   </div>
@@ -1426,15 +1426,19 @@ window.addEventListener('load', () => {
 // ============================================================
 gsap.registerPlugin(ScrollTrigger);
 
-// Burger del Mes
-gsap.from('#burger-del-mes-3d', {
-  x: -120, opacity: 0, duration: 1.4, ease: 'power3.out',
-  scrollTrigger: { trigger: '.bdm-container', start: 'top 75%' }
-});
-gsap.from('.bdm-info > *', {
-  x: 80, opacity: 0, duration: 0.9, stagger: 0.15, ease: 'power3.out',
-  scrollTrigger: { trigger: '.bdm-info', start: 'top 75%' }
-});
+    // Burger del Mes
+    gsap.from('.bdm-rotate-wrapper', {
+      scale: 0.6, opacity: 0, duration: 1.4, ease: 'power3.out',
+      scrollTrigger: { trigger: '.bdm-container', start: 'top 75%' }
+    });
+    gsap.from('.bdm-shadow', {
+      scale: 0.4, opacity: 0, duration: 1.2, ease: 'power3.out',
+      scrollTrigger: { trigger: '.bdm-container', start: 'top 75%' }
+    });
+    gsap.from('.bdm-info > *', {
+      y: 40, opacity: 0, duration: 0.9, stagger: 0.12, ease: 'power3.out',
+      scrollTrigger: { trigger: '.bdm-info', start: 'top 75%' }
+    });
 
 // Section headers
 gsap.utils.toArray('.section-header').forEach(header => {
