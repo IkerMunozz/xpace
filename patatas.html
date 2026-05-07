@@ -117,7 +117,7 @@
     .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 40px; }
     .product-card {
       background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
-      border-radius: 4px; padding: 40px; transition: all 0.5s ease;
+      border-radius: 4px; padding: 40px; transition: border-color 0.5s ease, background 0.5s ease, transform 0.5s ease;
     }
     .product-card:hover {
       border-color: var(--neon-red); background: rgba(255, 45, 85, 0.02);
@@ -212,10 +212,10 @@
 
   <script>
     const lenis = new Lenis();
-    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-    requestAnimationFrame(raf);
-
     gsap.registerPlugin(ScrollTrigger);
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
     gsap.from('.product-card', {
       y: 50, opacity: 0, duration: 0.8, stagger: 0.15, ease: 'power3.out',
       scrollTrigger: { trigger: '.product-grid', start: 'top 85%' }

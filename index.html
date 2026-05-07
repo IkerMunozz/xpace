@@ -145,6 +145,7 @@
     .hero-buttons {
       display: flex; gap: 20px; justify-content: center;
     }
+
     .scroll-indicator {
       position: absolute; bottom: 40px; left: 50%;
       transform: translateX(-50%); z-index: 10;
@@ -372,7 +373,15 @@
     .bdm-rotate-wrapper {
       position: relative; z-index: 2;
       transform-style: preserve-3d;
-      animation: bdm-orbit 25s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+      will-change: transform;
+    }
+    .bdm-parallax {
+      transform-style: preserve-3d;
+      position: relative;
+    }
+    .bdm-burger-inner {
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
     }
     .bdm-rotate-wrapper img {
       display: block;
@@ -380,10 +389,24 @@
       height: auto;
       backface-visibility: visible;
       -webkit-backface-visibility: visible;
-      animation: bdm-float 4s ease-in-out infinite;
       filter: drop-shadow(0 40px 80px rgba(0,0,0,0.6)) brightness(1.05) contrast(1.05);
-      border-radius: 8px;
-      transform: translateZ(15px);
+    }
+    .bdm-light-sweep {
+      position: absolute; inset: 0; z-index: 3;
+      pointer-events: none; overflow: hidden;
+    }
+    .bdm-light-sweep::after {
+      content: '';
+      position: absolute; top: -50%; left: -100%;
+      width: 80%; height: 200%;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.02) 30%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.02) 70%, transparent 100%);
+      animation: bdm-light-sweep 10s ease-in-out infinite;
+    }
+    @keyframes bdm-light-sweep {
+      0% { transform: translateX(-100%) rotate(-20deg); }
+      73% { transform: translateX(-100%) rotate(-20deg); }
+      86% { transform: translateX(400%) rotate(-20deg); }
+      100% { transform: translateX(400%) rotate(-20deg); }
     }
     .bdm-shadow {
       position: relative; z-index: 1;
@@ -391,25 +414,9 @@
       height: 24px;
       background: radial-gradient(ellipse, rgba(0,0,0,0.5) 0%, transparent 70%);
       margin-top: -20px;
-      animation: bdm-shadow-pulse 4s ease-in-out infinite;
+      will-change: transform, opacity;
     }
-    @keyframes bdm-orbit {
-      0% { transform: rotateY(0deg) rotateX(7deg) rotateZ(2deg) scale(1); }
-      20% { transform: rotateY(72deg) rotateX(5deg) rotateZ(0deg) scale(1.02); }
-      40% { transform: rotateY(144deg) rotateX(8deg) rotateZ(-1deg) scale(1); }
-      50% { transform: rotateY(180deg) rotateX(6deg) rotateZ(-2deg) scale(0.98); }
-      60% { transform: rotateY(216deg) rotateX(8deg) rotateZ(-1deg) scale(1); }
-      80% { transform: rotateY(288deg) rotateX(5deg) rotateZ(0deg) scale(1.02); }
-      100% { transform: rotateY(360deg) rotateX(7deg) rotateZ(2deg) scale(1); }
-    }
-    @keyframes bdm-float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-18px); }
-    }
-    @keyframes bdm-shadow-pulse {
-      0%, 100% { transform: scale(1); opacity: 0.5; }
-      50% { transform: scale(0.85); opacity: 0.25; }
-    }
+
     .bdm-info {
       padding: 20px 0;
     }
@@ -464,6 +471,28 @@
       font-weight: 400;
       color: rgba(248, 250, 252, 0.2);
       letter-spacing: 0;
+    }
+    .bdm-btn {
+      display: inline-flex; align-items: center; gap: 12px;
+      padding: 16px 40px;
+      border: 1px solid var(--neon-red);
+      border-radius: 4px;
+      background: transparent;
+      color: var(--star-white);
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
+      position: relative;
+    }
+    .bdm-btn:hover {
+      background: var(--neon-red);
+      box-shadow: 0 0 40px var(--neon-red-glow);
+      transform: translateY(-3px);
     }
     /* ===== CARTA / MENU ===== */
     .carta {
@@ -1130,14 +1159,30 @@
 
   <!-- Goiko Style Marquee -->
   <div class="goiko-marquee">
-    <div class="marquee-track" style="animation-duration: 40s;">
+    <div class="marquee-track" style="animation-duration: 100s;">
       <div class="marquee-content">
+        <div class="marquee-item">HAMBURGUESA DEL MES</div>
+        <div class="marquee-item marquee-item--outline">HAMBURGUESA DEL MES</div>
+        <div class="marquee-item">HAMBURGUESA DEL MES</div>
+        <div class="marquee-item marquee-item--outline">HAMBURGUESA DEL MES</div>
+        <div class="marquee-item">HAMBURGUESA DEL MES</div>
+        <div class="marquee-item marquee-item--outline">HAMBURGUESA DEL MES</div>
+        <div class="marquee-item">HAMBURGUESA DEL MES</div>
+        <div class="marquee-item marquee-item--outline">HAMBURGUESA DEL MES</div>
         <div class="marquee-item">HAMBURGUESA DEL MES</div>
         <div class="marquee-item marquee-item--outline">HAMBURGUESA DEL MES</div>
         <div class="marquee-item">HAMBURGUESA DEL MES</div>
         <div class="marquee-item marquee-item--outline">HAMBURGUESA DEL MES</div>
       </div>
       <div class="marquee-content" aria-hidden="true">
+        <div class="marquee-item">HAMBURGUESA DEL MES</div>
+        <div class="marquee-item marquee-item--outline">HAMBURGUESA DEL MES</div>
+        <div class="marquee-item">HAMBURGUESA DEL MES</div>
+        <div class="marquee-item marquee-item--outline">HAMBURGUESA DEL MES</div>
+        <div class="marquee-item">HAMBURGUESA DEL MES</div>
+        <div class="marquee-item marquee-item--outline">HAMBURGUESA DEL MES</div>
+        <div class="marquee-item">HAMBURGUESA DEL MES</div>
+        <div class="marquee-item marquee-item--outline">HAMBURGUESA DEL MES</div>
         <div class="marquee-item">HAMBURGUESA DEL MES</div>
         <div class="marquee-item marquee-item--outline">HAMBURGUESA DEL MES</div>
         <div class="marquee-item">HAMBURGUESA DEL MES</div>
@@ -1152,8 +1197,13 @@
       <div class="bdm-visual">
         <div class="bdm-3d-stage">
           <div class="bdm-orbital-ring"></div>
-          <div class="bdm-rotate-wrapper">
-            <img src="/hamburguesa_mes.png" alt="Supernova Truffle" loading="lazy">
+          <div class="bdm-rotate-wrapper" id="bdmOrbit">
+            <div class="bdm-parallax" id="bdmParallax">
+              <div class="bdm-burger-inner">
+                <img src="/hamburguesa_mes.png" alt="Supernova Truffle" loading="lazy">
+                <div class="bdm-light-sweep"></div>
+              </div>
+            </div>
           </div>
           <div class="bdm-shadow"></div>
         </div>
@@ -1172,7 +1222,7 @@
           <span class="bdm-feature">Smash Style</span>
         </div>
         <div class="bdm-price">14,90&euro; <small>IVA incl.</small></div>
-        <a href="#carta" class="btn btn-primary">Pedir Ahora</a>
+        <a href="#carta" class="bdm-btn">Pedir Ahora</a>
       </div>
     </div>
   </section>
@@ -1187,8 +1237,24 @@
         <div class="marquee-item marquee-item--outline">CARTA</div>
         <div class="marquee-item">CARTA</div>
         <div class="marquee-item marquee-item--outline">CARTA</div>
+        <div class="marquee-item">CARTA</div>
+        <div class="marquee-item marquee-item--outline">CARTA</div>
+        <div class="marquee-item">CARTA</div>
+        <div class="marquee-item marquee-item--outline">CARTA</div>
+        <div class="marquee-item">CARTA</div>
+        <div class="marquee-item marquee-item--outline">CARTA</div>
+        <div class="marquee-item">CARTA</div>
+        <div class="marquee-item marquee-item--outline">CARTA</div>
       </div>
       <div class="marquee-content" aria-hidden="true">
+        <div class="marquee-item">CARTA</div>
+        <div class="marquee-item marquee-item--outline">CARTA</div>
+        <div class="marquee-item">CARTA</div>
+        <div class="marquee-item marquee-item--outline">CARTA</div>
+        <div class="marquee-item">CARTA</div>
+        <div class="marquee-item marquee-item--outline">CARTA</div>
+        <div class="marquee-item">CARTA</div>
+        <div class="marquee-item marquee-item--outline">CARTA</div>
         <div class="marquee-item">CARTA</div>
         <div class="marquee-item marquee-item--outline">CARTA</div>
         <div class="marquee-item">CARTA</div>
@@ -1426,19 +1492,64 @@ window.addEventListener('load', () => {
 // ============================================================
 gsap.registerPlugin(ScrollTrigger);
 
-    // Burger del Mes
-    gsap.from('.bdm-rotate-wrapper', {
-      scale: 0.6, opacity: 0, duration: 1.4, ease: 'power3.out',
-      scrollTrigger: { trigger: '.bdm-container', start: 'top 75%' }
+    // Burger del Mes — cinematic
+    const bdmOrbit = document.getElementById('bdmOrbit');
+    const bdmParallax = document.getElementById('bdmParallax');
+    const bdmShadowEl = document.querySelector('.bdm-shadow');
+
+    // Set initial hidden state
+    gsap.set(bdmOrbit, { scale: 0.6, opacity: 0 });
+    gsap.set(bdmShadowEl, { scale: 0.4, opacity: 0 });
+    gsap.set('.bdm-info > *', { y: 40, opacity: 0 });
+
+    // Entrance + cinematic start
+    ScrollTrigger.create({
+      trigger: '.bdm-container', start: 'top 75%',
+      onEnter: () => {
+        const entranceTL = gsap.timeline();
+        entranceTL.to(bdmOrbit, { scale: 1, opacity: 1, duration: 1.4, ease: 'power3.out' })
+          .to(bdmShadowEl, { scale: 1, opacity: 1, duration: 1.2, ease: 'power3.out' }, '-=0.8')
+          .to('.bdm-info > *', { y: 0, opacity: 1, duration: 0.9, stagger: 0.12, ease: 'power3.out' }, '-=0.6')
+          .call(startCinematicBDM);
+      }, once: true
     });
-    gsap.from('.bdm-shadow', {
-      scale: 0.4, opacity: 0, duration: 1.2, ease: 'power3.out',
-      scrollTrigger: { trigger: '.bdm-container', start: 'top 75%' }
-    });
-    gsap.from('.bdm-info > *', {
-      y: 40, opacity: 0, duration: 0.9, stagger: 0.12, ease: 'power3.out',
-      scrollTrigger: { trigger: '.bdm-info', start: 'top 75%' }
-    });
+
+    function startCinematicBDM() {
+      if (!bdmOrbit) return;
+
+      gsap.set(bdmOrbit, { scale: 1, opacity: 1 });
+
+      // Floating motion
+      const floatTL = gsap.timeline({ repeat: -1, yoyo: true });
+      floatTL.to(bdmOrbit, { y: 22, duration: 5.5, ease: 'sine.inOut' })
+        .to(bdmOrbit, { y: -22, duration: 5.5, ease: 'sine.inOut' }, 2.75);
+
+      // Slow orbit — micro camera movement
+      const orbitTL = gsap.timeline({ repeat: -1, yoyo: true });
+      orbitTL.to(bdmOrbit, { rotateX: 4, rotateY: 6, rotateZ: 1.5, duration: 10, ease: 'sine.inOut' })
+        .to(bdmOrbit, { rotateX: -3, rotateY: -4, rotateZ: -1, duration: 10, ease: 'sine.inOut' }, 5);
+
+      // Shadow follows floating
+      if (bdmShadowEl) {
+        gsap.set(bdmShadowEl, { scale: 1, opacity: 1 });
+        const shadowTL = gsap.timeline({ repeat: -1, yoyo: true });
+        shadowTL.to(bdmShadowEl, { scale: 0.82, opacity: 0.3, duration: 5.5, ease: 'sine.inOut' })
+          .to(bdmShadowEl, { scale: 1, opacity: 0.6, duration: 5.5, ease: 'sine.inOut' }, 2.75);
+      }
+
+      // Mouse parallax
+      if (bdmParallax) {
+        document.addEventListener('mousemove', (e) => {
+          const x = (e.clientX / window.innerWidth - 0.5) * 2;
+          const y = (e.clientY / window.innerHeight - 0.5) * 2;
+          gsap.to(bdmParallax, {
+            x: x * 14, y: y * -10,
+            duration: 1.8, ease: 'power2.out',
+            overwrite: 'auto'
+          });
+        });
+      }
+    }
 
 // Section headers
 gsap.utils.toArray('.section-header').forEach(header => {
