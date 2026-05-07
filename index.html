@@ -348,7 +348,7 @@
     .bdm-visual {
       position: relative;
       display: flex; align-items: center; justify-content: center;
-      height: 600px;
+      height: 700px;
     }
     .bdm-3d-stage {
       perspective: 1200px;
@@ -395,13 +395,15 @@
       position: relative;
       display: flex; align-items: center; justify-content: center;
     }
-    .bdm-rotate-wrapper img {
+    .bdm-rotate-wrapper img,
+    .bdm-burger-inner video {
       display: block;
-      width: 90%; max-width: 450px;
+      width: 100%; max-width: 850px;
       height: auto;
       backface-visibility: visible;
       -webkit-backface-visibility: visible;
       filter: drop-shadow(0 40px 80px rgba(0,0,0,0.6)) brightness(1.05) contrast(1.05);
+      border-radius: 50%;
     }
     .bdm-light-sweep {
       position: absolute; inset: 0; z-index: 3;
@@ -1251,8 +1253,9 @@
     /* ===== RESPONSIVE ===== */
     @media (max-width: 1024px) {
       .bdm-container { grid-template-columns: 1fr; gap: 60px; text-align: center; }
-      .bdm-visual { height: 400px; }
-      .bdm-rotate-wrapper img { max-width: 320px; }
+      .bdm-visual { height: 480px; }
+      .bdm-rotate-wrapper img,
+      .bdm-burger-inner video { max-width: 400px; }
       .bdm-label { justify-content: center; }
       .bdm-description { max-width: 100%; }
       .location-container, .contact-container { gap: 60px; }
@@ -1274,8 +1277,9 @@
       .menu-toggle { display: flex; }
       .menu-grid { grid-template-columns: 1fr; }
       .burger-del-mes { padding: 80px 20px; }
-      .bdm-visual { height: 300px; }
-      .bdm-rotate-wrapper img { max-width: 220px; }
+      .bdm-visual { height: 360px; }
+      .bdm-rotate-wrapper img,
+      .bdm-burger-inner video { max-width: 280px; }
       .bdm-name { font-size: 2rem; }
       .location { padding: 100px 20px; }
       .location-headline { font-size: clamp(2.2rem, 12vw, 3.5rem); }
@@ -1399,7 +1403,10 @@
           <div class="bdm-rotate-wrapper" id="bdmOrbit">
             <div class="bdm-parallax" id="bdmParallax">
               <div class="bdm-burger-inner">
-                <img src="/hamburguesa_mes.png" alt="Supernova Truffle" loading="lazy">
+                <video class="burger__360" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" preload="auto" autoplay="autoplay" loop="loop" muted="muted" poster="">
+                  <source src="https://www.goiko.com/es/wp-content/uploads/2023/07/KB-360x2-1.mov" type="video/mp4; codecs=&quot;hvc1&quot;">
+                  <source src="https://www.goiko.com/es/wp-content/uploads/2023/07/kb-360x2-1.webm" type="video/webm">
+                </video>
                 <div class="bdm-light-sweep"></div>
               </div>
             </div>
