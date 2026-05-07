@@ -402,25 +402,8 @@
       height: auto;
       backface-visibility: visible;
       -webkit-backface-visibility: visible;
-      filter: drop-shadow(0 40px 80px rgba(0,0,0,0.6)) brightness(1.05) contrast(1.05);
+      filter: none;
       border-radius: 50%;
-    }
-    .bdm-light-sweep {
-      position: absolute; inset: 0; z-index: 3;
-      pointer-events: none; overflow: hidden;
-    }
-    .bdm-light-sweep::after {
-      content: '';
-      position: absolute; top: -50%; left: -100%;
-      width: 80%; height: 200%;
-      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.02) 30%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.02) 70%, transparent 100%);
-      animation: bdm-light-sweep 10s ease-in-out infinite;
-    }
-    @keyframes bdm-light-sweep {
-      0% { transform: translateX(-100%) rotate(-20deg); }
-      73% { transform: translateX(-100%) rotate(-20deg); }
-      86% { transform: translateX(400%) rotate(-20deg); }
-      100% { transform: translateX(400%) rotate(-20deg); }
     }
     .bdm-shadow {
       position: relative; z-index: 1;
@@ -1401,13 +1384,12 @@
         <div class="bdm-3d-stage">
           <div class="bdm-orbital-ring"></div>
           <div class="bdm-rotate-wrapper" id="bdmOrbit">
-            <div class="bdm-parallax" id="bdmParallax">
+                <div class="bdm-parallax" id="bdmParallax">
               <div class="bdm-burger-inner">
                 <video class="burger__360" playsinline="true" webkit-playsinline="true" x-webkit-airplay="true" preload="auto" autoplay="autoplay" loop="loop" muted="muted" poster="">
                   <source src="https://www.goiko.com/es/wp-content/uploads/2023/07/KB-360x2-1.mov" type="video/mp4; codecs=&quot;hvc1&quot;">
                   <source src="https://www.goiko.com/es/wp-content/uploads/2023/07/kb-360x2-1.webm" type="video/webm">
                 </video>
-                <div class="bdm-light-sweep"></div>
               </div>
             </div>
           </div>
