@@ -280,10 +280,14 @@
     var modal = document.createElement('div');
     modal.className = 'xp-modal xp-modal-cart';
     modal.innerHTML =
+      '<div class="xp-cart-drag-handle"></div>' +
       '<div class="xp-cart-header">' +
-        '<div>' +
-          '<div class="xp-cart-header-title">Tu pedido</div>' +
-          '<div class="xp-cart-header-type"></div>' +
+        '<div class="xp-cart-header-left">' +
+          '<div class="xp-cart-header-icon">\u{1F6D2}</div>' +
+          '<div>' +
+            '<div class="xp-cart-header-title">Tu pedido</div>' +
+            '<div class="xp-cart-header-type"></div>' +
+          '</div>' +
         '</div>' +
         '<button class="xp-cart-header-close" aria-label="Cerrar">&times;</button>' +
       '</div>' +
@@ -294,6 +298,7 @@
           '<span class="xp-cart-total-label">Subtotal</span>' +
           '<span class="xp-cart-total-value xp-cart-subtotal"></span>' +
         '</div>' +
+        '<div class="xp-cart-footer-divider"></div>' +
         '<div class="xp-cart-total-row">' +
           '<span class="xp-cart-total-label total">Total</span>' +
           '<span class="xp-cart-total-value total xp-cart-grandtotal"></span>' +
@@ -370,8 +375,8 @@
     els.cartHeaderType.textContent = orderLabel;
 
     if (state.orderType === 'domicilio' && state.address) {
-      els.cartAddressDisplay.style.display = 'block';
-      els.cartAddressDisplay.textContent = '\ud83d\udccd ' + state.address;
+      els.cartAddressDisplay.style.display = 'flex';
+      els.cartAddressDisplay.textContent = state.address;
     } else {
       els.cartAddressDisplay.style.display = 'none';
     }
