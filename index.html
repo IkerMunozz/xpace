@@ -1283,6 +1283,7 @@
       transition: transform 0.1s ease-out;
     }
   </style>
+  <link rel="stylesheet" href="xpacify.css">
 </head>
 <body>
   <!-- Noise overlay -->
@@ -1909,6 +1910,30 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     e.preventDefault();
     const target = document.querySelector(anchor.getAttribute('href'));
     if (target) lenis.scrollTo(target, { offset: -80 });
+  });
+});
+</script>
+<script src="xpacify.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var btn = document.querySelector('.bdm-btn');
+  if (!btn) btn = document.querySelector('#burger-del-mes .btn.btn-primary');
+  if (!btn) return;
+  btn.setAttribute('href', '#xp-noop');
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    var cart = JSON.parse(localStorage.getItem('xpacify_cart') || '[]');
+    var existing = null;
+    for (var i = 0; i < cart.length; i++) {
+      if (cart[i].id === 'supernova-truffle') { existing = cart[i]; break; }
+    }
+    if (existing) {
+      existing.qty += 1;
+    } else {
+      cart.push({ id: 'supernova-truffle', name: 'SUPERNOVA TRUFFLE', price: 14.90, qty: 1 });
+    }
+    localStorage.setItem('xpacify_cart', JSON.stringify(cart));
+    window.dispatchEvent(new CustomEvent('xpacify:refresh'));
   });
 });
 </script>
