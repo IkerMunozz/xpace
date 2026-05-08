@@ -1922,18 +1922,9 @@ document.addEventListener('DOMContentLoaded', function() {
   btn.setAttribute('href', '#xp-noop');
   btn.addEventListener('click', function(e) {
     e.preventDefault();
-    var cart = JSON.parse(localStorage.getItem('xpacify_cart') || '[]');
-    var existing = null;
-    for (var i = 0; i < cart.length; i++) {
-      if (cart[i].id === 'supernova-truffle') { existing = cart[i]; break; }
+    if (window.xpacifyAddProduct) {
+      window.xpacifyAddProduct('SUPERNOVA TRUFFLE', 14.90);
     }
-    if (existing) {
-      existing.qty += 1;
-    } else {
-      cart.push({ id: 'supernova-truffle', name: 'SUPERNOVA TRUFFLE', price: 14.90, qty: 1 });
-    }
-    localStorage.setItem('xpacify_cart', JSON.stringify(cart));
-    window.dispatchEvent(new CustomEvent('xpacify:refresh'));
   });
 });
 </script>

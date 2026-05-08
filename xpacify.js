@@ -552,6 +552,18 @@
     }
   });
 
+  window.xpacifyAddProduct = function (name, price) {
+    if (!state.orderTypeSet) {
+      state.pendingProduct = { name: name, price: price };
+      showOrderTypeModal();
+    } else {
+      addToCart(name, price);
+      saveCart();
+      showAddToast(name);
+      updateBottomBar();
+    }
+  };
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
