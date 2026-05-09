@@ -102,11 +102,11 @@
     .product-container { max-width: 1200px; margin: 0 auto; padding: 0 40px 100px; }
     .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 40px; }
     .product-card {
-      background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
+      background: var(--space-dark); border: 1px solid rgba(255,255,255,0.05);
       border-radius: 4px; padding: 40px; transition: border-color 0.5s ease, background 0.5s ease, transform 0.5s ease;
     }
     .product-card:hover {
-      border-color: var(--neon-red); background: rgba(255, 45, 85, 0.02);
+      border-color: var(--neon-red); background: var(--space-dark); box-shadow: 0 0 30px rgba(255,45,85,0.15);
       transform: translateY(-10px);
     }
     .product-name { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; margin-bottom: 15px; }

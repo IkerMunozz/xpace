@@ -10,14 +10,14 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
-  <link rel="icon" href="logo_xpace.jpg" type="image/jpg">
+  <link rel="icon" href="img/logo_xpace.jpg" type="image/jpg">
   <link rel="stylesheet" href="css/hamburguesas.css">
   <link rel="stylesheet" href="xpacify.css">
 </head>
 <body>
   <nav class="navbar" id="navbar">
     <a href="index.html" class="nav-logo">
-      <img src="logo_xpace.jpg" alt="Xpace Burger">
+      <img src="img/logo_xpace.jpg" alt="Xpace Burger">
       <span class="nav-logo-text">XPACE <span>BURGER</span></span>
     </a>
     <ul class="nav-links" id="navLinks">
@@ -40,48 +40,150 @@
 
   <main class="product-container">
     <div class="product-grid">
-      <div class="product-card">
-        <span class="product-badge">Popular</span>
-        <h3 class="product-name">Estrella</h3>
-        <p class="product-desc">Pan brioche Juanita baker, doble carne de vacuno smash (180g), bacon ahumado, cebolla crispy y pepinillos encurtidos, todo acompañado con nuestra salsa especial.</p>
-        <div class="product-footer">
-          <span class="product-price">10,90&euro;</span>
-          <a href="#" class="btn-add">Pedir</a>
+      <div class="product-card product-card--featured">
+        <div class="featured-atmosphere"></div>
+        <div class="featured-fog"></div>
+        <div class="featured-visual">
+          <div class="featured-image-glow"></div>
+          <div class="featured-image-glow featured-image-glow--secondary"></div>
+          <div class="featured-image-wrapper">
+            <img src="img/hamburguesa_principal.png" alt="Estrella">
+          </div>
+          <div class="featured-image-shadow"></div>
+        </div>
+        <div class="featured-content">
+          <div class="featured-badge">
+            <span class="featured-badge-dot"></span>
+            Popular
+          </div>
+          <h3 class="featured-title product-name">Estrella</h3>
+          <p class="featured-desc">Pan brioche Juanita baker, doble carne de vacuno smash (180g), bacon ahumado, cebolla crispy y pepinillos encurtidos, todo acompañado con nuestra salsa especial.</p>
+          <div class="featured-footer">
+            <div class="featured-price">
+              <span class="featured-price-label">Desde</span>
+              <span class="featured-price-value product-price">10,90<span class="featured-price-currency">€</span></span>
+            </div>
+            <a href="#" class="featured-btn btn-add">
+              <span>Pedir Ahora</span>
+              <svg class="featured-btn-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
         </div>
       </div>
-      <div class="product-card">
-        <h3 class="product-name">Lunar</h3>
-        <p class="product-desc">Pan brioche baker, doble carne de vacuno smash (180g), bacon ahumado, queso cheddar y nuestra salsa secreta lunar.</p>
-        <div class="product-footer">
-          <span class="product-price">11,90&euro;</span>
-          <a href="#" class="btn-add">Pedir</a>
+      <div class="product-card product-card--featured">
+        <div class="featured-atmosphere"></div>
+        <div class="featured-fog"></div>
+        <div class="featured-visual">
+          <div class="featured-image-glow"></div>
+          <div class="featured-image-glow featured-image-glow--secondary"></div>
+          <div class="featured-image-wrapper">
+            <img src="img/hamburguesa_principal.png" alt="Lunar">
+          </div>
+          <div class="featured-image-shadow"></div>
+        </div>
+        <div class="featured-content">
+          <h3 class="featured-title product-name">Lunar</h3>
+          <p class="featured-desc">Pan brioche baker, doble carne de vacuno smash (180g), bacon ahumado, queso cheddar y nuestra salsa secreta lunar.</p>
+          <div class="featured-footer">
+            <div class="featured-price">
+              <span class="featured-price-label">Desde</span>
+              <span class="featured-price-value product-price">11,90<span class="featured-price-currency">€</span></span>
+            </div>
+            <a href="#" class="featured-btn btn-add">
+              <span>Pedir Ahora</span>
+              <svg class="featured-btn-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
         </div>
       </div>
-      <div class="product-card">
-        <span class="product-badge">Hot</span>
-        <h3 class="product-name">Volcán</h3>
-        <p class="product-desc">Pan brioche Juanita baker, doble carne de vacuno smash (180g), jalapeños, queso fundido y salsa de queso volcán. Con jalapeños ardientes.</p>
-        <div class="product-footer">
-          <span class="product-price">11,90&euro;</span>
-          <a href="#" class="btn-add">Pedir</a>
+      <div class="product-card product-card--featured">
+        <div class="featured-atmosphere"></div>
+        <div class="featured-fog"></div>
+        <div class="featured-visual">
+          <div class="featured-image-glow"></div>
+          <div class="featured-image-glow featured-image-glow--secondary"></div>
+          <div class="featured-image-wrapper">
+            <img src="img/hamburguesa_principal.png" alt="Volcán">
+          </div>
+          <div class="featured-image-shadow"></div>
+        </div>
+        <div class="featured-content">
+          <div class="featured-badge">
+            <span class="featured-badge-dot"></span>
+            Hot
+          </div>
+          <h3 class="featured-title product-name">Volcán</h3>
+          <p class="featured-desc">Pan brioche Juanita baker, doble carne de vacuno smash (180g), jalapeños, queso fundido y salsa de queso volcán. Con jalapeños ardientes.</p>
+          <div class="featured-footer">
+            <div class="featured-price">
+              <span class="featured-price-label">Desde</span>
+              <span class="featured-price-value product-price">11,90<span class="featured-price-currency">€</span></span>
+            </div>
+            <a href="#" class="featured-btn btn-add">
+              <span>Pedir Ahora</span>
+              <svg class="featured-btn-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
         </div>
       </div>
-      <div class="product-card">
-        <span class="product-badge">Nuevo</span>
-        <h3 class="product-name">Trufada 2.0</h3>
-        <p class="product-desc">Pan brioche baker, doble carne de vacuno smash (180g), queso Monterey Jack, bacon ahumado, cebolla caramelizada y vinagreta de trufa.</p>
-        <div class="product-footer">
-          <span class="product-price">11,90&euro;</span>
-          <a href="#" class="btn-add">Pedir</a>
+      <div class="product-card product-card--featured">
+        <div class="featured-atmosphere"></div>
+        <div class="featured-fog"></div>
+        <div class="featured-visual">
+          <div class="featured-image-glow"></div>
+          <div class="featured-image-glow featured-image-glow--secondary"></div>
+          <div class="featured-image-wrapper">
+            <img src="img/hamburguesa_principal.png" alt="Trufada 2.0">
+          </div>
+          <div class="featured-image-shadow"></div>
+        </div>
+        <div class="featured-content">
+          <div class="featured-badge">
+            <span class="featured-badge-dot"></span>
+            Nuevo
+          </div>
+          <h3 class="featured-title product-name">Trufada 2.0</h3>
+          <p class="featured-desc">Pan brioche baker, doble carne de vacuno smash (180g), queso Monterey Jack, bacon ahumado, cebolla caramelizada y vinagreta de trufa.</p>
+          <div class="featured-footer">
+            <div class="featured-price">
+              <span class="featured-price-label">Desde</span>
+              <span class="featured-price-value product-price">11,90<span class="featured-price-currency">€</span></span>
+            </div>
+            <a href="#" class="featured-btn btn-add">
+              <span>Pedir Ahora</span>
+              <svg class="featured-btn-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
         </div>
       </div>
-      <div class="product-card">
-        <span class="product-badge">Favorita</span>
-        <h3 class="product-name">Emmy Xpace</h3>
-        <p class="product-desc">Pan brioche baker, doble carne de vacuno smash o medallón (180g), queso Monterey Jack, lechuga, tomate, salsa Emmy casera.</p>
-        <div class="product-footer">
-          <span class="product-price">11,90&euro;</span>
-          <a href="#" class="btn-add">Pedir</a>
+      <div class="product-card product-card--featured">
+        <div class="featured-atmosphere"></div>
+        <div class="featured-fog"></div>
+        <div class="featured-visual">
+          <div class="featured-image-glow"></div>
+          <div class="featured-image-glow featured-image-glow--secondary"></div>
+          <div class="featured-image-wrapper">
+            <img src="img/hamburguesa_principal.png" alt="Emmy Xpace">
+          </div>
+          <div class="featured-image-shadow"></div>
+        </div>
+        <div class="featured-content">
+          <div class="featured-badge">
+            <span class="featured-badge-dot"></span>
+            Favorita
+          </div>
+          <h3 class="featured-title product-name">Emmy Xpace</h3>
+          <p class="featured-desc">Pan brioche baker, doble carne de vacuno smash o medallón (180g), queso Monterey Jack, lechuga, tomate, salsa Emmy casera.</p>
+          <div class="featured-footer">
+            <div class="featured-price">
+              <span class="featured-price-label">Desde</span>
+              <span class="featured-price-value product-price">11,90<span class="featured-price-currency">€</span></span>
+            </div>
+            <a href="#" class="featured-btn btn-add">
+              <span>Pedir Ahora</span>
+              <svg class="featured-btn-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -93,5 +195,6 @@
 
   <script src="js/hamburguesas.js"></script>
   <script src="xpacify.js"></script>
+  <script src="js/stars.js"></script>
 </body>
 </html>

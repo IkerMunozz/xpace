@@ -203,7 +203,6 @@
     /* ===== GOIKO STYLE MARQUEE ===== */
     .goiko-marquee {
       width: 100%;
-      background: #030712;
       overflow: hidden;
       padding: 30px 0;
       position: relative;
@@ -217,8 +216,8 @@
     .goiko-marquee::before, .goiko-marquee::after {
       content: ""; position: absolute; top: 0; width: 10vw; height: 100%; z-index: 2; pointer-events: none;
     }
-    .goiko-marquee::before { left: 0; background: linear-gradient(to right, #030712, transparent); }
-    .goiko-marquee::after { right: 0; background: linear-gradient(to left, #030712, transparent); }
+    .goiko-marquee::before { left: 0; background: linear-gradient(to right, rgba(3,7,18,0.85), transparent); }
+    .goiko-marquee::after { right: 0; background: linear-gradient(to left, rgba(3,7,18,0.85), transparent); }
     .marquee-track {
       display: flex; width: max-content;
       animation: goiko-scroll 25s linear infinite;
@@ -268,7 +267,7 @@
     }
 
     /* ===== CATEGORY BLOCKS (GOIKO STYLE) ===== */
-    .category-section { padding: 0; background: var(--space-dark); }
+    .category-section { padding: 0; }
     .category-block {
       position: relative; height: 85vh; width: 100%;
       overflow: hidden; display: flex; align-items: center; justify-content: center;
@@ -319,7 +318,6 @@
     /* ===== BURGER DEL MES ===== */
     .burger-del-mes {
       padding: 160px 80px;
-      background: var(--space-dark);
       overflow: hidden;
     }
     .bdm-container {
@@ -476,7 +474,7 @@
     /* ===== CARTA / MENU ===== */
     .carta {
       padding: 160px 60px;
-      background: linear-gradient(180deg, var(--space-dark), rgba(10,17,40,0.4), var(--space-dark));
+      background: linear-gradient(180deg, transparent, rgba(3,7,18,0.3), transparent);
     }
     .carta-container { max-width: 1300px; margin: 0 auto; }
     .menu-tabs {
@@ -843,7 +841,7 @@
     /* ===== ABOUT ===== */
     .about {
       padding: 160px 60px;
-      background: linear-gradient(180deg, var(--space-dark), rgba(10,17,40,0.5), var(--space-dark));
+      background: linear-gradient(180deg, transparent, rgba(3,7,18,0.3), transparent);
       overflow: hidden;
     }
     .about-container { max-width: 1000px; margin: 0 auto; text-align: center; }
@@ -936,7 +934,7 @@
     /* ===== INSTAGRAM ===== */
     .instagram-section {
       padding: 140px 60px;
-      background: linear-gradient(180deg, var(--space-dark), rgba(10,17,40,0.3), var(--space-dark));
+      background: linear-gradient(180deg, transparent, rgba(3,7,18,0.3), transparent);
       text-align: center;
     }
     .instagram-handle {
@@ -986,7 +984,6 @@
     /* ===== LOCATION — EDITORIAL ===== */
     .location {
       padding: 180px 80px 140px;
-      background: var(--space-dark);
       overflow: hidden; position: relative;
     }
     .location-container {
@@ -1089,7 +1086,6 @@
     /* ===== CONTACT — EDITORIAL ===== */
     .contact-section {
       padding: 120px 80px 180px;
-      background: var(--space-dark);
       border-top: 1px solid rgba(255, 255, 255, 0.02);
     }
     .contact-container {
@@ -1263,4 +1259,16 @@
     .tilt-3d {
       transform-style: preserve-3d;
       transition: transform 0.1s ease-out;
+    }
+
+    /* ===== STARFIELD CANVAS ===== */
+    #xpace-starfield {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
     }
