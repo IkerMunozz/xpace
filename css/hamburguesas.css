@@ -313,10 +313,6 @@
       letter-spacing: -3px;
       color: var(--star-white);
       margin-bottom: 24px;
-      background: linear-gradient(135deg, var(--star-white) 50%, rgba(255, 43, 110, 0.5));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
     }
     .featured-desc {
       font-size: 0.9rem;
@@ -498,7 +494,7 @@
         justify-content: center;
       }
     }
-    .footer { padding: 60px 40px; border-top: 1px solid rgba(255,255,255,0.03); text-align: center; }
+    .footer { padding: 60px 40px; border-top: 1px solid rgba(255,255,255,0.03); text-align: center; background: var(--space-dark); }
     .footer p { font-size: 0.8rem; color: rgba(248,250,252,0.2); }
     @media (max-width: 768px) {
       .navbar { padding: 15px 20px; }

@@ -121,7 +121,7 @@
     }
     .product-card:hover .btn-add { background: white; color: black; border-color: white; }
 
-    .footer { padding: 60px 40px; border-top: 1px solid rgba(255,255,255,0.03); text-align: center; }
+    .footer { padding: 60px 40px; border-top: 1px solid rgba(255,255,255,0.03); text-align: center; background: var(--space-dark); }
     .footer p { font-size: 0.8rem; color: rgba(248,250,252,0.2); }
     @media (max-width: 768px) {
       .navbar { padding: 15px 20px; }
