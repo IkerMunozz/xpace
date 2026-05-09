@@ -186,23 +186,45 @@
 
     modal.innerHTML =
       '<div class="xp-modal-title">\u00bfC\u00f3mo quieres tu pedido?</div>' +
-      '<div class="xp-modal-subtitle">Elige tu opci\u00f3n de recogida preferida</div>' +
+      '<div class="xp-modal-subtitle">Elige c\u00f3mo prefieres recibirlo</div>' +
       '<div class="xp-order-options">' +
         '<button class="xp-order-option" data-type="domicilio">' +
-          '<span class="xp-order-icon">\ud83d\udef5</span>' +
+          '<span class="xp-order-icon">' +
+            '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">' +
+              '<circle cx="5.5" cy="17.5" r="2.5"/><circle cx="15.5" cy="17.5" r="2.5"/>' +
+              '<path d="M8 17.5h5.5"/><path d="M14.5 10h3.5l2.5 4v3.5h-2"/>' +
+              '<path d="M3 12.5h5l2-3h2"/><path d="M8.5 16v-3.5"/>' +
+            '</svg>' +
+          '</span>' +
           '<span class="xp-order-label">A domicilio</span>' +
           '<span class="xp-order-desc">Te lo llevamos a casa</span>' +
         '</button>' +
         '<button class="xp-order-option" data-type="recoger">' +
-          '<span class="xp-order-icon">\ud83c\udfea</span>' +
+          '<span class="xp-order-icon">' +
+            '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">' +
+              '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>' +
+              '<polyline points="9 22 9 12 15 12 15 22"/>' +
+            '</svg>' +
+          '</span>' +
           '<span class="xp-order-label">Recoger en local</span>' +
           '<span class="xp-order-desc">P\u00e1sate a recogerlo</span>' +
         '</button>' +
       '</div>' +
       '<div class="xp-address-section">' +
         '<label class="xp-address-label">\u00bfA qu\u00e9 direcci\u00f3n lo enviamos?</label>' +
-        '<input class="xp-address-input" type="text" placeholder="Calle, n\u00famero, ciudad..." />' +
-        '<button class="xp-confirm-address">Confirmar direcci\u00f3n</button>' +
+        '<div class="xp-address-input-wrap">' +
+          '<svg class="xp-address-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+            '<path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2C20 17.5 12 22 12 22z"/>' +
+            '<circle cx="12" cy="10" r="3"/>' +
+          '</svg>' +
+          '<input class="xp-address-input" type="text" placeholder="Calle, n\u00famero, ciudad..." />' +
+        '</div>' +
+        '<button class="xp-confirm-address">' +
+          'Confirmar direcci\u00f3n' +
+          '<svg class="xp-btn-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">' +
+            '<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>' +
+          '</svg>' +
+        '</button>' +
       '</div>';
 
     els.overlay.appendChild(modal);
@@ -283,15 +305,30 @@
       '<div class="xp-cart-drag-handle"></div>' +
       '<div class="xp-cart-header">' +
         '<div class="xp-cart-header-left">' +
-          '<div class="xp-cart-header-icon">\u{1F6D2}</div>' +
+          '<div class="xp-cart-header-icon">' +
+            '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+              '<circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>' +
+              '<path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>' +
+            '</svg>' +
+          '</div>' +
           '<div>' +
             '<div class="xp-cart-header-title">Tu pedido</div>' +
-            '<div class="xp-cart-header-type"></div>' +
+            '<div class="xp-cart-header-meta">' +
+              '<span class="xp-cart-header-type"></span>' +
+              '<span class="xp-cart-header-count"></span>' +
+            '</div>' +
           '</div>' +
         '</div>' +
         '<button class="xp-cart-header-close" aria-label="Cerrar">&times;</button>' +
       '</div>' +
-      '<div class="xp-cart-address-display" style="display:none"></div>' +
+      '<div class="xp-cart-header-divider"></div>' +
+      '<div class="xp-cart-address-display" style="display:none">' +
+        '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+          '<path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2C20 17.5 12 22 12 22z"/>' +
+          '<circle cx="12" cy="10" r="3"/>' +
+        '</svg>' +
+        '<span></span>' +
+      '</div>' +
       '<div class="xp-cart-products"></div>' +
       '<div class="xp-cart-footer">' +
         '<div class="xp-cart-total-row">' +
@@ -312,7 +349,9 @@
     els.cartSubtotal = modal.querySelector('.xp-cart-subtotal');
     els.cartGrandtotal = modal.querySelector('.xp-cart-grandtotal');
     els.cartHeaderType = modal.querySelector('.xp-cart-header-type');
+    els.cartHeaderCount = modal.querySelector('.xp-cart-header-count');
     els.cartAddressDisplay = modal.querySelector('.xp-cart-address-display');
+    els.cartAddressDisplayText = els.cartAddressDisplay.querySelector('span');
 
     modal.querySelector('.xp-cart-header-close').addEventListener('click', function () {
       hideAllModals();
@@ -363,20 +402,32 @@
     var count = getCartCount();
 
     if (count === 0) {
-      els.cartProducts.innerHTML = '<div class="xp-cart-empty">Tu pedido est\u00e1 vac\u00edo</div>';
+      els.cartProducts.innerHTML = '<div class="xp-cart-empty">' +
+        '<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">' +
+          '<circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>' +
+          '<path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>' +
+        '</svg>' +
+        'Tu pedido est\u00e1 vac\u00edo</div>';
       els.cartSubtotal.textContent = '0,00\u20ac';
       els.cartGrandtotal.textContent = '0,00\u20ac';
-      els.cartHeaderType.textContent = '';
+      els.cartHeaderType.innerHTML = '';
+      els.cartHeaderCount.textContent = '';
       els.cartAddressDisplay.style.display = 'none';
       return;
     }
 
-    var orderLabel = state.orderType === 'domicilio' ? '\ud83d\udef5 A domicilio' : '\ud83c\udfea Recoger en local';
-    els.cartHeaderType.textContent = orderLabel;
+    var countText = count + ' ' + (count === 1 ? 'producto' : 'productos');
+    els.cartHeaderCount.textContent = countText;
+
+    var orderLabel = state.orderType === 'domicilio' ? 'A domicilio' : 'Recoger en local';
+    var orderIcon = state.orderType === 'domicilio' ?
+      '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="17.5" r="2.5"/><circle cx="15.5" cy="17.5" r="2.5"/><path d="M8 17.5h5.5"/><path d="M14.5 10h3.5l2.5 4v3.5h-2"/><path d="M3 12.5h5l2-3h2"/><path d="M8.5 16v-3.5"/></svg>' :
+      '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>';
+    els.cartHeaderType.innerHTML = orderIcon + ' ' + orderLabel;
 
     if (state.orderType === 'domicilio' && state.address) {
       els.cartAddressDisplay.style.display = 'flex';
-      els.cartAddressDisplay.textContent = state.address;
+      els.cartAddressDisplayText.textContent = state.address;
     } else {
       els.cartAddressDisplay.style.display = 'none';
     }
@@ -507,7 +558,7 @@
     var info = getProductInfo(btn);
     if (!info) return;
 
-    if (!state.orderTypeSet) {
+    if (getCartCount() === 0) {
       state.pendingProduct = info;
       showOrderTypeModal();
     } else {
@@ -558,7 +609,7 @@
   });
 
   window.xpacifyAddProduct = function (name, price) {
-    if (!state.orderTypeSet) {
+    if (getCartCount() === 0) {
       state.pendingProduct = { name: name, price: price };
       showOrderTypeModal();
     } else {
