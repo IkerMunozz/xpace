@@ -592,12 +592,24 @@
     els.overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
     if (window.__lenis) window.__lenis.stop();
+    var products = document.querySelector('.xp-cart-products');
+    if (products) {
+      products.addEventListener('touchmove', allowScroll, { passive: false });
+    }
   }
 
   function hideOverlay() {
     els.overlay.classList.remove('active');
     document.body.style.overflow = '';
     if (window.__lenis) window.__lenis.start();
+    var products = document.querySelector('.xp-cart-products');
+    if (products) {
+      products.removeEventListener('touchmove', allowScroll);
+    }
+  }
+
+  function allowScroll(e) {
+    e.stopPropagation();
   }
 
   function showOrderTypeModal() {

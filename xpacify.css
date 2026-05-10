@@ -1275,6 +1275,9 @@
     min-height: 0;
     max-height: none;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
   }
 
   .xp-modal-cart .xp-cart-item {
