@@ -21,6 +21,7 @@ const lenis = new Lenis({
   orientation: 'vertical',
   smoothWheel: true
 });
+window.__lenis = lenis;
 function raf(time) {
   lenis.raf(time);
   requestAnimationFrame(raf);

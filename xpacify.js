@@ -591,11 +591,13 @@
   function showOverlay() {
     els.overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
+    if (window.__lenis) window.__lenis.stop();
   }
 
   function hideOverlay() {
     els.overlay.classList.remove('active');
     document.body.style.overflow = '';
+    if (window.__lenis) window.__lenis.start();
   }
 
   function showOrderTypeModal() {
