@@ -1051,10 +1051,10 @@
 
   .xp-modal-order .xp-cart-header-title,
   .xp-modal-cart .xp-cart-header-title {
-    font-size: 0.82rem;
+    font-size: 0.74rem;
     font-family: 'Orbitron', sans-serif;
     font-weight: 800;
-    letter-spacing: 2.5px;
+    letter-spacing: 1.5px;
     background: linear-gradient(135deg, #f8fafc, rgba(255, 255, 255, 0.7));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -1100,8 +1100,7 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
-    overflow-y: auto;
-    flex: 1;
+    justify-content: flex-start;
   }
 
   .xp-modal-order .xp-order-option {
