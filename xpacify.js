@@ -185,8 +185,21 @@
     modal.className = 'xp-modal xp-modal-order';
 
     modal.innerHTML =
-      '<div class="xp-modal-title">\u00bfC\u00f3mo quieres tu pedido?</div>' +
-      '<div class="xp-modal-subtitle">Elige c\u00f3mo prefieres recibirlo</div>' +
+      '<div class="xp-cart-drag-handle"></div>' +
+      '<div class="xp-cart-header">' +
+        '<div class="xp-cart-header-left">' +
+          '<div class="xp-cart-header-icon">' +
+            '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+              '<path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>' +
+            '</svg>' +
+          '</div>' +
+          '<div>' +
+            '<div class="xp-cart-header-title">\u00bfC\u00f3mo quieres tu pedido?</div>' +
+          '</div>' +
+        '</div>' +
+        '<button class="xp-cart-header-close" aria-label="Cerrar">&times;</button>' +
+      '</div>' +
+      '<div class="xp-cart-header-divider"></div>' +
       '<div class="xp-order-options">' +
         '<button class="xp-order-option" data-type="domicilio">' +
           '<span class="xp-order-icon">' +
@@ -211,17 +224,19 @@
         '</button>' +
       '</div>' +
       '<div class="xp-address-section">' +
-        '<label class="xp-address-label">\u00bfA qu\u00e9 direcci\u00f3n lo enviamos?</label>' +
-        '<div class="xp-address-input-wrap">' +
-          '<svg class="xp-address-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<div class="xp-address-icon-wrap">' +
+          '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
             '<path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2C20 17.5 12 22 12 22z"/>' +
             '<circle cx="12" cy="10" r="3"/>' +
           '</svg>' +
+          '<span>Direcci\u00f3n de entrega</span>' +
+        '</div>' +
+        '<div class="xp-address-input-wrap">' +
           '<input class="xp-address-input" type="text" placeholder="Calle, n\u00famero, ciudad..." />' +
         '</div>' +
-        '<button class="xp-confirm-address">' +
+        '<button class="xp-cart-continue xp-confirm-address">' +
           'Confirmar direcci\u00f3n' +
-          '<svg class="xp-btn-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">' +
+          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">' +
             '<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>' +
           '</svg>' +
         '</button>' +
@@ -229,6 +244,49 @@
 
     els.overlay.appendChild(modal);
     els.orderTypeModal = modal;
+
+    /* ---- Close button ---- */
+    modal.querySelector('.xp-cart-header-close').addEventListener('click', function () {
+      state.pendingProduct = null;
+      hideAllModals();
+    });
+
+    /* ---- Drag to dismiss (mobile) ---- */
+    var dragHandle = modal.querySelector('.xp-cart-drag-handle');
+    var dragStartY = 0;
+    var dragOffset = 0;
+    var isDragging = false;
+
+    dragHandle.addEventListener('touchstart', function (e) {
+      dragStartY = e.touches[0].clientY;
+      isDragging = true;
+      modal.style.transition = 'none';
+    }, { passive: true });
+
+    dragHandle.addEventListener('touchmove', function (e) {
+      if (!isDragging) return;
+      dragOffset = e.touches[0].clientY - dragStartY;
+      if (dragOffset < 0) dragOffset = 0;
+      modal.style.transform = 'translateY(' + dragOffset + 'px)';
+    }, { passive: true });
+
+    dragHandle.addEventListener('touchend', function () {
+      if (!isDragging) return;
+      isDragging = false;
+      modal.style.transition = 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)';
+      if (dragOffset > 100) {
+        state.pendingProduct = null;
+        modal.style.transform = 'translateY(100%)';
+        setTimeout(function () {
+          hideAllModals();
+          modal.style.transform = '';
+          modal.style.transition = '';
+        }, 350);
+      } else {
+        modal.style.transform = '';
+      }
+      dragOffset = 0;
+    }, { passive: true });
 
     var options = modal.querySelectorAll('.xp-order-option');
     var addressSection = modal.querySelector('.xp-address-section');
@@ -360,6 +418,42 @@
     modal.querySelector('.xp-cart-continue').addEventListener('click', function () {
       hideAllModals();
     });
+
+    /* ---- Drag to dismiss (mobile) ---- */
+    var dragHandle = modal.querySelector('.xp-cart-drag-handle');
+    var dragStartY = 0;
+    var dragOffset = 0;
+    var isDragging = false;
+
+    dragHandle.addEventListener('touchstart', function (e) {
+      dragStartY = e.touches[0].clientY;
+      isDragging = true;
+      modal.style.transition = 'none';
+    }, { passive: true });
+
+    dragHandle.addEventListener('touchmove', function (e) {
+      if (!isDragging) return;
+      dragOffset = e.touches[0].clientY - dragStartY;
+      if (dragOffset < 0) dragOffset = 0;
+      modal.style.transform = 'translateY(' + dragOffset + 'px)';
+    }, { passive: true });
+
+    dragHandle.addEventListener('touchend', function () {
+      if (!isDragging) return;
+      isDragging = false;
+      modal.style.transition = 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)';
+      if (dragOffset > 100) {
+        modal.style.transform = 'translateY(100%)';
+        setTimeout(function () {
+          hideAllModals();
+          modal.style.transform = '';
+          modal.style.transition = '';
+        }, 350);
+      } else {
+        modal.style.transform = '';
+      }
+      dragOffset = 0;
+    }, { passive: true });
   }
 
   /* ====================== UI UPDATES ====================== */
