@@ -903,9 +903,7 @@
     padding: 0;
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: stretch;
+    display: block;
   }
 
   .xp-overlay:not(.xp-order-active) {
@@ -934,6 +932,10 @@
 
   .xp-modal-order,
   .xp-modal-cart {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
     border-radius: 32px 32px 0 0;
     max-width: 100%;
     width: 100%;
@@ -956,6 +958,11 @@
       0 -20px 120px rgba(255, 45, 85, 0.04),
       0 -2px 30px rgba(50, 130, 255, 0.03),
       inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
+
+  /* Cart modal: fixed height so flex:1 properly constrains products area */
+  .xp-modal-cart {
+    height: 90vh;
   }
 
   .xp-overlay.active .xp-modal-order,
