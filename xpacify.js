@@ -704,6 +704,19 @@
     }
   });
 
+  window.addEventListener('pageshow', function (e) {
+    if (e.persisted) {
+      loadState();
+      if (els.bottomBar) {
+        if (getCartCount() > 0) {
+          updateBottomBar();
+        } else {
+          els.bottomBar.classList.remove('visible');
+        }
+      }
+    }
+  });
+
   window.xpacifyAddProduct = function (name, price) {
     if (getCartCount() === 0) {
       state.pendingProduct = { name: name, price: price };
