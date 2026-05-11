@@ -12,7 +12,7 @@
   <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
   <link rel="icon" href="img/logo_xpace.jpg" type="image/jpg">
   <link rel="stylesheet" href="css/bebidas.css">
-  <link rel="stylesheet" href="xpacify.css">
+  <link rel="stylesheet" href="css/xpacify.css">
 </head>
 <body>
   <nav class="navbar" id="navbar">
@@ -40,28 +40,66 @@
 
   <main class="product-container">
     <div class="product-grid">
-      <div class="product-card">
-        <h3 class="product-name">Refrescos</h3>
-        <p class="product-desc">Coca-Cola, Fanta, Sprite, Aquarius, Nestea.</p>
-        <div class="product-footer">
-          <span class="product-price">2,50&euro;</span>
-          <a href="#" class="btn-add">Pedir</a>
+      <div class="product-card product-card--featured">
+        <div class="featured-atmosphere"></div>
+        <div class="featured-fog"></div>
+        <div class="featured-content">
+          <div class="featured-badge">
+            <span class="featured-badge-dot"></span>
+            Clásicos
+          </div>
+          <h3 class="featured-title product-name">Refrescos</h3>
+          <p class="featured-desc">Coca-Cola, Fanta, Sprite, Aquarius, Nestea.</p>
+          <div class="featured-footer">
+            <div class="featured-price">
+              <span class="featured-price-label">Desde</span>
+              <span class="featured-price-value product-price">2,50<span class="featured-price-currency">€</span></span>
+            </div>
+            <a href="#" class="featured-btn btn-add">
+              <span>Pedir Ahora</span>
+              <svg class="featured-btn-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
         </div>
       </div>
-      <div class="product-card">
-        <h3 class="product-name">Cerveza Estelar</h3>
-        <p class="product-desc">Cerveza artesanal de la casa, suave y refrescante.</p>
-        <div class="product-footer">
-          <span class="product-price">3,50&euro;</span>
-          <a href="#" class="btn-add">Pedir</a>
+      <div class="product-card product-card--featured">
+        <div class="featured-atmosphere"></div>
+        <div class="featured-fog"></div>
+        <div class="featured-content">
+          <div class="featured-badge">
+            <span class="featured-badge-dot"></span>
+            Artesana
+          </div>
+          <h3 class="featured-title product-name">Cerveza Estelar</h3>
+          <p class="featured-desc">Cerveza artesanal de la casa, suave y refrescante.</p>
+          <div class="featured-footer">
+            <div class="featured-price">
+              <span class="featured-price-label">Desde</span>
+              <span class="featured-price-value product-price">3,50<span class="featured-price-currency">€</span></span>
+            </div>
+            <a href="#" class="featured-btn btn-add">
+              <span>Pedir Ahora</span>
+              <svg class="featured-btn-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
         </div>
       </div>
-      <div class="product-card">
-        <h3 class="product-name">Agua Mineral</h3>
-        <p class="product-desc">Agua pura de manantial.</p>
-        <div class="product-footer">
-          <span class="product-price">1,80&euro;</span>
-          <a href="#" class="btn-add">Pedir</a>
+      <div class="product-card product-card--featured">
+        <div class="featured-atmosphere"></div>
+        <div class="featured-fog"></div>
+        <div class="featured-content">
+          <h3 class="featured-title product-name">Agua Mineral</h3>
+          <p class="featured-desc">Agua pura de manantial.</p>
+          <div class="featured-footer">
+            <div class="featured-price">
+              <span class="featured-price-label">Desde</span>
+              <span class="featured-price-value product-price">1,80<span class="featured-price-currency">€</span></span>
+            </div>
+            <a href="#" class="featured-btn btn-add">
+              <span>Pedir Ahora</span>
+              <svg class="featured-btn-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -72,7 +110,7 @@
   </footer>
 
   <script src="js/bebidas.js"></script>
-  <script src="xpacify.js"></script>
+  <script src="js/xpacify.js"></script>
   <script src="js/stars.js"></script>
 </body>
 </html>
