@@ -972,7 +972,7 @@
       box-shadow: 0 25px 80px rgba(0,0,0,0.4), 0 0 40px rgba(255,45,85,0.12);
     }
     .instagram-item::after {
-      content: '@xpace_burger'; position: absolute; inset: 0;
+      content: '@celestial_burger'; position: absolute; inset: 0;
       display: flex; align-items: center; justify-content: center;
       background: linear-gradient(135deg, rgba(255,45,85,0.85), rgba(139,92,246,0.85));
       font-family: var(--font-accent); font-size: 0.65rem;
@@ -1262,7 +1262,7 @@
     }
 
     /* ===== STARFIELD CANVAS ===== */
-    #xpace-starfield {
+    #celestial-starfield {
       position: fixed;
       top: 0;
       left: 0;

@@ -27,3 +27,4 @@
         navLinks.classList.remove('open');
       });
     });
+

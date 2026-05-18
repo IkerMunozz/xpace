@@ -2,7 +2,7 @@
 // 1. PRELOADER
 // ============================================================
 (function() {
-  const text = 'XPACE BURGER';
+  const text = 'CELESTIAL BURGER';
   const container = document.getElementById('preloaderText');
   text.split('').forEach((ch, i) => {
     const span = document.createElement('span');

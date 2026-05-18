@@ -70,7 +70,7 @@
 
   function init() {
     canvas = document.createElement('canvas');
-    canvas.id = 'xpace-starfield';
+    canvas.id = 'celestial-starfield';
     ctx = canvas.getContext('2d');
 
     canvas.style.position = 'fixed';
@@ -98,3 +98,4 @@
     init();
   }
 })();
+
